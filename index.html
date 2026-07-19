@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Marteder Textile — Bazin Getzner, tissus wax africains de luxe et mèches X-Pression à Meyrin, Genève.">
+  <title>Marteder Textile — Accueil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link
+    rel="preload"
+    as="image"
+    type="image/jpeg"
+    imagesrcset="
+      https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?auto=format&fit=crop&w=800&h=500&q=85 800w,
+      https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?auto=format&fit=crop&w=1280&h=800&q=85 1280w,
+      https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?auto=format&fit=crop&w=1920&h=900&q=85 1920w
+    "
+    imagesizes="100vw"
+    href="https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?auto=format&fit=crop&w=1280&h=800&q=85"
+  >
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="#" class="logo" aria-label="Marteder Textile">
+        <svg class="logo-mark" xmlns="http://www.w3.org/2000/svg" viewBox="74 46 272 272" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="logoGold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F2E6B3"/>
+              <stop offset="40%" stop-color="#D4AF37"/>
+              <stop offset="100%" stop-color="#9A7420"/>
+            </linearGradient>
+            <linearGradient id="logoGoldVert" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#EED991"/>
+              <stop offset="100%" stop-color="#B8892E"/>
+            </linearGradient>
+            <linearGradient id="logoBurgundy" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#8B2A38"/>
+              <stop offset="100%" stop-color="#651E28"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(210 182)">
+            <circle r="128" fill="none" stroke="url(#logoGold)" stroke-width="3.4"/>
+            <path fill="url(#logoBurgundy)" fill-rule="evenodd" d="M 0 -128 A 128 128 0 1 1 -0.01 -128 Z M 0 -105 A 105 105 0 1 0 0.01 -105 Z"/>
+            <circle r="105" fill="none" stroke="url(#logoGold)" stroke-width="2.5"/>
+          </g>
+          <g transform="translate(210 182)">
+            <path d="M -32 20 C -34 38 -16 50 0 52 C 16 50 34 38 32 20 C 22 26 11 30 0 30 C -11 30 -22 26 -32 20 Z" fill="#2F7A4A"/>
+            <path d="M -48 8 C -40 26 -22 34 0 36 C 22 34 40 26 48 8 C 36 16 18 22 0 22 C -18 22 -36 16 -48 8 Z" fill="#3E9460"/>
+            <path d="M -26 -4 C -28 14 -12 28 0 30 C 12 28 28 14 26 -4 C 18 4 9 8 0 8 C -9 8 -18 4 -26 -4 Z" fill="url(#logoGoldVert)"/>
+            <path d="M -17 -18 C -19 2 -8 16 0 18 C 8 16 19 2 17 -18 C 10 -8 5 -4 0 -4 C -5 -4 -10 -8 -17 -18 Z" fill="url(#logoGold)"/>
+            <path d="M -40 -26 C -32 -8 -18 0 0 0 C -14 -10 -24 -20 -40 -26 Z" fill="#1B4685"/>
+            <path d="M 40 -26 C 32 -8 18 0 0 0 C 14 -10 24 -20 40 -26 Z" fill="#1B4685"/>
+            <path d="M 0 -44 C -8 -26 -8 -6 0 4 C 8 -6 8 -26 0 -44 Z" fill="url(#logoGold)"/>
+          </g>
+        </svg>
+        <span class="logo-text">Marteder Textile</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#articles">Boutique</a></li>
+        <li><a href="#espace-cosmetiques">Cosmétiques</a></li>
+        <li><a href="#espace-coiffure">Coiffure</a></li>
+        <li><a href="#collections">Collections</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="Rechercher">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/>
+          </svg>
+        </button>
+        <button class="icon-btn cart-btn" id="cartToggle" aria-label="Panier" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/>
+          </svg>
+          <span class="cart-count">0</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Panier -->
+  <div class="cart-panel" id="cartPanel" aria-hidden="true">
+    <div class="cart-panel-backdrop" id="cartBackdrop"></div>
+    <aside class="cart-panel-drawer" role="dialog" aria-labelledby="cartPanelTitle">
+      <div class="cart-panel-header">
+        <h2 id="cartPanelTitle">Votre panier</h2>
+        <button type="button" class="cart-panel-close" id="cartClose" aria-label="Fermer le panier">&times;</button>
+      </div>
+      <div class="cart-panel-body" id="cartList">
+        <p class="cart-empty">Votre panier est vide.</p>
+      </div>
+      <div class="cart-panel-footer">
+        <p class="cart-panel-total">Total : <strong id="cartTotal">0 CHF</strong></p>
+        <button type="button" class="btn btn-cart cart-checkout-btn" id="cartCheckoutBtn" disabled>
+          Passer commande
+        </button>
+        <p class="cart-checkout-note">Paiement CB &amp; Twint — activation prochaine via Stripe</p>
+        <form class="cart-checkout-form hidden" id="cartCheckoutForm" novalidate>
+          <p class="cart-checkout-form-title">Vos coordonnées de livraison</p>
+          <label class="form-label" for="checkoutName">Nom complet</label>
+          <input class="form-input" type="text" id="checkoutName" name="name" required autocomplete="name">
+          <label class="form-label" for="checkoutEmail">E-mail</label>
+          <input class="form-input" type="email" id="checkoutEmail" name="email" required autocomplete="email">
+          <label class="form-label" for="checkoutPhone">Téléphone</label>
+          <input class="form-input" type="tel" id="checkoutPhone" name="phone" required autocomplete="tel">
+          <label class="form-label" for="checkoutAddress">Adresse de livraison</label>
+          <textarea class="form-input form-textarea" id="checkoutAddress" name="address" rows="3" required placeholder="Rue, numéro, NPA, ville, pays"></textarea>
+          <button type="submit" class="btn btn-cart" id="cartSubmitOrderBtn">Envoyer la commande</button>
+          <button type="button" class="btn btn-outline cart-checkout-cancel" id="cartCheckoutCancel">Retour au panier</button>
+        </form>
+      </div>
+    </aside>
+  </div>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="accueil">
+      <div class="hero-bg" aria-hidden="true">
+        <picture class="hero-bg-picture">
+          <source
+            media="(min-width: 1200px)"
+            srcset="https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?auto=format&fit=crop&w=1920&h=900&q=85"
+          >
+          <source
+            media="(min-width: 768px)"
+            srcset="https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?auto=format&fit=crop&w=1280&h=800&q=85"
+          >
+          <img
+            class="hero-bg-image"
+            src="https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?auto=format&fit=crop&w=800&h=500&q=85"
+            alt=""
+            width="1920"
+            height="900"
+            fetchpriority="high"
+            decoding="async"
+          >
+        </picture>
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content container">
+        <span class="hero-badge">Bazin Getzner &amp; wax premium</span>
+        <h1 class="hero-title">
+          L'art du tissu<br>
+          <em>africain</em>
+        </h1>
+        <p class="hero-text">
+          Découvrez notre sélection de Bazin Getzner, wax hollandais et tissus brodés
+          d'exception. Des étoffes de luxe pour sublimer vos créations et célébrer
+          l'élégance africaine.
+        </p>
+        <div class="hero-actions">
+          <a href="#articles" class="btn btn-primary">Découvrir nos tissus</a>
+          <a href="#collections" class="btn btn-outline">Voir les collections</a>
+        </div>
+      </div>
+      <div class="hero-scroll">
+        <span>Défiler</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- Vitrine tissus -->
+    <section class="cover-sections" aria-labelledby="cover-tissus-title">
+      <div class="container">
+        <div class="cover-tissus">
+          <div class="section-header centered">
+            <span class="section-label">Boutique</span>
+            <h2 class="section-title" id="cover-tissus-title">Nos tissus d’exception</h2>
+          </div>
+          <figure class="cover-tissus-figure">
+            <img
+              src="MA-boutique.png"
+              alt="Grille de tissus Marteder Textile"
+              width="1200"
+              height="800"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
+          <p class="cover-tissus-text">
+            Explorez notre sélection de tissus d’exception.
+            Qualité, prestige et authenticité pour toutes vos créations.
+          </p>
+          <a href="#articles" class="btn btn-outline cover-cta">Voir le catalogue</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nouvel Arrivage Getzner -->
+    <section class="getzner-arrival" id="nouvel-arrivage" aria-labelledby="getzner-arrival-title">
+      <div class="container getzner-arrival-inner">
+        <span class="section-label">Nouvel arrivage</span>
+        <h2 class="getzner-arrival-title" id="getzner-arrival-title">Tissus Getzner 100&nbsp;% authentiques</h2>
+        <p class="getzner-arrival-tagline">Qualité premium — Élégance — Prestige</p>
+
+        <div class="getzner-video-wrapper">
+          <video
+            class="getzner-video"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            aria-label="Présentation du nouvel arrivage Getzner"
+          >
+            <source src="64999.mp4" type="video/mp4">
+            Votre navigateur ne prend pas en charge la lecture de cette vidéo.
+          </video>
+        </div>
+
+        <div class="getzner-product-details">
+          <p class="getzner-price">
+            80&nbsp;CHF
+            <span class="getzner-price-unit">les 5 yards</span>
+          </p>
+          <p class="getzner-meta">
+            Boutique : 15g Rue de la Golette, 1217 Meyrin<br>
+            <em>Les stocks sont très limités.</em>
+          </p>
+          <a
+            href="https://wa.me/41765761672"
+            class="btn btn-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Commander sur WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Avantages -->
+    <section class="features">
+      <div class="container features-grid">
+        <div class="feature">
+          <div class="feature-icon">✦</div>
+          <h3>Bazin Getzner authentique</h3>
+          <p>Coton damassé premium, sélectionné pour sa brillance et sa tenue</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">♡</div>
+          <h3>Tissus de luxe</h3>
+          <p>Wax, bazin riche et broderies artisanales d'Afrique de l'Ouest</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">↺</div>
+          <h3>Livraison soignée</h3>
+          <p>Vos tissus expédiés avec soin partout en Suisse, en France et en Europe.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✉</div>
+          <h3>Conseil personnalisé</h3>
+          <p>Notre équipe vous guide dans le choix de vos étoffes</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Articles -->
+    <section class="products" id="articles">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <span class="section-label">Notre sélection</span>
+            <h2 class="section-title">Notre catalogue</h2>
+          </div>
+          <p class="section-desc">
+            Bazin Getzner, wax hollandais et broderies d'exception — vendus par lot de 3 pagnes.
+            Des étoffes premium pour vos tenues de cérémonie et créations sur mesure.
+          </p>
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">Tous</button>
+          <button class="filter-btn" data-filter="bazin">Bazin Getzner</button>
+          <button class="filter-btn" data-filter="wax">Wax</button>
+          <button class="filter-btn" data-filter="brodes">Broderies</button>
+          <button class="filter-btn" data-filter="meches" data-scroll="#meches">Mèches</button>
+          <button class="filter-btn" data-filter="accessoires">Accessoires</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+
+          <!-- Création exclusive Marteder (produit vedette) -->
+          <article class="product-card product-card--fabric" data-category="bazin">
+            <div class="product-image-wrap">
+              <img
+                class="product-image"
+                src="marteder.png"
+                alt="Création exclusive Marteder Textile — collection Getzner"
+                loading="lazy"
+                decoding="async"
+              >
+              <span class="product-badge new">Nouveau</span>
+            </div>
+            <div class="product-info">
+              <p class="product-category">Collection Getzner</p>
+              <h3 class="product-name">Création exclusive Marteder</h3>
+              <p class="product-description">
+                Nouveauté disponible en boutique. Collection Getzner en coupons de 5 yards,
+                déclinée dans une large palette de couleurs.
+              </p>
+              <div class="product-price"><span class="current">80 CHF</span></div>
+              <p class="product-lot-note">Par coupon de 5 yards</p>
+              <div class="product-order-actions">
+                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
+                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Bazin Getzner Schwer -->
+          <article class="product-card product-card--fabric" data-category="bazin" data-product-id="1">
+            <div class="product-image-wrap">
+              <img class="product-image" src="https://images.unsplash.com/photo-1631663027473-3671aa7c4503?w=800&q=85" alt="Bazin Getzner Schwer — Beige / Doré" loading="lazy">
+              <span class="product-badge new">Nouveau</span>
+            </div>
+            <div class="product-info">
+              <p class="product-category">Bazin Getzner</p>
+              <h3 class="product-name">Bazin Riche Getzner Authentique (Schwer) – Lot de 5 Yards</h3>
+              <p class="product-description">
+                Découvrez l'excellence du véritable bazin riche Getzner de qualité « Schwer » (qualité lourde), importé directement d'Autriche. Apprécié pour sa densité unique, sa superbe tenue et son éclat incomparable, c'est le choix d'excellence pour vos créations de prestige.
+              </p>
+              <ul class="product-features">
+                <li>Conditionnement : vendu en lot de 5 yards</li>
+                <li>Qualité : authentique Getzner Schwer (lourd)</li>
+                <li>Brillance et rigidité haut de gamme durables</li>
+              </ul>
+              <div class="product-price"><span class="current">80 CHF</span></div>
+              <p class="product-lot-note">Vendu en lot de 5 yards</p>
+              <div class="fabric-variants">
+                <span class="variant-label">Choisir la couleur</span>
+                <div class="fabric-swatch-list" role="listbox" aria-label="Couleurs Getzner Schwer">
+                  <button type="button" class="fabric-swatch" data-variant="violet" title="Getzner Schwer — Violet" aria-label="Getzner Schwer — Violet">
+                    <img src="https://images.unsplash.com/photo-1607300110843-b3994a493d98?w=120&q=80" alt="Getzner Schwer — Violet">
+                    <span class="fabric-swatch-name">Violet</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="vert-clair" title="Getzner Schwer — Vert Clair" aria-label="Getzner Schwer — Vert Clair">
+                    <img src="https://images.unsplash.com/photo-1527167598984-8802d8028eea?w=120&q=80" alt="Getzner Schwer — Vert Clair">
+                    <span class="fabric-swatch-name">Vert clair</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="blanc" title="Getzner Schwer — Blanc" aria-label="Getzner Schwer — Blanc">
+                    <img src="https://images.unsplash.com/photo-1744502671977-702d9105533d?w=120&q=80" alt="Getzner Schwer — Blanc">
+                    <span class="fabric-swatch-name">Blanc</span>
+                  </button>
+                  <button type="button" class="fabric-swatch active" data-variant="beige-dore" title="Getzner Schwer — Beige / Doré" aria-label="Getzner Schwer — Beige / Doré">
+                    <img src="https://images.unsplash.com/photo-1631663027473-3671aa7c4503?w=120&q=80" alt="Getzner Schwer — Beige / Doré">
+                    <span class="fabric-swatch-name">Beige / Doré</span>
+                  </button>
+                </div>
+                <select class="variant-select fabric-variant-select" aria-label="Choisir la couleur du bazin Schwer">
+                  <option value="violet">Getzner Schwer — Violet</option>
+                  <option value="vert-clair">Getzner Schwer — Vert Clair</option>
+                  <option value="blanc">Getzner Schwer — Blanc</option>
+                  <option value="beige-dore" selected>Getzner Schwer — Beige / Doré</option>
+                </select>
+                <p class="variant-selected fabric-variant-preview">Couleur sélectionnée : <strong>Getzner Schwer — Beige / Doré</strong></p>
+              </div>
+              <div class="product-order-actions">
+                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
+                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card product-card--fabric" data-category="bazin" data-product-id="2">
+            <div class="product-image-wrap">
+              <img class="product-image" src="https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?w=800&q=85" alt="Bazin riche doré brodé — Or classique" loading="lazy">
+            </div>
+            <div class="product-info">
+              <p class="product-category">Bazin Getzner</p>
+              <h3 class="product-name">Bazin riche doré brodé</h3>
+              <p class="product-description">Bazin Getzner teinte dorée, finition riche idéale pour les tenues de fête.</p>
+              <div class="product-price"><span class="current">120 CHF</span></div>
+              <p class="product-lot-note">Vendu par lot de 3 pagnes</p>
+              <div class="fabric-variants">
+                <span class="variant-label">Choisir le modèle</span>
+                <div class="fabric-swatch-list" role="listbox" aria-label="Modèles bazin doré brodé">
+                  <button type="button" class="fabric-swatch active" data-variant="or-classique" title="Or classique brodé" aria-label="Or classique brodé">
+                    <img src="https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Or classique</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="or-rose" title="Or rose brodé" aria-label="Or rose brodé">
+                    <img src="https://images.unsplash.com/photo-1777148783728-510bbeeba075?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Or rose</span>
+                  </button>
+                </div>
+                <select class="variant-select fabric-variant-select" aria-label="Choisir le modèle bazin doré">
+                  <option value="or-classique" selected>Or classique brodé</option>
+                  <option value="or-rose">Or rose brodé</option>
+                </select>
+                <p class="variant-selected fabric-variant-preview">Modèle sélectionné : <strong>Or classique brodé</strong></p>
+              </div>
+              <div class="product-order-actions">
+                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
+                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Wax -->
+          <article class="product-card product-card--fabric" data-category="wax" data-product-id="3">
+            <div class="product-image-wrap">
+              <img class="product-image" src="https://images.unsplash.com/photo-1768212565426-58b089b6386d?w=800&q=85" alt="Wax hollandais Vlisco — Motif classique" loading="lazy">
+              <span class="product-badge new">Nouveau</span>
+            </div>
+            <div class="product-info">
+              <p class="product-category">Wax</p>
+              <h3 class="product-name">Wax hollandais Vlisco</h3>
+              <p class="product-description">Wax authentique aux motifs traditionnels, couleurs intenses et tenue durable.</p>
+              <div class="product-price"><span class="current">45 CHF</span></div>
+              <p class="product-lot-note">Vendu par lot de 3 pagnes</p>
+              <div class="fabric-variants">
+                <span class="variant-label">Choisir le motif</span>
+                <div class="fabric-swatch-list" role="listbox" aria-label="Motifs wax Vlisco">
+                  <button type="button" class="fabric-swatch active" data-variant="classique" title="Motif classique" aria-label="Motif classique">
+                    <img src="https://images.unsplash.com/photo-1768212565426-58b089b6386d?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Classique</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="indigo" title="Motif indigo" aria-label="Motif indigo">
+                    <img src="https://images.unsplash.com/photo-1630084305900-b297cff3a608?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Indigo</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="floral" title="Motif floral" aria-label="Motif floral">
+                    <img src="https://images.unsplash.com/photo-1768212565424-efa3a3852b81?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Floral</span>
+                  </button>
+                </div>
+                <select class="variant-select fabric-variant-select" aria-label="Choisir le motif wax Vlisco">
+                  <option value="classique" selected>Motif classique</option>
+                  <option value="indigo">Motif indigo</option>
+                  <option value="floral">Motif floral</option>
+                </select>
+                <p class="variant-selected fabric-variant-preview">Motif sélectionné : <strong>Motif classique</strong></p>
+              </div>
+              <div class="product-order-actions">
+                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
+                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card product-card--fabric" data-category="wax" data-product-id="4">
+            <div class="product-image-wrap">
+              <img class="product-image" src="https://images.unsplash.com/photo-1630084305900-b297cff3a608?w=800&q=85" alt="Wax super wax — Motif géométrique noir" loading="lazy">
+              <span class="product-badge sale">-21%</span>
+            </div>
+            <div class="product-info">
+              <p class="product-category">Wax</p>
+              <h3 class="product-name">Wax super wax motifs géométriques</h3>
+              <p class="product-description">Super wax hollandais aux motifs géométriques audacieux et finition premium.</p>
+              <div class="product-price">
+                <span class="current">38 CHF</span>
+                <span class="original">48 CHF</span>
+              </div>
+              <p class="product-lot-note">Vendu par lot de 3 pagnes</p>
+              <div class="fabric-variants">
+                <span class="variant-label">Choisir le motif</span>
+                <div class="fabric-swatch-list" role="listbox" aria-label="Motifs wax géométriques">
+                  <button type="button" class="fabric-swatch active" data-variant="geo-noir" title="Géométrique noir &amp; or" aria-label="Géométrique noir et or">
+                    <img src="https://images.unsplash.com/photo-1630084305900-b297cff3a608?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Noir &amp; or</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="geo-rouge" title="Géométrique rouge" aria-label="Géométrique rouge">
+                    <img src="https://images.unsplash.com/photo-1768212566108-4ce4f329e4d2?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Rouge</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="geo-bleu" title="Géométrique bleu" aria-label="Géométrique bleu">
+                    <img src="https://images.unsplash.com/photo-1768212565426-58b089b6386d?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Bleu</span>
+                  </button>
+                </div>
+                <select class="variant-select fabric-variant-select" aria-label="Choisir le motif wax géométrique">
+                  <option value="geo-noir" selected>Géométrique noir &amp; or</option>
+                  <option value="geo-rouge">Géométrique rouge</option>
+                  <option value="geo-bleu">Géométrique bleu</option>
+                </select>
+                <p class="variant-selected fabric-variant-preview">Motif sélectionné : <strong>Géométrique noir &amp; or</strong></p>
+              </div>
+              <div class="product-order-actions">
+                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
+                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card product-card--fabric" data-category="wax" data-product-id="6">
+            <div class="product-image-wrap">
+              <img class="product-image" src="https://images.unsplash.com/photo-1768212565424-efa3a3852b81?w=800&q=85" alt="Pagne wax premium — Multicolore vif" loading="lazy">
+            </div>
+            <div class="product-info">
+              <p class="product-category">Wax</p>
+              <h3 class="product-name">Pagne wax premium multicolore</h3>
+              <p class="product-description">Wax multicolore aux motifs vibrants, parfait pour robes et ensembles.</p>
+              <div class="product-price"><span class="current">42 CHF</span></div>
+              <p class="product-lot-note">Vendu par lot de 3 pagnes</p>
+              <div class="fabric-variants">
+                <span class="variant-label">Choisir le modèle</span>
+                <div class="fabric-swatch-list" role="listbox" aria-label="Modèles pagne wax">
+                  <button type="button" class="fabric-swatch active" data-variant="multi-vif" title="Multicolore vif" aria-label="Multicolore vif">
+                    <img src="https://images.unsplash.com/photo-1768212565424-efa3a3852b81?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Multicolore</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="multi-terre" title="Tons terre" aria-label="Tons terre">
+                    <img src="https://images.unsplash.com/photo-1768212566108-4ce4f329e4d2?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Tons terre</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="multi-sunset" title="Sunset orange" aria-label="Sunset orange">
+                    <img src="https://images.unsplash.com/photo-1768212565426-58b089b6386d?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Sunset</span>
+                  </button>
+                </div>
+                <select class="variant-select fabric-variant-select" aria-label="Choisir le modèle pagne wax">
+                  <option value="multi-vif" selected>Multicolore vif</option>
+                  <option value="multi-terre">Tons terre</option>
+                  <option value="multi-sunset">Sunset orange</option>
+                </select>
+                <p class="variant-selected fabric-variant-preview">Modèle sélectionné : <strong>Multicolore vif</strong></p>
+              </div>
+              <div class="product-order-actions">
+                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
+                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Broderies -->
+          <article class="product-card product-card--fabric" data-category="brodes" data-product-id="7">
+            <div class="product-image-wrap">
+              <img class="product-image" src="https://images.unsplash.com/photo-1777148783728-510bbeeba075?w=800&q=85" alt="Bazin Riche Getzner Brodé de Luxe — Or" loading="lazy">
+              <span class="product-badge sale">-15%</span>
+            </div>
+            <div class="product-info">
+              <p class="product-category">Broderies</p>
+              <h3 class="product-name">Bazin Riche Getzner Brodé de Luxe</h3>
+              <p class="product-description">Tissu riche, lourd et structuré avec broderies fines pour grandes cérémonies.</p>
+              <div class="product-price">
+                <span class="current">165 CHF</span>
+                <span class="original">195 CHF</span>
+              </div>
+              <div class="fabric-variants">
+                <span class="variant-label">Choisir le modèle</span>
+                <div class="fabric-swatch-list" role="listbox" aria-label="Modèles bazin brodé de luxe">
+                  <button type="button" class="fabric-swatch active" data-variant="brode-or" title="Broderie or" aria-label="Broderie or">
+                    <img src="https://images.unsplash.com/photo-1777148783728-510bbeeba075?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Or</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="brode-blanc" title="Broderie blanc &amp; or" aria-label="Broderie blanc et or">
+                    <img src="https://images.unsplash.com/photo-1744502671977-702d9105533d?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Blanc &amp; or</span>
+                  </button>
+                  <button type="button" class="fabric-swatch" data-variant="brode-violet" title="Broderie violet" aria-label="Broderie violet">
+                    <img src="https://images.unsplash.com/photo-1607300110843-b3994a493d98?w=120&q=80" alt="">
+                    <span class="fabric-swatch-name">Violet</span>
+                  </button>
+                </div>
+                <select class="variant-select fabric-variant-select" aria-label="Choisir le modèle bazin brodé">
+                  <option value="brode-or" selected>Broderie or</option>
+                  <option value="brode-blanc">Broderie blanc &amp; or</option>
+                  <option value="brode-violet">Broderie violet</option>
+                </select>
+                <p class="variant-selected fabric-variant-preview">Modèle sélectionné : <strong>Broderie or</strong></p>
+              </div>
+              <div class="product-order-actions">
+                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
+                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Accessoires -->
+          <article class="product-card" data-category="accessoires">
+            <div class="product-image-wrap">
+              <img class="product-image" src="https://images.unsplash.com/photo-1768212566108-4ce4f329e4d2?w=800&q=85" alt="Foulard en bazin imprimé" loading="lazy">
+            </div>
+            <div class="product-info">
+              <p class="product-category">Accessoires</p>
+              <h3 class="product-name">Foulard en bazin imprimé</h3>
+              <p class="product-description">Foulard léger en bazin imprimé, idéal pour accessoiriser vos tenues.</p>
+              <div class="product-price"><span class="current">35 CHF</span></div>
+              <div class="product-order-actions">
+                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
+                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="products-footer">
+          <a href="#" class="btn btn-outline">Voir tout le catalogue</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mèches X-Pression -->
+    <section class="meches" id="meches">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <span class="section-label">Coiffure</span>
+            <h2 class="section-title">Mèches X-Pression Ultra Braid</h2>
+          </div>
+          <p class="section-desc">
+            Mèches synthétiques premium pour tresses et coiffures protectrices.
+            Qualité X-Pression, disponibles en plusieurs teintes.
+          </p>
+        </div>
+
+        <div class="meches-grid meches-grid--single">
+          <article class="meche-card" id="mecheProduct">
+            <div class="meche-image-wrap">
+              <img
+                id="mecheVariantImage"
+                class="is-pack-shot"
+                src="meches-expression.png"
+                alt="Paquets de mèches X-Pression Ultra Braid — présentation boutique"
+                loading="lazy"
+              >
+              <span class="product-badge new">Nouveau</span>
+            </div>
+            <div class="meche-gallery" role="group" aria-label="Galerie photos mèches">
+              <div class="meche-gallery-row">
+                <button type="button" class="meche-thumb" data-image-key="portrait" aria-label="Photo look porté">
+                  <img src="https://images.unsplash.com/photo-1763256377889-c4e85bdd1a6c?w=200&q=80" alt="Look porté">
+                </button>
+                <button type="button" class="meche-thumb" data-image-key="closeup" aria-label="Gros plan des mèches">
+                  <img src="https://images.unsplash.com/photo-1759756655332-d66200497312?w=200&q=80" alt="Gros plan mèches">
+                </button>
+                <button type="button" class="meche-thumb meche-thumb--pack active" data-image-key="pack1b" aria-label="Paquet teinte 1B — Noir naturel">
+                  <img src="images/meches/xpression-pack-1b.jpg" alt="Paquet X-Pression 1B">
+                </button>
+                <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack350" aria-label="Paquet teinte 350 — Cuivré / Roux">
+                  <img src="images/meches/xpression-pack-350.jpg" alt="Paquet X-Pression 350">
+                </button>
+                <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack2" aria-label="Paquet teinte 2 — Brun foncé">
+                  <img src="images/meches/xpression-pack-2-brun.jpg" alt="Paquet X-Pression 2 Brun">
+                </button>
+              </div>
+              <p class="meche-gallery-caption">Look porté · Gros plan · Paquets produit (1B, 350, Brun)</p>
+            </div>
+            <div class="meche-info">
+              <p class="product-category">Mèches</p>
+              <h3 class="product-name">X-Pression Ultra Braid</h3>
+              <p class="product-description">
+                Mèches synthétiques premium pour tresses et coiffures protectrices. Choisissez votre teinte ci-dessous.
+              </p>
+              <div class="meche-price">
+                <span class="current" id="mechePriceDisplay">5 CHF</span>
+                <span class="price-note">(le paquet)</span>
+              </div>
+              <label class="variant-label" for="mecheVariantSelect">Choisir la teinte</label>
+              <select class="variant-select" id="mecheVariantSelect" aria-label="Choisir la teinte des mèches">
+                <option value="1b" selected>Teinte 1B — Noir naturel</option>
+                <option value="350">Teinte 350 — Cuivré / Roux</option>
+              </select>
+              <p class="variant-selected" id="mecheVariantPreview">Teinte sélectionnée : <strong>1B (Noir naturel)</strong></p>
+              <div class="product-order-actions">
+                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
+                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Collections -->
+    <section class="collections" id="collections">
+      <div class="container">
+        <div class="section-header centered">
+          <span class="section-label">Collections</span>
+          <h2 class="section-title">Inspirations tissées</h2>
+        </div>
+        <div class="collections-grid">
+          <a href="#articles" class="collection-card collection-large">
+            <div class="collection-img" style="background-image: url('https://images.unsplash.com/photo-1744502671977-702d9105533d?w=800&q=85')"></div>
+            <div class="collection-overlay">
+              <span>Bazin Getzner</span>
+              <h3>Éclat &amp; majesté</h3>
+            </div>
+          </a>
+          <a href="#articles" class="collection-card">
+            <div class="collection-img" style="background-image: url('https://images.unsplash.com/photo-1768212565426-58b089b6386d?w=800&q=85')"></div>
+            <div class="collection-overlay">
+              <span>Wax hollandais</span>
+              <h3>Motifs &amp; couleurs vives</h3>
+            </div>
+          </a>
+          <a href="#articles" class="collection-card">
+            <div class="collection-img" style="background-image: url('https://images.unsplash.com/photo-1768212565424-efa3a3852b81?w=800&q=85')"></div>
+            <div class="collection-overlay">
+              <span>Wax africain</span>
+              <h3>Tradition &amp; modernité</h3>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Témoignage -->
+    <section class="testimonial">
+      <div class="container testimonial-inner">
+        <blockquote>
+          « Un Bazin Getzner d'une qualité remarquable, avec cette brillance
+          si caractéristique. Marteder Textile est devenue ma référence
+          pour tous mes tissus de cérémonie. »
+        </blockquote>
+        <cite>— Aïssata D., couturière et cliente fidèle</cite>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="section-header centered">
+          <span class="section-label">Contact</span>
+          <p class="section-desc contact-intro">
+            Une question sur nos tissus, wax ou mèches ? N'hésitez pas à nous écrire ou à nous appeler.
+          </p>
+        </div>
+        <div class="contact-layout">
+          <div class="contact-grid">
+            <div class="contact-card">
+              <span class="contact-icon" aria-hidden="true">📞</span>
+              <h3>Téléphone</h3>
+              <a href="tel:+41768429683">+41 76 842 96 83</a>
+              <p class="contact-card-note">Également notre numéro Twint pour nous joindre ou régler vos achats.</p>
+            </div>
+            <div class="contact-card">
+              <span class="contact-icon" aria-hidden="true">✉</span>
+              <h3>E-mail</h3>
+              <a href="mailto:Adoarraa@gmail.com">Adoarraa@gmail.com</a>
+            </div>
+            <div class="contact-card">
+              <span class="contact-icon" aria-hidden="true">📍</span>
+              <h3>Adresse</h3>
+              <p>Rue de la Golette<br>1217 Meyrin, Genève, Suisse</p>
+            </div>
+          </div>
+
+          <form
+            class="contact-form"
+            id="contactForm"
+            action="https://formsubmit.co/Adoarraa@gmail.com"
+            method="POST"
+          >
+            <input type="hidden" name="_subject" value="Nouveau message — Marteder Textile">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="hidden" name="_next" value="contact-merci.html">
+
+            <h3 class="contact-form-title">Envoyez-nous un message</h3>
+            <p class="contact-form-desc">Réponse sous 24 à 48 h. Votre message arrive directement sur notre boîte e-mail.</p>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label" for="contactName">Nom complet</label>
+                <input class="form-input" type="text" id="contactName" name="name" required autocomplete="name" placeholder="Votre nom">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="contactEmail">E-mail</label>
+                <input class="form-input" type="email" id="contactEmail" name="email" required autocomplete="email" placeholder="votre@email.com">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="contactPhone">Téléphone <span class="form-optional">(facultatif)</span></label>
+              <input class="form-input" type="tel" id="contactPhone" name="phone" autocomplete="tel" placeholder="+41 76 000 00 00">
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="contactSubject">Sujet</label>
+              <select class="form-input form-select" id="contactSubject" name="subject" required>
+                <option value="">Choisir un sujet</option>
+                <option value="Question sur un tissu">Question sur un tissu</option>
+                <option value="Commande / disponibilité">Commande / disponibilité</option>
+                <option value="Mèches X-Pression">Mèches X-Pression</option>
+                <option value="Livraison">Livraison</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="contactMessage">Message</label>
+              <textarea class="form-input form-textarea" id="contactMessage" name="message" rows="5" required placeholder="Décrivez votre demande…"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-cart contact-submit-btn">Envoyer le message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+      <div class="container newsletter-inner">
+        <div class="newsletter-content">
+          <span class="section-label">Newsletter</span>
+          <h2 class="section-title">Restez informée</h2>
+          <p>Recevez en avant-première nos nouveaux bazins, wax exclusifs et arrivages de tissus africains de luxe.</p>
+        </div>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="Votre adresse e-mail" required aria-label="Adresse e-mail">
+          <button type="submit" class="btn btn-primary">S'inscrire</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Espace Cosmétiques & Soins -->
+    <section class="espace-cosmetiques" id="espace-cosmetiques" aria-labelledby="espace-cosmetiques-title">
+      <div class="container">
+        <div class="espace-cosmetiques-panel">
+          <div class="section-header centered">
+            <span class="section-label">Beauté</span>
+            <h2 class="section-title" id="espace-cosmetiques-title">Crèmes &amp; soins de beauté</h2>
+            <figure class="cosmetiques-hero">
+              <img
+                src="ma.boutique.png"
+                alt="Espace bien-être et soins Marteder"
+                width="1024"
+                height="559"
+                loading="lazy"
+                decoding="async"
+              >
+            </figure>
+            <p class="espace-cosmetiques-lead">
+              Prenez soin de votre peau et de vos cheveux avec notre future sélection
+              de produits cosmétiques haut de gamme. Bientôt disponible en boutique.
+            </p>
+          </div>
+
+          <div class="cosmetiques-grid">
+            <article class="cosmetique-card">
+              <div class="cosmetique-image-wrap">
+                <img
+                  src="lait-corps.png"
+                  alt="Lait corporel hydratant — flacon pompe doré"
+                  width="1024"
+                  height="768"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </div>
+              <h3 class="cosmetique-name">Lait corporel hydratant</h3>
+              <p class="cosmetique-desc">Gamme Éclat &amp; Douceur</p>
+              <p class="cosmetique-price">— CHF</p>
+              <span class="cosmetique-badge">Arrivage bientôt</span>
+            </article>
+
+            <article class="cosmetique-card">
+              <div class="cosmetique-image-wrap">
+                <img
+                  src="huile-cheveux.png"
+                  alt="Huile capillaire nourrissante — flacon ambré avec pipette"
+                  width="1024"
+                  height="768"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </div>
+              <h3 class="cosmetique-name">Huile capillaire nourrissante</h3>
+              <p class="cosmetique-desc">Idéal pour cheveux tressés</p>
+              <p class="cosmetique-price">— CHF</p>
+              <span class="cosmetique-badge">Arrivage bientôt</span>
+            </article>
+
+            <article class="cosmetique-card">
+              <div class="cosmetique-image-wrap">
+                <img
+                  src="creme-visage.png"
+                  alt="Crème de soin visage — pot avec couvercle doré"
+                  width="1024"
+                  height="768"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </div>
+              <h3 class="cosmetique-name">Crème de soin visage</h3>
+              <p class="cosmetique-desc">Protection &amp; nutrition</p>
+              <p class="cosmetique-price">— CHF</p>
+              <span class="cosmetique-badge">Arrivage bientôt</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Salon de Coiffure & Tresses -->
+    <section class="espace-coiffure" id="espace-coiffure" aria-labelledby="espace-coiffure-title">
+      <div class="container">
+        <div class="espace-coiffure-panel">
+          <div class="coiffure-presentation">
+            <div class="coiffure-presentation-media">
+              <img
+                src="Ma boutique.png"
+                alt="Salon de coiffure Marteder Textile"
+                width="800"
+                height="1000"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+            <div class="coiffure-presentation-content">
+              <span class="section-label">Salon</span>
+              <h2 class="section-title" id="espace-coiffure-title">Salon de coiffure &amp; tresses</h2>
+              <p class="coiffure-presentation-text">
+                Découvrez notre espace coiffure spécialisé. Des tresses rasta aux coiffures
+                simples et élégantes du quotidien, nous prenons soin de vos cheveux.
+                Consultez nos modèles et nos tarifs ci-dessous pour réserver votre créneau.
+              </p>
+              <a
+                href="https://wa.me/41765761672?text=Bonjour%2C%20je%20souhaite%20prendre%20rendez-vous%20pour%20une%20prestation%20coiffure."
+                class="btn btn-primary cover-cta"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Réserver un rendez-vous
+              </a>
+            </div>
+          </div>
+
+          <div class="coiffure-gallery">
+            <h3 class="coiffure-gallery-title">Nos nouveaux modèles</h3>
+            <div class="coiffure-gallery-grid coiffure-gallery-grid--duo">
+              <figure class="coiffure-gallery-item">
+                <img
+                  src="rasta-model.png"
+                  alt="Modèle tresses bicolores"
+                  width="600"
+                  height="750"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </figure>
+              <figure class="coiffure-gallery-item">
+                <img
+                  src="rasta-zoom.jpg"
+                  alt="Zoom tresses rasta"
+                  width="600"
+                  height="750"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </figure>
+            </div>
+          </div>
+
+          <div class="tarifs-coiffure-bas">
+            <h3 class="coiffure-tarifs-title">Nos tarifs coiffure</h3>
+            <table class="tarifs-table">
+              <thead>
+                <tr>
+                  <th scope="col">Prestation</th>
+                  <th scope="col">Tarif</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="tarif-name">Natte simple (avec ses propres cheveux)</span>
+                  </td>
+                  <td class="tarif-price">30&nbsp;CHF</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="tarif-name">Natte couchée avec des mèches</span>
+                  </td>
+                  <td class="tarif-price">50&nbsp;CHF</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="tarif-name">Rasta</span>
+                  </td>
+                  <td class="tarif-price">70&nbsp;CHF</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="coiffure-disclaimer">
+              Les tarifs peuvent varier selon la longueur et l’épaisseur des cheveux.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">Marteder Textile</a>
+        <p>Votre maison de référence pour le Bazin Getzner, les tissus wax africains de luxe et les mèches X-Pression à Meyrin, Genève.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Boutique</h4>
+        <ul>
+          <li><a href="#articles">Nouveautés</a></li>
+          <li><a href="#articles">Bazin Getzner</a></li>
+          <li><a href="#espace-cosmetiques">Cosmétiques &amp; soins</a></li>
+          <li><a href="#espace-coiffure">Salon de coiffure</a></li>
+          <li><a href="#articles">Mèches X-Pression</a></li>
+          <li><a href="#collections">Collections wax</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Informations</h4>
+        <ul>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="mentions-legales.html#cgv">CGV</a></li>
+          <li><a href="mentions-legales.html#cgv">Livraison &amp; retours</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Contact</h4>
+        <ul class="footer-contact">
+          <li><a href="tel:+41768429683">+41 76 842 96 83</a></li>
+          <li><a href="mailto:Adoarraa@gmail.com">Adoarraa@gmail.com</a></li>
+          <li class="footer-address">Rue de la Golette<br>1217 Meyrin, Genève, Suisse</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <div class="footer-social">
+        <a
+          href="https://www.tiktok.com/@monmaite25"
+          class="footer-social-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Suivez Marteder Textile sur TikTok"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+          </svg>
+        </a>
+      </div>
+      <p>&copy; 2026 Marteder Textile. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

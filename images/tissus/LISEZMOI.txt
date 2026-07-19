@@ -1,0 +1,16 @@
+Photos Bazin Getzner Schwer — dossier officiel
+==============================================
+
+Placez vos 4 photos ICI, avec ces noms EXACTS (tout en minuscules) :
+
+  violet.jpg
+  vert-clair.jpg
+  blanc.jpg
+  beige-dore.jpg
+
+Important :
+- Pas de majuscules (Blanc.JPG ne fonctionnera pas sur certains hébergeurs)
+- Format .jpg ou .jpeg accepté
+- Ne mettez pas ces fichiers ailleurs (Bureau, Téléchargements, etc.)
+
+Si vos photos s'appellent autrement, renommez-les avant de les copier ici.

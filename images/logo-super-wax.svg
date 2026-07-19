@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="35 52 350 248" width="350" height="248" role="img" aria-label="SUPER-WAX - Textiles d'Exception">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2E6B3"/>
+      <stop offset="40%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#9A7420"/>
+    </linearGradient>
+    <linearGradient id="goldGradVert" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#EED991"/>
+      <stop offset="100%" stop-color="#B8892E"/>
+    </linearGradient>
+    <linearGradient id="burgundyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8B2A38"/>
+      <stop offset="100%" stop-color="#651E28"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(210 188)">
+    <circle r="126" fill="none" stroke="url(#goldGrad)" stroke-width="3.2"/>
+    <path
+      fill="url(#burgundyGrad)"
+      fill-rule="evenodd"
+      d="M 0 -126 A 126 126 0 1 1 -0.01 -126 Z M 0 -104 A 104 104 0 1 0 0.01 -104 Z"
+    />
+    <circle r="104" fill="none" stroke="url(#goldGrad)" stroke-width="2.4"/>
+  </g>
+
+  <g transform="translate(210 132)">
+    <path d="M -36 24 C -38 46 -18 58 0 60 C 18 58 38 46 36 24 C 24 32 12 36 0 36 C -12 36 -24 32 -36 24 Z" fill="#2F7A4A"/>
+    <path d="M -54 10 C -46 30 -24 40 0 42 C 24 40 46 30 54 10 C 40 20 20 26 0 26 C -20 26 -40 20 -54 10 Z" fill="#3E9460"/>
+    <path d="M -30 -2 C -32 18 -14 34 0 36 C 14 34 32 18 30 -2 C 20 6 10 10 0 10 C -10 10 -20 6 -30 -2 Z" fill="url(#goldGradVert)"/>
+    <path d="M -20 -20 C -22 2 -10 18 0 20 C 10 18 22 2 20 -20 C 12 -10 6 -6 0 -6 C -6 -6 -12 -10 -20 -20 Z" fill="url(#goldGrad)"/>
+    <path d="M -46 -30 C -38 -10 -20 0 0 0 C -16 -12 -28 -24 -46 -30 Z" fill="#1B4685"/>
+    <path d="M 46 -30 C 38 -10 20 0 0 0 C 16 -12 28 -24 46 -30 Z" fill="#1B4685"/>
+    <path d="M 0 -50 C -9 -30 -9 -8 0 6 C 9 -8 9 -30 0 -50 Z" fill="url(#goldGrad)"/>
+  </g>
+
+  <text
+    x="210"
+    y="252"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="40"
+    font-weight="700"
+    letter-spacing="5"
+    fill="url(#goldGrad)"
+  >SUPER-WAX</text>
+
+  <text
+    x="210"
+    y="280"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="14.5"
+    font-weight="600"
+    letter-spacing="1.2"
+    fill="url(#goldGradVert)"
+  >Textiles d'Exception</text>
+
+  <line x1="54" y1="240" x2="108" y2="240" stroke="url(#goldGrad)" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="312" y1="240" x2="366" y2="240" stroke="url(#goldGrad)" stroke-width="2.2" stroke-linecap="round"/>
+</svg>
