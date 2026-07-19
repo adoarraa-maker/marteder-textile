@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marteder Textile — QR de partage</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #faf8f5;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #1a1714;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .card {
+    max-width: 420px;
+    width: 100%;
+    background: #faf8f5;
+    border: 1px solid #e6ddd3;
+    border-radius: 12px;
+    padding: 40px 32px;
+    text-align: center;
+  }
+  .rule {
+    width: 48px;
+    height: 2px;
+    background: #8b5a3c;
+    margin: 0 auto 20px;
+  }
+  h1 {
+    font-size: 30px;
+    font-weight: normal;
+    letter-spacing: 2px;
+    color: #8b5a3c;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 15px;
+    font-style: italic;
+    color: #5a4d40;
+    margin-bottom: 28px;
+  }
+  .qr {
+    width: 260px;
+    height: 260px;
+    display: block;
+    margin: 0 auto 24px;
+    border: 1px solid #e6ddd3;
+    border-radius: 8px;
+  }
+  .url {
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    color: #8b5a3c;
+    word-break: break-all;
+    margin-bottom: 20px;
+  }
+  .address {
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #5a4d40;
+  }
+  @media print {
+    body { min-height: auto; }
+    .card { border: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="rule"></div>
+    <h1>Marteder Textile</h1>
+    <p class="subtitle">Scannez pour d&eacute;couvrir la boutique</p>
+    <img class="qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAAJYAQMAAACEqAqfAAAABlBMVEX6+PUaFxTWegj0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEMElEQVR4nO3dO5LbMAyAYe64cOkj8Cg6mnQ0HUVHUOnCY0YkHoTsZNJ66R/FalciP1XBGCDppEQQBPFro4RIl+PH6rfux+P5efyY5O+1js/2dPk5TcXCwvow627/ynO19vpbvcw66CmjHjLmUjbhc7V2mzphYWENbmVJMNlyjll3mdFCrJ6N1GrZaMfCwvoiK9kMtZJcpvCWzfJMwsLC+lLrJjOK3HKr5Zx28TT0/5yDhYU1jqURP5scQ+XWMSNaitwt52hgYWGNbYVoxcskl/mZrtLYuNY26aNlI8s5sbrRqVhYWJ9lnSKsdxx54lqKzFjrs9vrk/fpWFhYw1q5jgh9zD5Dc04pWorIRbNRKf7ho+ccLCysMS3dJZFs9VOsH6tIqmVPQn9Cwz7PYGFhDW3lek/bmfpBJNX2g1cqqyyBtOqm75+oH1feihcsLKxhLfm40fPHzTZY9WwUJ2oNc+tdECwsrIEtWf2UNNJnqJXlMhXNOUd4WaMvk0RVsLCwRraK9C3u8vtuj3sN08J3dPuT2ZEbFhbWB1o+IxedUTTuUl2Es1vapkiaQSrSb2FhYQ1r1ZyTZHFDjSRpxJ68nvGMe6Om9/yFhYU1nCWNibCE0TOLVhfX05McOhe6Mbuvd2BhYQ1pWf5oNcy/+xOy1zppzqmhl7h/AgsLa2Brft1ntYc05G9ZX3sdu71FAwsLa1CrViqzr4vG8LdopWJWndZSDxYW1pdYvsGqhHVRT0PxyRrOgfWQPIWFhfVhVtKTF831U9q7lSIaJ0vnvL8fCwtrTKv46meWZ6tvltD+xNWGTrLXWmOWzkUKgYWFNaZl+aMlGFm7kJA+5vJ6UGuTzkUjfa/1KX9hYWENZ9WYffVzD7da6EpIjTUlTUMxYg2DhYU1ptWQZ79fpDU5l17DTKVfsgzZfEHk0QdgYWENa22nnDMVW9WotxafoVs0dV002ynxU2BhYY1peaWync6BFc05OkN3U2mvw9+yhiMfWFhYn2fJ5VRDCG8ZRGbIO54prpGEWgULC2tMq2hPssWlb3eaz10IbVr64OxnPCWwsLBGtv6yLqpnMs4Vicfyvn9iTVhYWF9gtbPgoQuhrc1Zef82ia3edf68LoqFhTWslWT1M4fvltllxmaWdTQub2ko1j1YWFhjWqfwjZgt9fiqRvG3aHVTraWOm5zEwsIa1yohDPEZvfOpuyRCzlnC/9GrgYWF9UHW3X7LtgOqxSKfJ5IUGbYuWmP2Abop6qXuwMLCGtDK9VGoO5J/b1SSikRnrFJ36Is1XmoYLCys8a32uIZ+Njlb5dEHl79+DyUWFtb4lnYhbr7JupJr0jj+9rJmludv66JYWFgjWhpew6SaYBa5aYsb/q0zxU9ryGAsLKwvsEIk7YmGWPx8R6tuvCe6JR3c6x4sLKxRLYIgiF8ZfwAVS9ythef9DgAAAABJRU5ErkJggg==" alt="QR code — Marteder Textile">
+    <p class="url">https://adoarraa-maker.github.io/marteder-textile/</p>
+    <p class="address">Meyrin, Gen&egrave;ve</p>
+  </div>
+</body>
+</html>
