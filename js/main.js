@@ -713,6 +713,8 @@ function initMartederGallery() {
   const mainImage = gallery.querySelector('[data-marteder-main]');
   const labelEl = gallery.querySelector('[data-marteder-label]');
   const previewEl = document.querySelector('[data-marteder-preview]');
+  const colorSelect = document.querySelector('[data-marteder-select]');
+  const whatsappBtn = document.querySelector('[data-marteder-whatsapp]');
   const thumbs = Array.from(gallery.querySelectorAll('.marteder-thumb'));
   const zoomBtn = gallery.querySelector('[data-marteder-zoom]');
   const lightboxImage = document.getElementById('martederLightboxImage');
@@ -727,6 +729,12 @@ function initMartederGallery() {
     };
   };
 
+  const updateWhatsappLink = (label) => {
+    if (!whatsappBtn) return;
+    const message = `Bonjour, je souhaite commander la Création exclusive Marteder (Getzner) — couleur : ${label}, coupon de 5 yards à 80 CHF.`;
+    whatsappBtn.href = `https://wa.me/41765761672?text=${encodeURIComponent(message)}`;
+  };
+
   const showSlide = (i) => {
     index = (i + thumbs.length) % thumbs.length;
     const slide = getSlide(index);
@@ -736,6 +744,8 @@ function initMartederGallery() {
     if (previewEl) {
       previewEl.innerHTML = `Couleur sélectionnée : <strong>${slide.label}</strong>`;
     }
+    if (colorSelect) colorSelect.value = String(index);
+    updateWhatsappLink(slide.label);
     thumbs.forEach((thumb, thumbIndex) => {
       const active = thumbIndex === index;
       thumb.classList.toggle('active', active);
@@ -767,6 +777,9 @@ function initMartederGallery() {
   gallery.querySelector('.marteder-gallery-next')?.addEventListener('click', () => showSlide(index + 1));
   thumbs.forEach((thumb) => {
     thumb.addEventListener('click', () => showSlide(Number(thumb.dataset.index)));
+  });
+  colorSelect?.addEventListener('change', () => {
+    showSlide(Number(colorSelect.value));
   });
   zoomBtn?.addEventListener('click', openLightbox);
 
