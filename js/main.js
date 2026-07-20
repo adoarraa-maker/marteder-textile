@@ -705,6 +705,100 @@ function initNewsletter() {
   });
 }
 
+function initMartederGallery() {
+  const gallery = document.querySelector('[data-marteder-gallery]');
+  const lightbox = document.getElementById('martederLightbox');
+  if (!gallery || !lightbox) return;
+
+  const mainImage = gallery.querySelector('[data-marteder-main]');
+  const labelEl = gallery.querySelector('[data-marteder-label]');
+  const previewEl = document.querySelector('[data-marteder-preview]');
+  const thumbs = Array.from(gallery.querySelectorAll('.marteder-thumb'));
+  const zoomBtn = gallery.querySelector('[data-marteder-zoom]');
+  const lightboxImage = document.getElementById('martederLightboxImage');
+  const lightboxLabel = document.getElementById('martederLightboxLabel');
+  let index = 0;
+
+  const getSlide = (i) => {
+    const thumb = thumbs[i];
+    return {
+      src: thumb.dataset.src,
+      label: thumb.dataset.label,
+    };
+  };
+
+  const showSlide = (i) => {
+    index = (i + thumbs.length) % thumbs.length;
+    const slide = getSlide(index);
+    mainImage.src = slide.src;
+    mainImage.alt = `Création exclusive Marteder — ${slide.label}`;
+    if (labelEl) labelEl.textContent = slide.label;
+    if (previewEl) {
+      previewEl.innerHTML = `Couleur sélectionnée : <strong>${slide.label}</strong>`;
+    }
+    thumbs.forEach((thumb, thumbIndex) => {
+      const active = thumbIndex === index;
+      thumb.classList.toggle('active', active);
+      thumb.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  };
+
+  const syncLightbox = () => {
+    const slide = getSlide(index);
+    lightboxImage.src = slide.src;
+    lightboxImage.alt = `Création exclusive Marteder — ${slide.label}`;
+    lightboxLabel.textContent = slide.label;
+  };
+
+  const openLightbox = () => {
+    syncLightbox();
+    lightbox.hidden = false;
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    lightbox.hidden = true;
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  gallery.querySelector('.marteder-gallery-prev')?.addEventListener('click', () => showSlide(index - 1));
+  gallery.querySelector('.marteder-gallery-next')?.addEventListener('click', () => showSlide(index + 1));
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => showSlide(Number(thumb.dataset.index)));
+  });
+  zoomBtn?.addEventListener('click', openLightbox);
+
+  lightbox.querySelectorAll('[data-marteder-close]').forEach((el) => {
+    el.addEventListener('click', closeLightbox);
+  });
+  lightbox.querySelector('.marteder-lightbox-prev')?.addEventListener('click', () => {
+    showSlide(index - 1);
+    syncLightbox();
+  });
+  lightbox.querySelector('.marteder-lightbox-next')?.addEventListener('click', () => {
+    showSlide(index + 1);
+    syncLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.hidden) {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') {
+        showSlide(index - 1);
+        syncLightbox();
+      }
+      if (e.key === 'ArrowRight') {
+        showSlide(index + 1);
+        syncLightbox();
+      }
+    }
+  });
+
+  showSlide(0);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
   initCart();
@@ -713,6 +807,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initFabricVariants();
   initMecheVariant();
+  initMartederGallery();
   initFilters();
   initNav();
   initNewsletter();

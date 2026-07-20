@@ -294,26 +294,63 @@
         <div class="products-grid" id="productsGrid">
 
           <!-- Création exclusive Marteder (produit vedette) -->
-          <article class="product-card product-card--fabric" data-category="bazin">
-            <div class="product-image-wrap">
-              <img
-                class="product-image"
-                src="marteder.png"
-                alt="Création exclusive Marteder Textile — collection Getzner"
-                loading="lazy"
-                decoding="async"
-              >
-              <span class="product-badge new">Nouveau</span>
+          <article class="product-card product-card--fabric product-card--gallery" data-category="bazin" data-product-id="marteder-getzner">
+            <div class="marteder-gallery" data-marteder-gallery>
+              <div class="marteder-gallery-main">
+                <button type="button" class="marteder-gallery-nav marteder-gallery-prev" aria-label="Couleur précédente">‹</button>
+                <button type="button" class="marteder-gallery-zoom" data-marteder-zoom aria-label="Agrandir l'image">
+                  <img
+                    class="product-image marteder-gallery-image"
+                    src="getzner-vert-eau.png"
+                    alt="Création exclusive Marteder — Vert d'eau"
+                    data-marteder-main
+                    loading="lazy"
+                    decoding="async"
+                  >
+                  <span class="marteder-zoom-hint">Cliquer pour agrandir</span>
+                </button>
+                <button type="button" class="marteder-gallery-nav marteder-gallery-next" aria-label="Couleur suivante">›</button>
+                <span class="product-badge new">Nouveau</span>
+                <p class="marteder-gallery-label" data-marteder-label>Vert d'eau</p>
+              </div>
+              <div class="marteder-gallery-thumbs" role="listbox" aria-label="Couleurs de la collection Getzner">
+                <button type="button" class="marteder-thumb active" role="option" aria-selected="true" data-index="0" data-label="Vert d'eau" data-src="getzner-vert-eau.png">
+                  <img src="getzner-vert-eau.png" alt="Vert d'eau" loading="lazy">
+                </button>
+                <button type="button" class="marteder-thumb" role="option" aria-selected="false" data-index="1" data-label="Blanc" data-src="getzner-blanc.png">
+                  <img src="getzner-blanc.png" alt="Blanc" loading="lazy">
+                </button>
+                <button type="button" class="marteder-thumb" role="option" aria-selected="false" data-index="2" data-label="Bleu ciel" data-src="getzner-bleu-ciel.png">
+                  <img src="getzner-bleu-ciel.png" alt="Bleu ciel" loading="lazy">
+                </button>
+                <button type="button" class="marteder-thumb" role="option" aria-selected="false" data-index="3" data-label="Rose saumon" data-src="getzner-rose-saumon.png">
+                  <img src="getzner-rose-saumon.png" alt="Rose saumon" loading="lazy">
+                </button>
+                <button type="button" class="marteder-thumb" role="option" aria-selected="false" data-index="4" data-label="Violet" data-src="getzner-violet.png">
+                  <img src="getzner-violet.png" alt="Violet" loading="lazy">
+                </button>
+                <button type="button" class="marteder-thumb" role="option" aria-selected="false" data-index="5" data-label="Rouge" data-src="getzner-rouge.png">
+                  <img src="getzner-rouge.png" alt="Rouge" loading="lazy">
+                </button>
+                <button type="button" class="marteder-thumb" role="option" aria-selected="false" data-index="6" data-label="Turquoise" data-src="getzner-turquoise.png">
+                  <img src="getzner-turquoise.png" alt="Turquoise" loading="lazy">
+                </button>
+                <button type="button" class="marteder-thumb" role="option" aria-selected="false" data-index="7" data-label="Bleu outremer" data-src="getzner-bleu-outremer.png">
+                  <img src="getzner-bleu-outremer.png" alt="Bleu outremer" loading="lazy">
+                </button>
+              </div>
             </div>
             <div class="product-info">
               <p class="product-category">Collection Getzner</p>
               <h3 class="product-name">Création exclusive Marteder</h3>
               <p class="product-description">
                 Nouveauté disponible en boutique. Collection Getzner en coupons de 5 yards,
-                déclinée dans une large palette de couleurs.
+                déclinée dans une large palette de couleurs. Faites défiler les teintes
+                et cliquez sur l’image pour l’agrandir.
               </p>
               <div class="product-price"><span class="current">80 CHF</span></div>
               <p class="product-lot-note">Par coupon de 5 yards</p>
+              <p class="variant-selected" data-marteder-preview>Couleur sélectionnée : <strong>Vert d'eau</strong></p>
               <div class="product-order-actions">
                 <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
                 <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
@@ -1145,6 +1182,18 @@
       <p>&copy; 2026 Marteder Textile. Tous droits réservés.</p>
     </div>
   </footer>
+
+  <!-- Lightbox galerie Marteder Getzner -->
+  <div class="marteder-lightbox" id="martederLightbox" hidden aria-hidden="true">
+    <div class="marteder-lightbox-backdrop" data-marteder-close></div>
+    <div class="marteder-lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="martederLightboxLabel">
+      <button type="button" class="marteder-lightbox-close" data-marteder-close aria-label="Fermer">&times;</button>
+      <button type="button" class="marteder-lightbox-nav marteder-lightbox-prev" aria-label="Image précédente">‹</button>
+      <img class="marteder-lightbox-image" id="martederLightboxImage" src="" alt="">
+      <button type="button" class="marteder-lightbox-nav marteder-lightbox-next" aria-label="Image suivante">›</button>
+      <p class="marteder-lightbox-caption" id="martederLightboxLabel"></p>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
 </body>

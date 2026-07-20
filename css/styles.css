@@ -556,6 +556,227 @@ ul {
   transform: scale(1.06);
 }
 
+.product-card--gallery:hover .product-image {
+  transform: none;
+}
+
+/* ---- Galerie Création exclusive Marteder ---- */
+.marteder-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--color-bg-alt);
+}
+
+.marteder-gallery-main {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #1a1714;
+}
+
+.marteder-gallery-zoom {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  position: relative;
+}
+
+.marteder-gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.marteder-zoom-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 3.25rem;
+  transform: translateX(-50%);
+  padding: 0.35rem 0.75rem;
+  background: rgba(26, 23, 20, 0.72);
+  color: #fff;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.marteder-gallery-zoom:hover .marteder-zoom-hint,
+.marteder-gallery-zoom:focus-visible .marteder-zoom-hint {
+  opacity: 1;
+}
+
+.marteder-gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.marteder-gallery-nav:hover {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.marteder-gallery-prev { left: 0.65rem; }
+.marteder-gallery-next { right: 0.65rem; }
+
+.marteder-gallery-label {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 2;
+  margin: 0;
+  padding: 0.45rem 0.7rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: var(--radius-sm);
+}
+
+.marteder-gallery-main .product-badge {
+  z-index: 2;
+}
+
+.marteder-gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  padding: 0 0.65rem 0.65rem;
+}
+
+.marteder-thumb {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--color-surface);
+  transition: var(--transition);
+}
+
+.marteder-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.marteder-thumb:hover,
+.marteder-thumb.active {
+  border-color: var(--color-accent);
+}
+
+.marteder-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.marteder-lightbox[hidden] {
+  display: none;
+}
+
+.marteder-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 23, 20, 0.88);
+}
+
+.marteder-lightbox-dialog {
+  position: relative;
+  z-index: 1;
+  max-width: min(920px, 100%);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.marteder-lightbox-image {
+  max-width: 100%;
+  max-height: calc(90vh - 3rem);
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  background: #000;
+  box-shadow: var(--shadow-lg);
+}
+
+.marteder-lightbox-caption {
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.marteder-lightbox-close {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.marteder-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--color-text);
+  font-size: 1.75rem;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.marteder-lightbox-prev { left: -0.5rem; }
+.marteder-lightbox-next { right: -0.5rem; }
+
+@media (max-width: 768px) {
+  .marteder-lightbox-prev { left: 0.25rem; }
+  .marteder-lightbox-next { right: 0.25rem; }
+  .marteder-lightbox-close { top: 0.5rem; right: 0.5rem; }
+}
+
 .product-badge {
   position: absolute;
   top: 1rem;
