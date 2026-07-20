@@ -1798,6 +1798,96 @@ ul {
   opacity: 0.6;
 }
 
+/* ---- Horaires & Accès ---- */
+.horaires-acces {
+  padding: 5rem 0;
+  background: var(--color-bg-alt);
+}
+
+.horaires-acces-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.horaires-bloc,
+.acces-bloc {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.horaires-bloc .section-title,
+.acces-bloc .section-title {
+  font-size: clamp(1.5rem, 3vw, 1.85rem);
+  margin-bottom: 1rem;
+}
+
+.horaires-highlight {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+  line-height: 1.35;
+}
+
+.horaires-texte,
+.acces-adresse {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+
+.horaires-liste {
+  margin: 0 0 1.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.horaires-liste li {
+  position: relative;
+  padding-left: 1.1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  line-height: 1.55;
+}
+
+.horaires-liste li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.horaires-bloc .btn-whatsapp {
+  width: auto;
+  max-width: 100%;
+}
+
+.acces-map {
+  width: 100%;
+  height: 300px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+}
+
+.acces-map iframe {
+  display: block;
+  border: 0;
+}
+
 /* ---- Contact ---- */
 .contact {
   padding: 5rem 0;
@@ -2413,6 +2503,15 @@ ul {
 
   .contact-grid {
     grid-template-columns: 1fr;
+  }
+
+  .horaires-acces-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .horaires-bloc .btn-whatsapp {
+    width: 100%;
   }
 
   .contact-layout {
