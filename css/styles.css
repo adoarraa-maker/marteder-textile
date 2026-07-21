@@ -892,11 +892,6 @@ ul {
   margin-top: 0.5rem;
 }
 
-.product-detail-link {
-  width: 100%;
-  margin-top: 1rem;
-}
-
 .product-features {
   list-style: none;
   margin: 0.5rem 0 0.75rem;
@@ -2642,16 +2637,16 @@ ul {
   object-fit: contain;
 }
 
-.okady-catalogue .cosmetique-card {
+.espace-cosmetiques .cosmetique-card {
   display: flex;
   flex-direction: column;
 }
 
-.okady-catalogue .cosmetique-name {
+.espace-cosmetiques .cosmetique-name {
   min-height: 3.1rem;
 }
 
-.okady-catalogue .cosmetique-action {
+.espace-cosmetiques .cosmetique-action {
   width: 100%;
   margin-top: auto;
 }
