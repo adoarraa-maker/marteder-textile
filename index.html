@@ -30,7 +30,7 @@
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": "Mèches X-Pression Ultra Braid",
-      "image": "https://adoarraa-maker.github.io/marteder-textile/meches-expression.png",
+      "image": "https://adoarraa-maker.github.io/marteder-textile/xpression-paquets-propres.png",
       "description": "Mèches de coiffure X-Pression de qualité supérieure chez Marteder Textile.",
       "brand": {
         "@type": "Brand",
@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260721-okady-zoom">
+  <link rel="stylesheet" href="css/styles.css?v=20260721-xpression-gallery">
   <link
     rel="preload"
     as="image"
@@ -616,35 +616,49 @@
 
         <div class="meches-grid meches-grid--single">
           <article class="meche-card" id="mecheProduct">
-            <div class="meche-image-wrap">
-              <img
-                id="mecheVariantImage"
-                class="is-pack-shot"
-                src="meches-expression.png"
-                alt="Paquets de mèches X-Pression Ultra Braid — présentation boutique"
-                loading="lazy"
+            <div class="meche-image-wrap product-zoom-wrap">
+              <button
+                type="button"
+                class="product-zoom-trigger"
+                data-product-zoom
+                data-caption="X-Pression Ultra Braid — trois paquets"
+                aria-label="Agrandir la photo principale des paquets X-Pression Ultra Braid"
               >
+                <img
+                  id="mecheVariantImage"
+                  class="is-pack-shot"
+                  src="xpression-paquets-propres.png?v=20260721-latest"
+                  alt="Trois paquets propres de mèches X-Pression Ultra Braid noires"
+                  loading="lazy"
+                >
+                <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+              </button>
               <span class="product-badge new">Nouveau</span>
             </div>
             <div class="meche-gallery" role="group" aria-label="Galerie photos mèches">
               <div class="meche-gallery-row">
-                <button type="button" class="meche-thumb" data-image-key="portrait" aria-label="Photo look porté">
-                  <img src="https://images.unsplash.com/photo-1763256377889-c4e85bdd1a6c?w=200&q=80" alt="Look porté">
+                <button type="button" class="meche-thumb" data-image-key="portrait" data-product-zoom data-caption="X-Pression Ultra Braid — vue 1" aria-label="Agrandir la première vignette X-Pression Ultra Braid">
+                  <img src="xpression-paquets-propres.png?v=20260721-latest" alt="Paquets X-Pression Ultra Braid">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
                 </button>
-                <button type="button" class="meche-thumb" data-image-key="closeup" aria-label="Gros plan des mèches">
-                  <img src="https://images.unsplash.com/photo-1759756655332-d66200497312?w=200&q=80" alt="Gros plan mèches">
+                <button type="button" class="meche-thumb" data-image-key="closeup" data-product-zoom data-caption="X-Pression Ultra Braid — vue 2" aria-label="Agrandir la deuxième vignette X-Pression Ultra Braid">
+                  <img src="xpression-paquets-propres.png?v=20260721-latest" alt="Paquets X-Pression Ultra Braid">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
                 </button>
-                <button type="button" class="meche-thumb meche-thumb--pack active" data-image-key="pack1b" aria-label="Paquet teinte 1B — Noir naturel">
-                  <img src="images/meches/xpression-pack-1b.jpg" alt="Paquet X-Pression 1B">
+                <button type="button" class="meche-thumb meche-thumb--pack active" data-image-key="pack1b" data-product-zoom data-caption="X-Pression Ultra Braid — teinte 1B" aria-label="Agrandir les paquets teinte 1B — Noir naturel">
+                  <img src="xpression-paquets-propres.png?v=20260721-latest" alt="Paquets X-Pression Ultra Braid noirs">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
                 </button>
-                <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack350" aria-label="Paquet teinte 350 — Cuivré / Roux">
-                  <img src="images/meches/xpression-pack-350.jpg" alt="Paquet X-Pression 350">
+                <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack350" data-product-zoom data-caption="X-Pression Ultra Braid — teinte 350" aria-label="Agrandir les paquets teinte 350 — Cuivré / Roux">
+                  <img src="xpression-paquets-propres.png?v=20260721-latest" alt="Paquets X-Pression Ultra Braid">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
                 </button>
-                <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack2" aria-label="Paquet teinte 2 — Brun foncé">
-                  <img src="images/meches/xpression-pack-2-brun.jpg" alt="Paquet X-Pression 2 Brun">
+                <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack2" data-product-zoom data-caption="X-Pression Ultra Braid — teinte 2" aria-label="Agrandir les paquets teinte 2 — Brun foncé">
+                  <img src="xpression-paquets-propres.png?v=20260721-latest" alt="Paquets X-Pression Ultra Braid">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
                 </button>
               </div>
-              <p class="meche-gallery-caption">Look porté · Gros plan · Paquets produit (1B, 350, Brun)</p>
+              <p class="meche-gallery-caption">Nouvelle présentation des paquets X-Pression Ultra Braid</p>
             </div>
             <div class="meche-info">
               <p class="product-category">Mèches</p>
@@ -1221,6 +1235,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260721-okady-zoom"></script>
+  <script src="js/main.js?v=20260721-xpression-gallery"></script>
 </body>
 </html>

@@ -1763,6 +1763,14 @@ ul {
   pointer-events: none;
 }
 
+.meche-thumb .product-zoom-icon {
+  right: 0.2rem;
+  bottom: 0.2rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  font-size: 0.9rem;
+}
+
 .product-face-zoom {
   position: absolute;
   z-index: 2;
@@ -1786,6 +1794,8 @@ ul {
 
 .product-zoom-trigger:hover .product-zoom-icon,
 .product-zoom-trigger:focus-visible .product-zoom-icon,
+.meche-thumb:hover .product-zoom-icon,
+.meche-thumb:focus-visible .product-zoom-icon,
 .product-face-zoom:hover span,
 .product-face-zoom:focus-visible span {
   color: #fff;

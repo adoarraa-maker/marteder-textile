@@ -177,24 +177,24 @@ const mecheProductName = 'X-Pression Ultra Braid';
 
 const mecheImages = {
   portrait: {
-    src: 'https://images.unsplash.com/photo-1763256377889-c4e85bdd1a6c?w=800&q=85',
-    alt: 'X-Pression Ultra Braid — look porté',
+    src: 'xpression-paquets-propres.png?v=20260721-latest',
+    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
   },
   closeup: {
-    src: 'https://images.unsplash.com/photo-1759756655332-d66200497312?w=800&q=85',
-    alt: 'X-Pression Ultra Braid — gros plan mèches cuivrées',
+    src: 'xpression-paquets-propres.png?v=20260721-latest',
+    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
   },
   pack1b: {
-    src: 'meches-expression.png',
-    alt: 'Paquets de mèches X-Pression Ultra Braid — présentation boutique',
+    src: 'xpression-paquets-propres.png?v=20260721-latest',
+    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
   },
   pack350: {
-    src: 'images/meches/xpression-pack-350.jpg',
-    alt: 'Paquet X-Pression Ultra Braid — teinte 350 Cuivré / Roux',
+    src: 'xpression-paquets-propres.png?v=20260721-latest',
+    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
   },
   pack2: {
-    src: 'images/meches/xpression-pack-2-brun.jpg',
-    alt: 'Paquet X-Pression Ultra Braid — teinte 2 Brun foncé',
+    src: 'xpression-paquets-propres.png?v=20260721-latest',
+    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
   },
 };
 
@@ -840,7 +840,8 @@ function initProductLightbox() {
   let lastTrigger = null;
 
   const openLightbox = (trigger) => {
-    const sourceImage = trigger.closest('.product-zoom-wrap')?.querySelector('img');
+    const sourceImage = trigger.querySelector('img')
+      || trigger.closest('.product-zoom-wrap')?.querySelector('img');
     if (!sourceImage) return;
 
     lastTrigger = trigger;
