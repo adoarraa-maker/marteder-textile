@@ -829,6 +829,50 @@ function initMartederGallery() {
   showSlide(0);
 }
 
+function initDNutrimecLightbox() {
+  const lightbox = document.getElementById('dnutrimecLightbox');
+  const image = document.getElementById('dnutrimecLightboxImage');
+  const caption = document.getElementById('dnutrimecLightboxCaption');
+  const triggers = document.querySelectorAll('[data-dnutrimec-zoom]');
+  if (!lightbox || !image || !caption || triggers.length === 0) return;
+
+  const closeButton = lightbox.querySelector('.marteder-lightbox-close');
+  let lastTrigger = null;
+
+  const openLightbox = (trigger) => {
+    const sourceImage = trigger.closest('.dnutrimec-zoom-wrap')?.querySelector('img');
+    if (!sourceImage) return;
+
+    lastTrigger = trigger;
+    image.src = sourceImage.currentSrc || sourceImage.src;
+    image.alt = sourceImage.alt;
+    caption.textContent = trigger.dataset.caption || sourceImage.alt;
+    lightbox.hidden = false;
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closeButton?.focus();
+  };
+
+  const closeLightbox = () => {
+    lightbox.hidden = true;
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    lastTrigger?.focus();
+  };
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => openLightbox(trigger));
+  });
+
+  lightbox.querySelectorAll('[data-dnutrimec-close]').forEach((element) => {
+    element.addEventListener('click', closeLightbox);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
   initCart();
@@ -838,6 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFabricVariants();
   initMecheVariant();
   initMartederGallery();
+  initDNutrimecLightbox();
   initFilters();
   initNav();
   initBackToTop();

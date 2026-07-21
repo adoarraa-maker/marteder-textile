@@ -955,15 +955,33 @@
             </article>
 
             <article class="cosmetique-card">
-              <div class="cosmetique-image-wrap">
-                <img
-                  src="d-nutrimec-collagene.png"
-                  alt="Gel Essence Réparateur au Collagène D-nutrimec avec son flacon et sa boîte"
-                  width="1024"
-                  height="1024"
-                  loading="lazy"
-                  decoding="async"
+              <div class="cosmetique-image-wrap dnutrimec-zoom-wrap">
+                <button
+                  type="button"
+                  class="dnutrimec-zoom-trigger"
+                  data-dnutrimec-zoom
+                  data-caption="Gel Essence Réparateur D-nutrimec Collagène"
+                  aria-label="Agrandir l’image du produit D-nutrimec"
                 >
+                  <img
+                    src="d-nutrimec-collagene.png"
+                    alt="Gel Essence Réparateur au Collagène D-nutrimec avec son flacon, sa boîte et un aperçu avant après"
+                    width="1024"
+                    height="1024"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                  <span class="dnutrimec-zoom-icon" aria-hidden="true">⌕</span>
+                </button>
+                <button
+                  type="button"
+                  class="dnutrimec-face-zoom"
+                  data-dnutrimec-zoom
+                  data-caption="Avant / Après — action ciblée anti-taches"
+                  aria-label="Agrandir le visuel Avant et Après anti-taches"
+                >
+                  <span aria-hidden="true">⌕</span>
+                </button>
               </div>
               <p class="cosmetique-proof-caption">Action ciblée anti-taches</p>
               <h3 class="cosmetique-name">Gel Essence Réparateur au Collagène</h3>
@@ -1163,6 +1181,21 @@
       <img class="marteder-lightbox-image" id="martederLightboxImage" src="" alt="">
       <button type="button" class="marteder-lightbox-nav marteder-lightbox-next" aria-label="Image suivante">›</button>
       <p class="marteder-lightbox-caption" id="martederLightboxLabel"></p>
+    </div>
+  </div>
+
+  <!-- Zoom plein écran D-nutrimec -->
+  <div class="marteder-lightbox" id="dnutrimecLightbox" hidden aria-hidden="true">
+    <div class="marteder-lightbox-backdrop" data-dnutrimec-close></div>
+    <div class="marteder-lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="dnutrimecLightboxCaption">
+      <button type="button" class="marteder-lightbox-close" data-dnutrimec-close aria-label="Fermer l’image agrandie">&times;</button>
+      <img
+        class="marteder-lightbox-image"
+        id="dnutrimecLightboxImage"
+        src="d-nutrimec-collagene.png"
+        alt="Gel Essence Réparateur D-nutrimec Collagène et résultat Avant Après"
+      >
+      <p class="marteder-lightbox-caption" id="dnutrimecLightboxCaption">Gel Essence Réparateur D-nutrimec Collagène</p>
     </div>
   </div>
 
