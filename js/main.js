@@ -829,18 +829,18 @@ function initMartederGallery() {
   showSlide(0);
 }
 
-function initDNutrimecLightbox() {
-  const lightbox = document.getElementById('dnutrimecLightbox');
-  const image = document.getElementById('dnutrimecLightboxImage');
-  const caption = document.getElementById('dnutrimecLightboxCaption');
-  const triggers = document.querySelectorAll('[data-dnutrimec-zoom]');
+function initProductLightbox() {
+  const lightbox = document.getElementById('productLightbox');
+  const image = document.getElementById('productLightboxImage');
+  const caption = document.getElementById('productLightboxCaption');
+  const triggers = document.querySelectorAll('[data-product-zoom]');
   if (!lightbox || !image || !caption || triggers.length === 0) return;
 
   const closeButton = lightbox.querySelector('.marteder-lightbox-close');
   let lastTrigger = null;
 
   const openLightbox = (trigger) => {
-    const sourceImage = trigger.closest('.dnutrimec-zoom-wrap')?.querySelector('img');
+    const sourceImage = trigger.closest('.product-zoom-wrap')?.querySelector('img');
     if (!sourceImage) return;
 
     lastTrigger = trigger;
@@ -864,7 +864,7 @@ function initDNutrimecLightbox() {
     trigger.addEventListener('click', () => openLightbox(trigger));
   });
 
-  lightbox.querySelectorAll('[data-dnutrimec-close]').forEach((element) => {
+  lightbox.querySelectorAll('[data-product-lightbox-close]').forEach((element) => {
     element.addEventListener('click', closeLightbox);
   });
 
@@ -882,7 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFabricVariants();
   initMecheVariant();
   initMartederGallery();
-  initDNutrimecLightbox();
+  initProductLightbox();
   initFilters();
   initNav();
   initBackToTop();
