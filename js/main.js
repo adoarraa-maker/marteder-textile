@@ -176,25 +176,37 @@ const fabricProducts = {
 const mecheProductName = 'X-Pression Ultra Braid';
 
 const mecheImages = {
+  clean: {
+    src: 'xpression-paquets-propres.png?v=20260721-gallery',
+    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid',
+  },
   portrait: {
-    src: 'xpression-paquets-propres.png?v=20260721-latest',
-    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
+    src: 'https://images.unsplash.com/photo-1763256377889-c4e85bdd1a6c?w=1200&q=90',
+    alt: 'X-Pression Ultra Braid — modèle avec coiffure portée',
   },
   closeup: {
-    src: 'xpression-paquets-propres.png?v=20260721-latest',
-    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
+    src: 'https://images.unsplash.com/photo-1759756655332-d66200497312?w=1200&q=90',
+    alt: 'X-Pression Ultra Braid — gros plan sur les mèches',
   },
   pack1b: {
-    src: 'xpression-paquets-propres.png?v=20260721-latest',
-    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
+    src: 'images/meches/xpression-pack-1b.jpg',
+    alt: 'Paquets X-Pression Ultra Braid — teinte 1B Noir naturel',
   },
   pack350: {
-    src: 'xpression-paquets-propres.png?v=20260721-latest',
-    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
+    src: 'images/meches/xpression-pack-350.jpg',
+    alt: 'Paquet X-Pression Ultra Braid — teinte 350 Cuivré Roux',
   },
   pack2: {
-    src: 'xpression-paquets-propres.png?v=20260721-latest',
-    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid noires',
+    src: 'images/meches/xpression-pack-2-brun.jpg',
+    alt: 'Paquet X-Pression Ultra Braid — teinte 2 Brun foncé',
+  },
+  color1: {
+    src: 'xpression-color-1.png',
+    alt: 'Coque de mèches X-Pression — Color 1',
+  },
+  color1b: {
+    src: 'xpression-color-1b.png',
+    alt: 'Coque de mèches X-Pression — Color 1B',
   },
 };
 
@@ -202,7 +214,7 @@ const mecheVariants = {
   '1b': {
     label: 'Teinte 1B (Noir naturel)',
     shortLabel: '1B — Noir naturel',
-    imageKey: 'pack1b',
+    imageKey: 'clean',
     price: 5,
   },
   '350': {
@@ -525,7 +537,10 @@ function initMecheVariant() {
 
     image.src = photo.src;
     image.alt = photo.alt;
-    image.classList.toggle('is-pack-shot', imageKey.startsWith('pack'));
+    const isProductShot = imageKey === 'clean'
+      || imageKey.startsWith('pack')
+      || imageKey.startsWith('color');
+    image.classList.toggle('is-pack-shot', isProductShot);
 
     if (updateThumbs) {
       thumbs.forEach((thumb) => {
@@ -833,25 +848,51 @@ function initProductLightbox() {
   const lightbox = document.getElementById('productLightbox');
   const image = document.getElementById('productLightboxImage');
   const caption = document.getElementById('productLightboxCaption');
-  const triggers = document.querySelectorAll('[data-product-zoom]');
+  const triggers = Array.from(document.querySelectorAll('[data-product-zoom]'));
   if (!lightbox || !image || !caption || triggers.length === 0) return;
 
   const closeButton = lightbox.querySelector('.marteder-lightbox-close');
+  const previousButton = lightbox.querySelector('[data-product-lightbox-prev]');
+  const nextButton = lightbox.querySelector('[data-product-lightbox-next]');
   let lastTrigger = null;
+  let galleryTriggers = [];
+  let galleryIndex = 0;
 
-  const openLightbox = (trigger) => {
+  const showTrigger = (trigger) => {
     const sourceImage = trigger.querySelector('img')
       || trigger.closest('.product-zoom-wrap')?.querySelector('img');
     if (!sourceImage) return;
 
-    lastTrigger = trigger;
     image.src = sourceImage.currentSrc || sourceImage.src;
     image.alt = sourceImage.alt;
     caption.textContent = trigger.dataset.caption || sourceImage.alt;
+  };
+
+  const openLightbox = (trigger) => {
+    lastTrigger = trigger;
+
+    const galleryName = trigger.dataset.productGallery;
+    galleryTriggers = galleryName
+      ? triggers
+        .filter((item) => item.dataset.productGallery === galleryName)
+        .sort((a, b) => Number(a.dataset.galleryIndex) - Number(b.dataset.galleryIndex))
+      : [trigger];
+    galleryIndex = Math.max(0, galleryTriggers.indexOf(trigger));
+
+    showTrigger(galleryTriggers[galleryIndex]);
+    const hasNavigation = galleryTriggers.length > 1;
+    if (previousButton) previousButton.hidden = !hasNavigation;
+    if (nextButton) nextButton.hidden = !hasNavigation;
     lightbox.hidden = false;
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     closeButton?.focus();
+  };
+
+  const navigateGallery = (direction) => {
+    if (galleryTriggers.length < 2) return;
+    galleryIndex = (galleryIndex + direction + galleryTriggers.length) % galleryTriggers.length;
+    showTrigger(galleryTriggers[galleryIndex]);
   };
 
   const closeLightbox = () => {
@@ -868,9 +909,14 @@ function initProductLightbox() {
   lightbox.querySelectorAll('[data-product-lightbox-close]').forEach((element) => {
     element.addEventListener('click', closeLightbox);
   });
+  previousButton?.addEventListener('click', () => navigateGallery(-1));
+  nextButton?.addEventListener('click', () => navigateGallery(1));
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+    if (lightbox.hidden) return;
+    if (event.key === 'Escape') closeLightbox();
+    if (event.key === 'ArrowLeft') navigateGallery(-1);
+    if (event.key === 'ArrowRight') navigateGallery(1);
   });
 }
 
