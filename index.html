@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260721-xpression-gallery">
+  <link rel="stylesheet" href="css/styles.css?v=20260721-dnutrimec-gallery">
   <link
     rel="preload"
     as="image"
@@ -1002,10 +1002,15 @@
                   type="button"
                   class="product-zoom-trigger"
                   data-product-zoom
+                  data-product-gallery="dnutrimec"
+                  data-gallery-exclude
+                  data-gallery-start-index="0"
                   data-caption="Gel Essence Réparateur D-nutrimec Collagène"
                   aria-label="Agrandir l’image du produit D-nutrimec"
                 >
                   <img
+                    id="dnutrimecMainImage"
+                    class="dnutrimec-main-image"
                     src="d-nutrimec-collagene.png?v=20260721-3visages"
                     alt="Gel Essence Réparateur au Collagène D-nutrimec avec son flacon, sa boîte et trois visages avant après"
                     width="1024"
@@ -1019,10 +1024,54 @@
                   type="button"
                   class="product-face-zoom"
                   data-product-zoom
+                  data-product-gallery="dnutrimec"
+                  data-gallery-exclude
+                  data-gallery-start-index="2"
                   data-caption="Avant / Après — action ciblée anti-taches"
                   aria-label="Agrandir le visuel Avant et Après anti-taches"
                 >
                   <span aria-hidden="true">⌕</span>
+                </button>
+              </div>
+              <div class="dnutrimec-gallery" role="group" aria-label="Galerie photos D-nutrimec Collagène">
+                <button
+                  type="button"
+                  class="meche-thumb dnutrimec-thumb active"
+                  data-dnutrimec-thumb
+                  data-product-gallery="dnutrimec"
+                  data-gallery-index="0"
+                  data-src="d-nutrimec-collagene.png?v=20260721-3visages"
+                  data-alt="Gel D-nutrimec avec badge Avant Après sur trois visages"
+                  data-caption="D-nutrimec Collagène — produit et action anti-taches"
+                  aria-label="Afficher la composition D-nutrimec Avant Après"
+                >
+                  <img src="d-nutrimec-collagene.png?v=20260721-3visages" alt="Composition D-nutrimec Avant Après">
+                </button>
+                <button
+                  type="button"
+                  class="meche-thumb dnutrimec-thumb"
+                  data-dnutrimec-thumb
+                  data-product-gallery="dnutrimec"
+                  data-gallery-index="1"
+                  data-src="d-nutrimec-produit.png"
+                  data-alt="Flacon et boîte D-nutrimec Collagen Repair Essence Gel"
+                  data-caption="D-nutrimec Collagène — flacon et boîte"
+                  aria-label="Afficher le flacon et la boîte D-nutrimec"
+                >
+                  <img src="d-nutrimec-produit.png" alt="Flacon et boîte D-nutrimec">
+                </button>
+                <button
+                  type="button"
+                  class="meche-thumb dnutrimec-thumb"
+                  data-dnutrimec-thumb
+                  data-product-gallery="dnutrimec"
+                  data-gallery-index="2"
+                  data-src="d-nutrimec-resultats.png"
+                  data-alt="Résultats Avant Après du soin D-nutrimec Collagène"
+                  data-caption="D-nutrimec Collagène — résultats Avant / Après"
+                  aria-label="Afficher les résultats Avant Après D-nutrimec"
+                >
+                  <img src="d-nutrimec-resultats.png" alt="Résultats Avant Après D-nutrimec">
                 </button>
               </div>
               <p class="cosmetique-proof-caption">Action ciblée anti-taches</p>
@@ -1247,6 +1296,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260721-xpression-carousel"></script>
+  <script src="js/main.js?v=20260721-dnutrimec-gallery"></script>
 </body>
 </html>

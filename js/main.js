@@ -844,11 +844,33 @@ function initMartederGallery() {
   showSlide(0);
 }
 
+function initDNutrimecGallery() {
+  const mainImage = document.getElementById('dnutrimecMainImage');
+  const mainTrigger = mainImage?.closest('[data-product-zoom]');
+  const thumbs = Array.from(document.querySelectorAll('[data-dnutrimec-thumb]'));
+  if (!mainImage || !mainTrigger || thumbs.length === 0) return;
+
+  const showImage = (thumb) => {
+    mainImage.src = thumb.dataset.src;
+    mainImage.alt = thumb.dataset.alt;
+    mainTrigger.dataset.caption = thumb.dataset.caption;
+    mainTrigger.dataset.galleryStartIndex = thumb.dataset.galleryIndex;
+    thumbs.forEach((item) => item.classList.toggle('active', item === thumb));
+  };
+
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => showImage(thumb));
+  });
+
+  showImage(thumbs[0]);
+}
+
 function initProductLightbox() {
   const lightbox = document.getElementById('productLightbox');
   const image = document.getElementById('productLightboxImage');
   const caption = document.getElementById('productLightboxCaption');
   const triggers = Array.from(document.querySelectorAll('[data-product-zoom]'));
+  const galleryItems = Array.from(document.querySelectorAll('[data-product-gallery]'));
   if (!lightbox || !image || !caption || triggers.length === 0) return;
 
   const closeButton = lightbox.querySelector('.marteder-lightbox-close');
@@ -863,8 +885,11 @@ function initProductLightbox() {
       || trigger.closest('.product-zoom-wrap')?.querySelector('img');
     if (!sourceImage) return;
 
-    image.src = sourceImage.currentSrc || sourceImage.src;
-    image.alt = sourceImage.alt;
+    const galleryPhoto = trigger.dataset.imageKey
+      ? mecheImages[trigger.dataset.imageKey]
+      : null;
+    image.src = galleryPhoto?.src || sourceImage.currentSrc || sourceImage.src;
+    image.alt = galleryPhoto?.alt || sourceImage.alt;
     caption.textContent = trigger.dataset.caption || sourceImage.alt;
   };
 
@@ -873,11 +898,19 @@ function initProductLightbox() {
 
     const galleryName = trigger.dataset.productGallery;
     galleryTriggers = galleryName
-      ? triggers
-        .filter((item) => item.dataset.productGallery === galleryName)
+      ? galleryItems
+        .filter((item) => (
+          item.dataset.productGallery === galleryName
+          && !item.hasAttribute('data-gallery-exclude')
+        ))
         .sort((a, b) => Number(a.dataset.galleryIndex) - Number(b.dataset.galleryIndex))
       : [trigger];
-    galleryIndex = Math.max(0, galleryTriggers.indexOf(trigger));
+
+    const requestedIndex = trigger.dataset.galleryStartIndex;
+    const requestedPosition = requestedIndex === undefined
+      ? galleryTriggers.indexOf(trigger)
+      : galleryTriggers.findIndex((item) => item.dataset.galleryIndex === requestedIndex);
+    galleryIndex = Math.max(0, requestedPosition);
 
     showTrigger(galleryTriggers[galleryIndex]);
     const hasNavigation = galleryTriggers.length > 1;
@@ -929,6 +962,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFabricVariants();
   initMecheVariant();
   initMartederGallery();
+  initDNutrimecGallery();
   initProductLightbox();
   initFilters();
   initNav();

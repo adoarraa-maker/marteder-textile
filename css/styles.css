@@ -1810,6 +1810,29 @@ ul {
   outline: none;
 }
 
+.dnutrimec-main-image {
+  object-fit: contain !important;
+  background: #fff;
+}
+
+.dnutrimec-gallery {
+  display: flex;
+  justify-content: center;
+  gap: 0.65rem;
+  margin: -0.25rem 0 1rem;
+}
+
+.dnutrimec-gallery .dnutrimec-thumb {
+  flex: 0 1 78px;
+  max-width: 78px;
+}
+
+.dnutrimec-gallery .dnutrimec-thumb img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  padding: 0;
+}
+
 .cosmetique-placeholder {
   display: flex;
   align-items: center;
