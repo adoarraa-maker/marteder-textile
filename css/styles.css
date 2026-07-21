@@ -1833,6 +1833,96 @@ ul {
   padding: 0;
 }
 
+.okady-main-visual .product-zoom-trigger {
+  height: auto;
+}
+
+.okady-main-image {
+  width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.okady-main-caption {
+  padding: 0.75rem 1rem;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.35;
+  background: var(--color-surface);
+}
+
+.cosmetique-card.okady-selected {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(139, 90, 60, 0.12), var(--shadow-sm);
+}
+
+/* ---- Avis Clients ---- */
+.customer-reviews {
+  padding: 4rem 0 1rem;
+  background: var(--color-bg);
+}
+
+.reviews-panel {
+  max-width: 1000px;
+  margin-inline: auto;
+  padding: 2.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.review-card {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
+.review-stars {
+  margin-bottom: 0.75rem;
+  color: #c99b32;
+  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+}
+
+.review-card h3 {
+  margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.review-card p {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.reviews-action {
+  margin-top: 1.75rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .reviews-panel {
+    padding: 1.5rem 1.15rem;
+  }
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .cosmetique-placeholder {
   display: flex;
   align-items: center;

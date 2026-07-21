@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260721-dnutrimec-gallery">
+  <link rel="stylesheet" href="css/styles.css?v=20260721-okady-global">
   <link
     rel="preload"
     as="image"
@@ -921,15 +921,31 @@
           <div class="section-header centered">
             <span class="section-label">Beauté &amp; soins du visage</span>
             <h2 class="section-title" id="espace-cosmetiques-title">Gamme VIP OKADY Pearl</h2>
-            <figure class="cosmetiques-hero okady-main-visual">
-              <img
-                src="coffret-okady-pearl.png"
-                alt="Rituel complet de soins du visage OKADY Pearl"
-                width="512"
-                height="488"
-                loading="lazy"
-                decoding="async"
+            <figure class="cosmetiques-hero okady-main-visual product-zoom-wrap">
+              <button
+                type="button"
+                class="product-zoom-trigger"
+                id="okadyMainTrigger"
+                data-product-zoom
+                data-product-gallery="okady"
+                data-gallery-exclude
+                data-gallery-start-index="0"
+                data-caption="Coffret Soin Visage OKADY Pearl — Rituel complet 7 pièces"
+                aria-label="Agrandir le produit OKADY sélectionné"
               >
+                <img
+                  id="okadyMainImage"
+                  class="okady-main-image"
+                  src="coffret-okady-pearl.png"
+                  alt="Rituel complet de soins du visage OKADY Pearl"
+                  width="512"
+                  height="488"
+                  loading="lazy"
+                  decoding="async"
+                >
+                <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+              </button>
+              <figcaption class="okady-main-caption" id="okadyMainCaption">Coffret Soin Visage OKADY Pearl</figcaption>
             </figure>
             <p class="espace-cosmetiques-lead">
               Révélez l'éclat naturel de votre peau avec le rituel complet OKADY Pearl.
@@ -945,6 +961,9 @@
                   type="button"
                   class="product-zoom-trigger"
                   data-product-zoom
+                  data-okady-product
+                  data-product-gallery="okady"
+                  data-gallery-index="0"
                   data-caption="Coffret Soin Visage OKADY Pearl — Rituel complet 7 pièces"
                   aria-label="Agrandir l’image du Coffret Soin Visage OKADY Pearl"
                 >
@@ -976,6 +995,9 @@
                   type="button"
                   class="product-zoom-trigger"
                   data-product-zoom
+                  data-okady-product
+                  data-product-gallery="okady"
+                  data-gallery-index="1"
                   data-caption="Sérum &amp; Lotion Éclat Repulpante OKADY"
                   aria-label="Agrandir l’image du Sérum et de la Lotion Éclat Repulpante"
                 >
@@ -1002,9 +1024,10 @@
                   type="button"
                   class="product-zoom-trigger"
                   data-product-zoom
-                  data-product-gallery="dnutrimec"
+                  data-okady-product
+                  data-product-gallery="okady"
                   data-gallery-exclude
-                  data-gallery-start-index="0"
+                  data-gallery-start-index="2"
                   data-caption="Gel Essence Réparateur D-nutrimec Collagène"
                   aria-label="Agrandir l’image du produit D-nutrimec"
                 >
@@ -1024,9 +1047,9 @@
                   type="button"
                   class="product-face-zoom"
                   data-product-zoom
-                  data-product-gallery="dnutrimec"
+                  data-product-gallery="okady"
                   data-gallery-exclude
-                  data-gallery-start-index="2"
+                  data-gallery-start-index="4"
                   data-caption="Avant / Après — action ciblée anti-taches"
                   aria-label="Agrandir le visuel Avant et Après anti-taches"
                 >
@@ -1038,8 +1061,8 @@
                   type="button"
                   class="meche-thumb dnutrimec-thumb active"
                   data-dnutrimec-thumb
-                  data-product-gallery="dnutrimec"
-                  data-gallery-index="0"
+                  data-product-gallery="okady"
+                  data-gallery-index="2"
                   data-src="d-nutrimec-collagene.png?v=20260721-3visages"
                   data-alt="Gel D-nutrimec avec badge Avant Après sur trois visages"
                   data-caption="D-nutrimec Collagène — produit et action anti-taches"
@@ -1051,8 +1074,8 @@
                   type="button"
                   class="meche-thumb dnutrimec-thumb"
                   data-dnutrimec-thumb
-                  data-product-gallery="dnutrimec"
-                  data-gallery-index="1"
+                  data-product-gallery="okady"
+                  data-gallery-index="3"
                   data-src="d-nutrimec-produit.png"
                   data-alt="Flacon et boîte D-nutrimec Collagen Repair Essence Gel"
                   data-caption="D-nutrimec Collagène — flacon et boîte"
@@ -1064,8 +1087,8 @@
                   type="button"
                   class="meche-thumb dnutrimec-thumb"
                   data-dnutrimec-thumb
-                  data-product-gallery="dnutrimec"
-                  data-gallery-index="2"
+                  data-product-gallery="okady"
+                  data-gallery-index="4"
                   data-src="d-nutrimec-resultats.png"
                   data-alt="Résultats Avant Après du soin D-nutrimec Collagène"
                   data-caption="D-nutrimec Collagène — résultats Avant / Après"
@@ -1086,6 +1109,41 @@
                 rel="noopener noreferrer"
               >💬 Commander via WhatsApp</a>
             </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Avis Clients OKADY -->
+    <section class="customer-reviews" id="avis-clients" aria-labelledby="avis-clients-title">
+      <div class="container">
+        <div class="reviews-panel">
+          <div class="section-header centered">
+            <span class="section-label">Votre expérience</span>
+            <h2 class="section-title" id="avis-clients-title">Avis Clients</h2>
+            <p class="espace-cosmetiques-lead">
+              Votre avis aide les autres clientes à choisir leur rituel et nous permet d’améliorer nos conseils.
+            </p>
+          </div>
+          <div class="reviews-grid">
+            <article class="review-card">
+              <div class="review-stars" aria-label="Évaluation à compléter sur cinq étoiles">☆☆☆☆☆</div>
+              <h3>Qualité des soins</h3>
+              <p>Partagez votre commentaire sur la texture, l’utilisation et la qualité des produits OKADY.</p>
+            </article>
+            <article class="review-card">
+              <div class="review-stars" aria-label="Évaluation à compléter sur cinq étoiles">☆☆☆☆☆</div>
+              <h3>Votre routine beauté</h3>
+              <p>Racontez-nous comment vous avez intégré le coffret, le sérum ou le soin Collagène à votre routine.</p>
+            </article>
+            <article class="review-card">
+              <div class="review-stars" aria-label="Évaluation à compléter sur cinq étoiles">☆☆☆☆☆</div>
+              <h3>Commentaires authentiques</h3>
+              <p>Les avis de nos clientes seront publiés ici après validation, sans modifier leur expérience.</p>
+            </article>
+          </div>
+          <div class="reviews-action">
+            <a href="#contact" class="btn btn-outline">Laisser un commentaire</a>
           </div>
         </div>
       </div>
@@ -1296,6 +1354,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260721-dnutrimec-gallery"></script>
+  <script src="js/main.js?v=20260721-okady-global"></script>
 </body>
 </html>

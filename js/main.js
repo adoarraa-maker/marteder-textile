@@ -865,6 +865,42 @@ function initDNutrimecGallery() {
   showImage(thumbs[0]);
 }
 
+function initOkadyGallery() {
+  const mainImage = document.getElementById('okadyMainImage');
+  const mainTrigger = document.getElementById('okadyMainTrigger');
+  const mainCaption = document.getElementById('okadyMainCaption');
+  const productTriggers = Array.from(document.querySelectorAll('[data-okady-product]'));
+  if (!mainImage || !mainTrigger || !mainCaption || productTriggers.length === 0) return;
+
+  const showProduct = (trigger) => {
+    const sourceImage = trigger.querySelector('img');
+    if (!sourceImage) return;
+
+    const card = trigger.closest('.cosmetique-card');
+    const productName = card?.querySelector('.cosmetique-name')?.textContent?.trim()
+      || trigger.dataset.caption;
+    const selectedIndex = trigger.dataset.galleryStartIndex
+      ?? trigger.dataset.galleryIndex
+      ?? '0';
+
+    mainImage.src = sourceImage.currentSrc || sourceImage.src;
+    mainImage.alt = sourceImage.alt;
+    mainCaption.textContent = productName;
+    mainTrigger.dataset.caption = trigger.dataset.caption || productName;
+    mainTrigger.dataset.galleryStartIndex = selectedIndex;
+
+    productTriggers.forEach((item) => {
+      item.closest('.cosmetique-card')?.classList.toggle('okady-selected', item === trigger);
+    });
+  };
+
+  productTriggers.forEach((trigger) => {
+    trigger.addEventListener('click', () => showProduct(trigger));
+  });
+
+  showProduct(productTriggers[0]);
+}
+
 function initProductLightbox() {
   const lightbox = document.getElementById('productLightbox');
   const image = document.getElementById('productLightboxImage');
@@ -963,6 +999,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMecheVariant();
   initMartederGallery();
   initDNutrimecGallery();
+  initOkadyGallery();
   initProductLightbox();
   initFilters();
   initNav();
