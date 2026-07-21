@@ -892,6 +892,11 @@ ul {
   margin-top: 0.5rem;
 }
 
+.product-detail-link {
+  width: 100%;
+  margin-top: 1rem;
+}
+
 .product-features {
   list-style: none;
   margin: 0.5rem 0 0.75rem;
@@ -2615,6 +2620,250 @@ ul {
 .back-to-top:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
+}
+
+/* ---- Page OKADY ---- */
+.okady-page {
+  padding-top: var(--header-height);
+  background: var(--color-bg);
+}
+
+.okady-hero {
+  position: relative;
+  padding: 7rem 0;
+  text-align: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(196, 149, 106, 0.28), transparent 35%),
+    radial-gradient(circle at 85% 70%, rgba(139, 90, 60, 0.18), transparent 35%),
+    linear-gradient(135deg, #fffaf5 0%, #f2e7dc 100%);
+}
+
+.okady-hero-inner {
+  position: relative;
+  max-width: 760px;
+}
+
+.okady-featured-badge {
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.okady-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 1.25rem;
+}
+
+.okady-hero h1 em {
+  display: block;
+  color: var(--color-accent);
+  font-weight: 400;
+}
+
+.okady-hero p:not(.section-label) {
+  max-width: 620px;
+  margin: 0 auto 2rem;
+  color: var(--color-text-muted);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.okady-featured-product {
+  padding: 6rem 0;
+}
+
+.okady-product-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 4rem;
+  align-items: start;
+}
+
+.okady-product-image {
+  position: sticky;
+  top: calc(var(--header-height) + 2rem);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-alt);
+  box-shadow: var(--shadow-md);
+}
+
+.okady-product-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.okady-product-details h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.08;
+  margin-bottom: 0.75rem;
+}
+
+.okady-subtitle {
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.okady-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.okady-price .current-price {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.okady-price .old-price {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.okady-detail-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.okady-detail-grid > div {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.okady-detail-grid h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.okady-product-list {
+  list-style: none;
+}
+
+.okady-product-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.okady-product-list li + li {
+  margin-top: 0.4rem;
+}
+
+.okady-product-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+.okady-routine p {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.okady-routine p + p {
+  margin-top: 0.75rem;
+}
+
+.okady-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.okady-upcoming {
+  padding: 5rem 0 6rem;
+  background: var(--color-bg-alt);
+}
+
+.okady-upcoming-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  max-width: 760px;
+  margin: 2rem auto 0;
+}
+
+.okady-placeholder {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  border: 1px dashed var(--color-accent-light);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.okady-placeholder > span {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
+}
+
+.okady-placeholder h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.okady-placeholder p {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .okady-hero {
+    padding: 5rem 0;
+  }
+
+  .okady-product-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .okady-product-image {
+    position: static;
+  }
+
+  .okady-actions {
+    flex-direction: column;
+  }
+
+  .okady-actions .btn {
+    width: 100%;
+  }
+
+  .okady-upcoming-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---- Responsive ---- */
