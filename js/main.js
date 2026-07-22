@@ -541,11 +541,66 @@ function getStripePaymentPlan() {
 }
 
 function buildStripeUrl(payment, email) {
-  const params = new URLSearchParams();
-  if (email) params.set('prefilled_email', email);
-  if (payment.quantity > 1) params.set('quantity', String(payment.quantity));
-  const query = params.toString();
-  return query ? `${payment.url}?${query}` : payment.url;
+  try {
+    const base = payment?.url || STRIPE_PRODUCTS.getzner.url;
+    const params = new URLSearchParams();
+    if (email) params.set('prefilled_email', String(email));
+    const quantity = Number(payment?.quantity) || 1;
+    if (quantity > 1) params.set('quantity', String(quantity));
+    const query = params.toString();
+    return query ? `${base}?${query}` : base;
+  } catch (error) {
+    console.error('buildStripeUrl', error);
+    return STRIPE_PRODUCTS.getzner.url;
+  }
+}
+
+function resolveDirectStripeUrl(email) {
+  try {
+    const plan = getStripePaymentPlan();
+    const payments = Array.isArray(plan.payments) ? plan.payments : [];
+
+    if (payments.length === 0) {
+      return buildStripeUrl({ url: STRIPE_PRODUCTS.getzner.url, quantity: 1 }, email);
+    }
+
+    // Un seul type d'article Stripe → lien correspondant (Bazin ou mèches)
+    if (payments.length === 1) {
+      return buildStripeUrl(payments[0], email);
+    }
+
+    // Panier mixte : prioriser Getzner, sinon premier lien disponible
+    const preferred = payments.find((payment) => payment.key === 'getzner') || payments[0];
+    return buildStripeUrl(preferred, email);
+  } catch (error) {
+    console.error('resolveDirectStripeUrl', error);
+    return STRIPE_PRODUCTS.getzner.url;
+  }
+}
+
+function notifyOrderInBackground(payload) {
+  try {
+    fetch(FORMSUBMIT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    }).catch(() => {
+      /* ne bloque jamais le paiement Stripe */
+    });
+  } catch (error) {
+    console.error('notifyOrderInBackground', error);
+  }
+}
+
+function redirectToStripe(payUrl) {
+  const url = payUrl || STRIPE_PRODUCTS.getzner.url;
+  try {
+    window.location.assign(url);
+  } catch (error) {
+    console.error('redirectToStripe', error);
+    window.location.href = url;
+  }
 }
 
 function updateCheckoutButton() {
@@ -983,7 +1038,7 @@ function initCartCheckout() {
   const cancelBtn = document.getElementById('cartCheckoutCancel');
   const submitBtn = document.getElementById('cartSubmitOrderBtn');
 
-  if (!checkoutBtn || !checkoutForm) return;
+  if (!checkoutBtn || !checkoutForm || !submitBtn) return;
 
   const showCheckoutForm = (show) => {
     checkoutForm.classList.toggle('hidden', !show);
@@ -991,16 +1046,18 @@ function initCartCheckout() {
     document.querySelector('.cart-checkout-note')?.classList.toggle('hidden', show);
     updateCheckoutButton();
     if (show) {
-      document.querySelector('.cart-panel-scroll')?.scrollTo({
-        top: document.querySelector('.cart-panel-scroll')?.scrollHeight || 0,
-        behavior: 'smooth',
-      });
+      const scroller = document.querySelector('.cart-panel-scroll');
+      if (scroller) {
+        scroller.scrollTo({
+          top: scroller.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
     }
   };
 
-  checkoutForm.querySelectorAll('#checkoutShipping').forEach((input) => {
-    input.addEventListener('change', () => updateCheckoutButton());
-  });
+  const shippingSelect = document.getElementById('checkoutShipping');
+  shippingSelect?.addEventListener('change', () => updateCheckoutButton());
 
   checkoutBtn.addEventListener('click', () => {
     if (cart.length === 0) return;
@@ -1010,104 +1067,110 @@ function initCartCheckout() {
 
   cancelBtn?.addEventListener('click', () => showCheckoutForm(false));
 
-  checkoutForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (cart.length === 0) return;
-
-    const formData = new FormData(checkoutForm);
-    const name = formData.get('name')?.toString().trim();
-    const email = formData.get('email')?.toString().trim();
-    const phone = formData.get('phone')?.toString().trim();
-    const address = formData.get('address')?.toString().trim();
-    const shipping = formData.get('shipping')?.toString() || 'geneve';
-
-    if (!name || !email || !phone || !address) {
-      showToast('Veuillez remplir tous les champs obligatoires.');
-      return;
-    }
-
-    const plan = getStripePaymentPlan();
-    const total = plan.total;
-    const orderSummary = formatCartSummary();
-    const shippingLabel = getShippingLabel(shipping);
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Paiement en cours…';
-
+  const startStripePayment = () => {
     try {
-      const response = await fetch(FORMSUBMIT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          _subject: `Nouvelle commande Marteder Textile — ${name}`,
-          _template: 'table',
-          type: 'Commande boutique',
-          name,
-          email,
-          phone,
-          address,
-          livraison: shippingLabel,
-          sous_total: formatPrice(plan.subtotal),
-          frais_livraison: plan.shipping > 0 ? formatPrice(plan.shipping) : 'Gratuit',
-          total: formatPrice(total),
-          order: orderSummary,
-          paiement: plan.payments.map((payment) => (
-            `${payment.label} × ${payment.quantity} = ${formatPrice(payment.amount)}`
-          )).join(' | ') || 'Confirmation manuelle',
-        }),
-      });
+      if (cart.length === 0) {
+        showToast('Votre panier est vide.');
+        return;
+      }
 
-      if (!response.ok) throw new Error('Erreur réseau');
+      const formData = new FormData(checkoutForm);
+      const name = formData.get('name')?.toString().trim();
+      const email = formData.get('email')?.toString().trim();
+      const phone = formData.get('phone')?.toString().trim();
+      const address = formData.get('address')?.toString().trim();
+      const shipping = formData.get('shipping')?.toString() || 'geneve';
 
-      sessionStorage.setItem('marteder-last-order', JSON.stringify({
-        total,
-        totalLabel: formatPrice(total),
-        subtotalLabel: formatPrice(plan.subtotal),
-        shippingLabel,
-        order: orderSummary,
-        name,
-        planMode: plan.mode,
-        shipping,
-      }));
+      if (!name || !email || !phone || !address) {
+        showToast('Veuillez remplir tous les champs obligatoires.');
+        return;
+      }
 
-      const payments = plan.payments.map((payment) => ({
+      const plan = getStripePaymentPlan();
+      const total = plan.total;
+      const orderSummary = formatCartSummary();
+      const shippingLabel = getShippingLabel(shipping);
+      const payments = (plan.payments || []).map((payment) => ({
         ...payment,
         payUrl: buildStripeUrl(payment, email),
       }));
+      const payUrl = resolveDirectStripeUrl(email);
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Redirection Stripe…';
+
+      try {
+        sessionStorage.setItem('marteder-last-order', JSON.stringify({
+          total,
+          totalLabel: formatPrice(total),
+          subtotalLabel: formatPrice(plan.subtotal),
+          shippingLabel,
+          order: orderSummary,
+          name,
+          planMode: plan.mode,
+          shipping,
+          payUrl,
+        }));
+
+        if (payments.length > 1) {
+          sessionStorage.setItem(STRIPE_PENDING_KEY, JSON.stringify({
+            email,
+            name,
+            totalLabel: formatPrice(total),
+            shippingLabel,
+            payments,
+            index: 0,
+          }));
+        } else {
+          sessionStorage.removeItem(STRIPE_PENDING_KEY);
+        }
+      } catch (storageError) {
+        console.error('sessionStorage', storageError);
+      }
+
+      notifyOrderInBackground({
+        _subject: `Nouvelle commande Marteder Textile — ${name}`,
+        _template: 'table',
+        type: 'Commande boutique',
+        name,
+        email,
+        phone,
+        address,
+        livraison: shippingLabel,
+        sous_total: formatPrice(plan.subtotal),
+        frais_livraison: plan.shipping > 0 ? formatPrice(plan.shipping) : 'Gratuit',
+        total: formatPrice(total),
+        order: orderSummary,
+        paiement_stripe: payUrl,
+        paiement: payments.map((payment) => (
+          `${payment.label} × ${payment.quantity} = ${formatPrice(payment.amount)}`
+        )).join(' | ') || 'Stripe Payment Link',
+      });
 
       cart = [];
       saveCart();
       renderCart();
-      checkoutForm.reset();
-      const shippingSelect = document.getElementById('checkoutShipping');
-      if (shippingSelect) shippingSelect.value = 'geneve';
-      showCheckoutForm(false);
-      closeCartPanel();
 
-      if (payments.length === 1 && plan.mode === 'single') {
-        window.location.href = payments[0].payUrl;
-        return;
-      }
-
-      if (payments.length > 0) {
-        sessionStorage.setItem(STRIPE_PENDING_KEY, JSON.stringify({
-          email,
-          name,
-          totalLabel: formatPrice(total),
-          shippingLabel,
-          payments,
-          index: 0,
-        }));
-      } else {
-        sessionStorage.removeItem(STRIPE_PENDING_KEY);
-      }
-
-      window.location.href = 'commande-merci.html';
-    } catch {
-      showToast('Impossible de finaliser le paiement. Réessayez ou contactez-nous.');
-      submitBtn.disabled = false;
-      updateCheckoutButton();
+      // Redirection immédiate vers Stripe (ne dépend pas de FormSubmit)
+      redirectToStripe(payUrl);
+    } catch (error) {
+      console.error('startStripePayment', error);
+      showToast('Redirection vers Stripe…');
+      redirectToStripe(STRIPE_PRODUCTS.getzner.url);
     }
+  };
+
+  // Bouton dédié : évite les blocages liés au submit HTML / fetch
+  submitBtn.type = 'button';
+  submitBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    startStripePayment();
+  });
+
+  checkoutForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    startStripePayment();
   });
 }
 
