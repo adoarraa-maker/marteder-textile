@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260722-stripe2">
+  <link rel="stylesheet" href="css/styles.css?v=20260722-cart-ship">
   <link
     rel="preload"
     as="image"
@@ -129,28 +129,59 @@
         <h2 id="cartPanelTitle">Votre panier</h2>
         <button type="button" class="cart-panel-close" id="cartClose" aria-label="Fermer le panier">&times;</button>
       </div>
-      <div class="cart-panel-body" id="cartList">
-        <p class="cart-empty">Votre panier est vide.</p>
-      </div>
-      <div class="cart-panel-footer">
-        <p class="cart-panel-total">Total : <strong id="cartTotal">0 CHF</strong></p>
-        <button type="button" class="btn btn-cart cart-checkout-btn" id="cartCheckoutBtn" disabled>
-          Payer la commande
-        </button>
-        <p class="cart-checkout-note">Le bouton de paiement s’adapte au total et au lien Stripe de vos articles.</p>
-        <form class="cart-checkout-form hidden" id="cartCheckoutForm" novalidate>
-          <p class="cart-checkout-form-title">Coordonnées pour finaliser le paiement</p>
-          <label class="form-label" for="checkoutName">Nom complet</label>
-          <input class="form-input" type="text" id="checkoutName" name="name" required autocomplete="name">
-          <label class="form-label" for="checkoutEmail">E-mail</label>
-          <input class="form-input" type="email" id="checkoutEmail" name="email" required autocomplete="email">
-          <label class="form-label" for="checkoutPhone">Téléphone</label>
-          <input class="form-input" type="tel" id="checkoutPhone" name="phone" required autocomplete="tel">
-          <label class="form-label" for="checkoutAddress">Adresse de livraison</label>
-          <textarea class="form-input form-textarea" id="checkoutAddress" name="address" rows="3" required placeholder="Rue, numéro, NPA, ville, pays"></textarea>
-          <button type="submit" class="btn btn-cart" id="cartSubmitOrderBtn">Payer la commande</button>
-          <button type="button" class="btn btn-outline cart-checkout-cancel" id="cartCheckoutCancel">Retour au panier</button>
-        </form>
+      <div class="cart-panel-scroll">
+        <div class="cart-panel-body" id="cartList">
+          <p class="cart-empty">Votre panier est vide.</p>
+        </div>
+        <div class="cart-panel-footer">
+          <div class="cart-totals">
+            <p class="cart-panel-subtotal">Sous-total : <strong id="cartSubtotal">0 CHF</strong></p>
+            <p class="cart-panel-shipping">Livraison : <strong id="cartShipping">Gratuit</strong></p>
+            <p class="cart-panel-total">Total : <strong id="cartTotal">0 CHF</strong></p>
+          </div>
+          <button type="button" class="btn btn-cart cart-checkout-btn" id="cartCheckoutBtn" disabled>
+            Continuer vers le paiement
+          </button>
+          <p class="cart-checkout-note">Choisissez ensuite votre livraison et payez par carte (Stripe).</p>
+          <form class="cart-checkout-form hidden" id="cartCheckoutForm" novalidate>
+            <p class="cart-checkout-form-title">Coordonnées pour finaliser le paiement</p>
+            <label class="form-label" for="checkoutName">Nom complet</label>
+            <input class="form-input" type="text" id="checkoutName" name="name" required autocomplete="name">
+            <label class="form-label" for="checkoutEmail">E-mail</label>
+            <input class="form-input" type="email" id="checkoutEmail" name="email" required autocomplete="email">
+            <label class="form-label" for="checkoutPhone">Téléphone</label>
+            <input class="form-input" type="tel" id="checkoutPhone" name="phone" required autocomplete="tel">
+            <label class="form-label" for="checkoutAddress">Adresse de livraison</label>
+            <textarea class="form-input form-textarea" id="checkoutAddress" name="address" rows="3" required placeholder="Rue, numéro, NPA, ville, pays"></textarea>
+
+            <fieldset class="cart-shipping-options">
+              <legend class="form-label">Choix de la livraison</legend>
+              <label class="cart-shipping-option">
+                <input type="radio" name="shipping" value="geneve" data-shipping-cost="0" checked>
+                <span>
+                  <strong>Genève</strong>
+                  <em>Gratuit</em>
+                </span>
+              </label>
+              <label class="cart-shipping-option">
+                <input type="radio" name="shipping" value="postpac" data-shipping-cost="8.5">
+                <span>
+                  <strong>Suisse PostPac</strong>
+                  <em>8.50 CHF</em>
+                </span>
+              </label>
+            </fieldset>
+
+            <p class="cart-panel-total cart-panel-total--final">
+              Total final : <strong id="cartFinalTotal">0 CHF</strong>
+            </p>
+
+            <button type="submit" class="btn btn-stripe cart-stripe-pay-btn" id="cartSubmitOrderBtn">
+              Payer par carte (Stripe)
+            </button>
+            <button type="button" class="btn btn-outline cart-checkout-cancel" id="cartCheckoutCancel">Retour au panier</button>
+          </form>
+        </div>
       </div>
     </aside>
   </div>
@@ -1320,6 +1351,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260722-stripe2"></script>
+  <script src="js/main.js?v=20260722-cart-ship"></script>
 </body>
 </html>

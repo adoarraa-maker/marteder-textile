@@ -329,8 +329,28 @@ function filterProducts(category) {
   });
 }
 
-function getCartTotal() {
+function getCartSubtotal() {
   return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+
+function getCartTotal() {
+  return getCartSubtotal() + getShippingCost();
+}
+
+function getSelectedShippingInput() {
+  return document.querySelector('input[name="shipping"]:checked');
+}
+
+function getShippingCost() {
+  const selected = getSelectedShippingInput();
+  if (!selected) return 0;
+  return Number(selected.dataset.shippingCost || 0);
+}
+
+function getShippingLabel() {
+  const selected = getSelectedShippingInput();
+  if (!selected || selected.value === 'geneve') return 'Genève — Gratuit';
+  return 'Suisse PostPac — 8.50 CHF';
 }
 
 function normalizeCartItem(item) {
@@ -367,29 +387,36 @@ function getStripeGroups() {
 }
 
 function getStripePaymentPlan() {
-  const total = getCartTotal();
+  const subtotal = getCartSubtotal();
+  const shipping = getShippingCost();
+  const total = subtotal + shipping;
   const stripeGroups = getStripeGroups();
-  const stripeAmount = stripeGroups.reduce((sum, group) => sum + group.amount, 0);
   const hasNonStripe = cart.some((item) => !normalizeCartItem(item).stripeProduct);
 
   if (cart.length === 0) {
     return {
       mode: 'empty',
       payments: [],
+      subtotal: 0,
+      shipping: 0,
       total: 0,
-      buttonLabel: 'Payer la commande',
+      buttonLabel: 'Payer par carte (Stripe)',
       note: 'Ajoutez des articles pour payer.',
     };
   }
+
+  const payLabel = `Payer par carte (Stripe) — ${formatPrice(total)}`;
 
   if (!hasNonStripe && stripeGroups.length === 1) {
     const payment = stripeGroups[0];
     return {
       mode: 'single',
       payments: [payment],
+      subtotal,
+      shipping,
       total,
-      buttonLabel: `Payer ${formatPrice(total)}`,
-      note: `Paiement Stripe sécurisé — ${payment.label}.`,
+      buttonLabel: payLabel,
+      note: `Paiement Stripe — ${payment.label}. Livraison : ${getShippingLabel()}.`,
     };
   }
 
@@ -397,9 +424,11 @@ function getStripePaymentPlan() {
     return {
       mode: 'multi',
       payments: stripeGroups,
+      subtotal,
+      shipping,
       total,
-      buttonLabel: `Payer ${formatPrice(total)}`,
-      note: 'Paiement Stripe en plusieurs étapes selon vos articles (Getzner et mèches).',
+      buttonLabel: payLabel,
+      note: `Paiement Stripe selon vos articles. Livraison : ${getShippingLabel()}.`,
     };
   }
 
@@ -407,18 +436,22 @@ function getStripePaymentPlan() {
     return {
       mode: 'mixed',
       payments: stripeGroups,
+      subtotal,
+      shipping,
       total,
-      buttonLabel: `Payer ${formatPrice(total)}`,
-      note: 'Les articles Stripe seront payés en ligne ; le reste sera confirmé après commande.',
+      buttonLabel: payLabel,
+      note: `Paiement carte pour les articles Stripe. Livraison : ${getShippingLabel()}.`,
     };
   }
 
   return {
     mode: 'manual',
     payments: [],
+    subtotal,
+    shipping,
     total,
-    buttonLabel: `Payer ${formatPrice(total)}`,
-    note: 'Nous confirmons le paiement du total après validation de votre commande.',
+    buttonLabel: payLabel,
+    note: `Commande enregistrée. Livraison : ${getShippingLabel()}.`,
   };
 }
 
@@ -434,14 +467,28 @@ function updateCheckoutButton() {
   const checkoutBtn = document.getElementById('cartCheckoutBtn');
   const submitBtn = document.getElementById('cartSubmitOrderBtn');
   const note = document.querySelector('.cart-checkout-note');
+  const cartSubtotal = document.getElementById('cartSubtotal');
+  const cartShipping = document.getElementById('cartShipping');
+  const cartTotal = document.getElementById('cartTotal');
+  const cartFinalTotal = document.getElementById('cartFinalTotal');
   const plan = getStripePaymentPlan();
+
+  if (cartSubtotal) cartSubtotal.textContent = formatPrice(plan.subtotal);
+  if (cartShipping) {
+    cartShipping.textContent = plan.shipping > 0 ? formatPrice(plan.shipping) : 'Gratuit';
+  }
+  if (cartTotal) cartTotal.textContent = formatPrice(plan.total);
+  if (cartFinalTotal) cartFinalTotal.textContent = formatPrice(plan.total);
 
   if (checkoutBtn) {
     checkoutBtn.disabled = cart.length === 0;
-    checkoutBtn.textContent = plan.buttonLabel;
+    checkoutBtn.textContent = cart.length === 0
+      ? 'Continuer vers le paiement'
+      : 'Continuer vers le paiement';
   }
   if (submitBtn && !submitBtn.disabled) {
     submitBtn.textContent = plan.buttonLabel;
+    submitBtn.disabled = cart.length === 0;
   }
   if (note && !note.classList.contains('hidden')) {
     note.textContent = plan.note;
@@ -450,7 +497,6 @@ function updateCheckoutButton() {
 
 function renderCart() {
   const cartList = document.getElementById('cartList');
-  const cartTotal = document.getElementById('cartTotal');
   const cartCountEls = document.querySelectorAll('.cart-count');
 
   if (!cartList) return;
@@ -485,7 +531,6 @@ function renderCart() {
   document.querySelectorAll('.cart-btn').forEach((btn) => {
     btn.classList.toggle('has-items', totalItems > 0);
   });
-  if (cartTotal) cartTotal.textContent = formatPrice(getCartTotal());
 
   updateCheckoutButton();
 }
@@ -851,8 +896,18 @@ function initCartCheckout() {
     checkoutForm.classList.toggle('hidden', !show);
     checkoutBtn.classList.toggle('hidden', show);
     document.querySelector('.cart-checkout-note')?.classList.toggle('hidden', show);
-    if (!show) updateCheckoutButton();
+    updateCheckoutButton();
+    if (show) {
+      document.querySelector('.cart-panel-scroll')?.scrollTo({
+        top: document.querySelector('.cart-panel-scroll')?.scrollHeight || 0,
+        behavior: 'smooth',
+      });
+    }
   };
+
+  checkoutForm.querySelectorAll('input[name="shipping"]').forEach((input) => {
+    input.addEventListener('change', () => updateCheckoutButton());
+  });
 
   checkoutBtn.addEventListener('click', () => {
     if (cart.length === 0) return;
@@ -871,6 +926,7 @@ function initCartCheckout() {
     const email = formData.get('email')?.toString().trim();
     const phone = formData.get('phone')?.toString().trim();
     const address = formData.get('address')?.toString().trim();
+    const shipping = formData.get('shipping')?.toString() || 'geneve';
 
     if (!name || !email || !phone || !address) {
       showToast('Veuillez remplir tous les champs obligatoires.');
@@ -880,6 +936,7 @@ function initCartCheckout() {
     const plan = getStripePaymentPlan();
     const total = plan.total;
     const orderSummary = formatCartSummary();
+    const shippingLabel = getShippingLabel();
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Paiement en cours…';
@@ -896,6 +953,9 @@ function initCartCheckout() {
           email,
           phone,
           address,
+          livraison: shippingLabel,
+          sous_total: formatPrice(plan.subtotal),
+          frais_livraison: plan.shipping > 0 ? formatPrice(plan.shipping) : 'Gratuit',
           total: formatPrice(total),
           order: orderSummary,
           paiement: plan.payments.map((payment) => (
@@ -909,9 +969,12 @@ function initCartCheckout() {
       sessionStorage.setItem('marteder-last-order', JSON.stringify({
         total,
         totalLabel: formatPrice(total),
+        subtotalLabel: formatPrice(plan.subtotal),
+        shippingLabel,
         order: orderSummary,
         name,
         planMode: plan.mode,
+        shipping,
       }));
 
       const payments = plan.payments.map((payment) => ({
@@ -923,6 +986,8 @@ function initCartCheckout() {
       saveCart();
       renderCart();
       checkoutForm.reset();
+      const geneveOption = checkoutForm.querySelector('input[name="shipping"][value="geneve"]');
+      if (geneveOption) geneveOption.checked = true;
       showCheckoutForm(false);
       closeCartPanel();
 
@@ -936,6 +1001,7 @@ function initCartCheckout() {
           email,
           name,
           totalLabel: formatPrice(total),
+          shippingLabel,
           payments,
           index: 0,
         }));
