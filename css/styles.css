@@ -1445,6 +1445,11 @@ ul {
   display: none !important;
 }
 
+.cart-checkout-btn {
+  width: 100%;
+  margin-top: 1rem;
+}
+
 .cart-checkout-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
