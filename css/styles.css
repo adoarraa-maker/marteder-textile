@@ -1250,10 +1250,12 @@ ul {
 .cart-panel-scroll {
   flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
+  height: 100%;
+  overflow-y: auto !important;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  padding-bottom: 2.5rem;
 }
 
 .cart-panel-body {
@@ -1406,68 +1408,30 @@ ul {
   border-radius: var(--radius-sm);
 }
 
-.cart-shipping-options {
-  margin: 1rem 0 0;
-  padding: 0;
-  border: 0;
+.cart-shipping-select {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
 }
 
-.cart-shipping-options legend {
-  margin-bottom: 0.65rem;
-}
-
-.cart-shipping-option {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7rem;
-  margin-bottom: 0.55rem;
-  padding: 0.75rem 0.85rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg);
-  cursor: pointer;
-}
-
-.cart-shipping-option:has(input:checked) {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(139, 90, 60, 0.12);
-}
-
-.cart-shipping-option input {
-  margin-top: 0.2rem;
-}
-
-.cart-shipping-option span {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
-.cart-shipping-option strong {
-  font-size: 0.92rem;
-  color: var(--color-text);
-}
-
-.cart-shipping-option em {
-  font-style: normal;
-  font-size: 0.85rem;
+.cart-shipping-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
   color: var(--color-accent);
-  font-weight: 600;
-}
-
-.cart-checkout-btn {
-  width: 100%;
-  margin-top: 1rem;
+  line-height: 1.4;
 }
 
 .cart-stripe-pay-btn {
   width: 100%;
   margin-top: 0.35rem;
-  padding: 0.95rem 1.25rem;
+  margin-bottom: 0.75rem;
+  padding: 1rem 1.25rem;
   font-size: 1rem;
   font-weight: 700;
   text-align: center;
   cursor: pointer;
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
 }
 
 .cart-stripe-btn {

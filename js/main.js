@@ -329,6 +329,30 @@ function filterProducts(category) {
   });
 }
 
+const SHIPPING_OPTIONS = {
+  geneve: {
+    label: 'Livraison / Retrait sur Genève',
+    baseCost: 0,
+  },
+  suisse: {
+    label: 'Envoi postal en Suisse',
+    baseCost: 18,
+    freeFromItems: 3,
+  },
+  europe: {
+    label: 'Envoi postal en Europe',
+    baseCost: 25,
+  },
+  monde: {
+    label: 'Envoi postal Reste du monde',
+    baseCost: 35,
+  },
+};
+
+function getCartItemCount() {
+  return cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
 function getCartSubtotal() {
   return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 }
@@ -337,20 +361,59 @@ function getCartTotal() {
   return getCartSubtotal() + getShippingCost();
 }
 
-function getSelectedShippingInput() {
-  return document.querySelector('input[name="shipping"]:checked');
+function getSelectedShippingKey() {
+  const select = document.getElementById('checkoutShipping');
+  return select?.value || 'geneve';
 }
 
-function getShippingCost() {
-  const selected = getSelectedShippingInput();
-  if (!selected) return 0;
-  return Number(selected.dataset.shippingCost || 0);
+function getShippingCost(key = getSelectedShippingKey()) {
+  const option = SHIPPING_OPTIONS[key];
+  if (!option) return 0;
+  if (option.freeFromItems && getCartItemCount() >= option.freeFromItems) return 0;
+  return option.baseCost;
 }
 
-function getShippingLabel() {
-  const selected = getSelectedShippingInput();
-  if (!selected || selected.value === 'geneve') return 'Genève — Gratuit';
-  return 'Suisse PostPac — 8.50 CHF';
+function getShippingLabel(key = getSelectedShippingKey()) {
+  const option = SHIPPING_OPTIONS[key];
+  if (!option) return 'Livraison / Retrait sur Genève — Gratuit';
+  const cost = getShippingCost(key);
+  if (cost === 0) {
+    if (key === 'suisse' && getCartItemCount() >= 3) {
+      return `${option.label} — GRATUIT (dès 3 articles)`;
+    }
+    return `${option.label} — GRATUIT`;
+  }
+  return `${option.label} — ${formatPrice(cost)}`;
+}
+
+function updateShippingSelectLabels() {
+  const select = document.getElementById('checkoutShipping');
+  const hint = document.getElementById('cartShippingHint');
+  if (!select) return;
+
+  const itemCount = getCartItemCount();
+  const labels = {
+    geneve: 'Livraison / Retrait sur Genève — GRATUIT (0 CHF)',
+    suisse: itemCount >= 3
+      ? 'Envoi postal en Suisse — GRATUIT (dès 3 articles)'
+      : 'Envoi postal en Suisse — 18.00 CHF (GRATUIT dès 3 articles)',
+    europe: 'Envoi postal en Europe — 25.00 CHF',
+    monde: 'Envoi postal Reste du monde — 35.00 CHF',
+  };
+
+  Array.from(select.options).forEach((option) => {
+    if (labels[option.value]) option.textContent = labels[option.value];
+  });
+
+  if (hint) {
+    if (select.value === 'suisse' && itemCount >= 3) {
+      hint.textContent = 'Livraison Suisse offerte : vous avez 3 articles ou plus.';
+    } else if (select.value === 'suisse') {
+      hint.textContent = `Ajoutez encore ${3 - itemCount} article(s) pour une livraison Suisse gratuite.`;
+    } else {
+      hint.textContent = '';
+    }
+  }
 }
 
 function normalizeCartItem(item) {
@@ -464,6 +527,8 @@ function buildStripeUrl(payment, email) {
 }
 
 function updateCheckoutButton() {
+  updateShippingSelectLabels();
+
   const checkoutBtn = document.getElementById('cartCheckoutBtn');
   const submitBtn = document.getElementById('cartSubmitOrderBtn');
   const note = document.querySelector('.cart-checkout-note');
@@ -482,9 +547,7 @@ function updateCheckoutButton() {
 
   if (checkoutBtn) {
     checkoutBtn.disabled = cart.length === 0;
-    checkoutBtn.textContent = cart.length === 0
-      ? 'Continuer vers le paiement'
-      : 'Continuer vers le paiement';
+    checkoutBtn.textContent = 'Continuer vers le paiement';
   }
   if (submitBtn && !submitBtn.disabled) {
     submitBtn.textContent = plan.buttonLabel;
@@ -905,7 +968,7 @@ function initCartCheckout() {
     }
   };
 
-  checkoutForm.querySelectorAll('input[name="shipping"]').forEach((input) => {
+  checkoutForm.querySelectorAll('#checkoutShipping').forEach((input) => {
     input.addEventListener('change', () => updateCheckoutButton());
   });
 
@@ -936,7 +999,7 @@ function initCartCheckout() {
     const plan = getStripePaymentPlan();
     const total = plan.total;
     const orderSummary = formatCartSummary();
-    const shippingLabel = getShippingLabel();
+    const shippingLabel = getShippingLabel(shipping);
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Paiement en cours…';
@@ -986,8 +1049,8 @@ function initCartCheckout() {
       saveCart();
       renderCart();
       checkoutForm.reset();
-      const geneveOption = checkoutForm.querySelector('input[name="shipping"][value="geneve"]');
-      if (geneveOption) geneveOption.checked = true;
+      const shippingSelect = document.getElementById('checkoutShipping');
+      if (shippingSelect) shippingSelect.value = 'geneve';
       showCheckoutForm(false);
       closeCartPanel();
 
