@@ -1612,6 +1612,37 @@ ul {
   box-shadow: 0 8px 24px rgba(37, 211, 102, 0.28);
 }
 
+.btn-stripe {
+  background: #635bff;
+  color: #fff;
+  border-color: #635bff;
+  border-radius: 6px;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+}
+
+.btn-stripe:hover {
+  background: #534bff;
+  border-color: #534bff;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(99, 91, 255, 0.28);
+}
+
+.getzner-order-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.getzner-order-actions .btn {
+  min-width: 220px;
+}
+
 .product-whatsapp-btn {
   width: 100%;
   margin-top: 0.75rem;
