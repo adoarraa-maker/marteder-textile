@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260722-cart">
+  <link rel="stylesheet" href="css/styles.css?v=20260722-cart2">
   <link
     rel="preload"
     as="image"
@@ -119,21 +119,13 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/>
           </svg>
-          <span class="cart-count" hidden>0</span>
+          <span class="cart-count">0</span>
         </button>
       </div>
     </nav>
   </header>
 
-  <!-- Icône panier fixe -->
-  <button type="button" class="floating-cart-btn cart-btn" id="floatingCartToggle" aria-label="Ouvrir le panier">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-      <path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/>
-    </svg>
-    <span class="cart-count" hidden>0</span>
-  </button>
-
-  <!-- Panier -->
+  <!-- Panier interactif -->
   <div class="cart-panel" id="cartPanel" aria-hidden="true">
     <div class="cart-panel-backdrop" id="cartBackdrop"></div>
     <aside class="cart-panel-drawer" role="dialog" aria-labelledby="cartPanelTitle">
@@ -147,19 +139,11 @@
       <div class="cart-panel-footer">
         <p class="cart-panel-total">Total : <strong id="cartTotal">0 CHF</strong></p>
         <button type="button" class="btn btn-cart cart-checkout-btn" id="cartCheckoutBtn" disabled>
-          Valider et payer
+          Payer la commande
         </button>
-        <a
-          id="cartStripePayBtn"
-          class="btn btn-stripe cart-stripe-btn"
-          href="https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00"
-          target="_blank"
-          rel="noopener noreferrer"
-          hidden
-        >Payer via Stripe</a>
-        <p class="cart-checkout-note">Ajoutez plusieurs articles puis payez le total en une seule fois (CB / Twint).</p>
+        <p class="cart-checkout-note">Récapitulatif automatique — paiement du total en une seule fois.</p>
         <form class="cart-checkout-form hidden" id="cartCheckoutForm" novalidate>
-          <p class="cart-checkout-form-title">Vos coordonnées de livraison</p>
+          <p class="cart-checkout-form-title">Coordonnées pour finaliser le paiement</p>
           <label class="form-label" for="checkoutName">Nom complet</label>
           <input class="form-input" type="text" id="checkoutName" name="name" required autocomplete="name">
           <label class="form-label" for="checkoutEmail">E-mail</label>
@@ -168,7 +152,7 @@
           <input class="form-input" type="tel" id="checkoutPhone" name="phone" required autocomplete="tel">
           <label class="form-label" for="checkoutAddress">Adresse de livraison</label>
           <textarea class="form-input form-textarea" id="checkoutAddress" name="address" rows="3" required placeholder="Rue, numéro, NPA, ville, pays"></textarea>
-          <button type="submit" class="btn btn-cart" id="cartSubmitOrderBtn">Valider et payer</button>
+          <button type="submit" class="btn btn-cart" id="cartSubmitOrderBtn">Payer la commande</button>
           <button type="button" class="btn btn-outline cart-checkout-cancel" id="cartCheckoutCancel">Retour au panier</button>
         </form>
       </div>
@@ -1345,6 +1329,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260722-cart"></script>
+  <script src="js/main.js?v=20260722-cart2"></script>
 </body>
 </html>

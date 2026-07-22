@@ -350,8 +350,7 @@ function renderCart() {
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   cartCountEls.forEach((el) => {
-    el.textContent = totalItems;
-    el.hidden = totalItems === 0;
+    el.textContent = String(totalItems);
   });
   document.querySelectorAll('.cart-btn').forEach((btn) => {
     btn.classList.toggle('has-items', totalItems > 0);
@@ -360,32 +359,6 @@ function renderCart() {
 
   const checkoutBtn = document.getElementById('cartCheckoutBtn');
   if (checkoutBtn) checkoutBtn.disabled = cart.length === 0;
-
-  updateStripePayButton();
-}
-
-function isStripeGetznerOnlyCart() {
-  return cart.length > 0 && cart.every((item) => item.stripeEligible && item.price === 80);
-}
-
-function getStripeGetznerQuantity() {
-  return cart.reduce((sum, item) => sum + item.quantity, 0);
-}
-
-function updateStripePayButton() {
-  const stripeBtn = document.getElementById('cartStripePayBtn');
-  if (!stripeBtn) return;
-
-  if (isStripeGetznerOnlyCart()) {
-    const qty = getStripeGetznerQuantity();
-    stripeBtn.hidden = false;
-    stripeBtn.href = `${STRIPE_GETZNER_LINK}${STRIPE_GETZNER_LINK.includes('?') ? '&' : '?'}quantity=${qty}`;
-    stripeBtn.textContent = qty > 1
-      ? `Payer ${qty * 80} CHF via Stripe`
-      : 'Payer 80 CHF via Stripe';
-  } else {
-    stripeBtn.hidden = true;
-  }
 }
 
 function addToCart(item) {
@@ -510,34 +483,29 @@ function initCart() {
 function openCartPanel() {
   const panel = document.getElementById('cartPanel');
   const toggle = document.getElementById('cartToggle');
-  const floatingToggle = document.getElementById('floatingCartToggle');
   if (!panel) return;
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
   if (toggle) toggle.setAttribute('aria-expanded', 'true');
-  if (floatingToggle) floatingToggle.setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
 }
 
 function closeCartPanel() {
   const panel = document.getElementById('cartPanel');
   const toggle = document.getElementById('cartToggle');
-  const floatingToggle = document.getElementById('floatingCartToggle');
   if (!panel) return;
   panel.classList.remove('open');
   panel.setAttribute('aria-hidden', 'true');
   if (toggle) toggle.setAttribute('aria-expanded', 'false');
-  if (floatingToggle) floatingToggle.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
 }
 
 function initCartPanel() {
   const toggle = document.getElementById('cartToggle');
-  const floatingToggle = document.getElementById('floatingCartToggle');
   const close = document.getElementById('cartClose');
   const backdrop = document.getElementById('cartBackdrop');
 
-  const handleToggle = () => {
+  toggle?.addEventListener('click', () => {
     const panel = document.getElementById('cartPanel');
     if (panel?.classList.contains('open')) {
       closeCartPanel();
@@ -545,10 +513,7 @@ function initCartPanel() {
       renderCart();
       openCartPanel();
     }
-  };
-
-  toggle?.addEventListener('click', handleToggle);
-  floatingToggle?.addEventListener('click', handleToggle);
+  });
 
   close?.addEventListener('click', closeCartPanel);
   backdrop?.addEventListener('click', closeCartPanel);
@@ -757,7 +722,6 @@ function initCartCheckout() {
     checkoutForm.classList.toggle('hidden', !show);
     checkoutBtn.classList.toggle('hidden', show);
     document.querySelector('.cart-checkout-note')?.classList.toggle('hidden', show);
-    document.getElementById('cartStripePayBtn')?.classList.toggle('hidden', show);
   };
 
   checkoutBtn.addEventListener('click', () => {
@@ -765,10 +729,7 @@ function initCartCheckout() {
     showCheckoutForm(true);
   });
 
-  cancelBtn?.addEventListener('click', () => {
-    showCheckoutForm(false);
-    updateStripePayButton();
-  });
+  cancelBtn?.addEventListener('click', () => showCheckoutForm(false));
 
   checkoutForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -787,11 +748,11 @@ function initCartCheckout() {
 
     const total = getCartTotal();
     const orderSummary = formatCartSummary();
-    const stripeOnly = isStripeGetznerOnlyCart();
-    const stripeQty = getStripeGetznerQuantity();
+    const stripeOnly = cart.length > 0 && cart.every((item) => item.stripeEligible && item.price === 80);
+    const stripeQty = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Envoi en cours…';
+    submitBtn.textContent = 'Paiement en cours…';
 
     try {
       const response = await fetch(FORMSUBMIT_URL, {
@@ -817,8 +778,6 @@ function initCartCheckout() {
         totalLabel: formatPrice(total),
         order: orderSummary,
         name,
-        stripeOnly,
-        stripeQty,
       }));
 
       cart = [];
@@ -836,9 +795,9 @@ function initCartCheckout() {
 
       window.location.href = 'commande-merci.html';
     } catch {
-      showToast('Impossible d\'envoyer la commande. Réessayez ou contactez-nous par téléphone.');
+      showToast('Impossible de finaliser le paiement. Réessayez ou contactez-nous.');
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Valider et payer';
+      submitBtn.textContent = 'Payer la commande';
     }
   });
 }

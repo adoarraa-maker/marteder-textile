@@ -244,49 +244,8 @@ ul {
   justify-content: center;
 }
 
-.cart-count[hidden] {
-  display: none !important;
-}
-
 .cart-btn.has-items {
   color: var(--color-accent-dark);
-}
-
-.floating-cart-btn {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 1200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.96);
-  color: var(--color-text);
-  box-shadow: var(--shadow-md);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.floating-cart-btn:hover,
-.floating-cart-btn.has-items {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: #fff;
-}
-
-.floating-cart-btn .cart-count {
-  top: 6px;
-  right: 6px;
-}
-
-@media (min-width: 901px) {
-  .floating-cart-btn {
-    top: 5.5rem;
-  }
 }
 
 .nav-toggle {
