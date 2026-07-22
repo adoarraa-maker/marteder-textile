@@ -206,6 +206,7 @@ ul {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .icon-btn {
@@ -225,6 +226,52 @@ ul {
 
 .icon-btn:hover {
   background: var(--color-bg-alt);
+}
+
+.cart-btn--menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  position: relative;
+  height: 42px;
+  padding: 0 0.95rem 0 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.cart-btn--menu:hover,
+.cart-btn--menu.has-items {
+  border-color: var(--color-accent);
+  color: var(--color-accent-dark);
+  background: #fff;
+}
+
+.cart-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cart-btn--menu .cart-count {
+  position: static;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  margin-left: 0.15rem;
+  padding: 0 0.35rem;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-count {
