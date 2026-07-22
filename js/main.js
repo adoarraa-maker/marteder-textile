@@ -8,7 +8,20 @@ const products = {
   10: { name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)', price: 30 },
 };
 
-const STRIPE_GETZNER_LINK = 'https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00';
+const STRIPE_PRODUCTS = {
+  getzner: {
+    url: 'https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00',
+    unitPrice: 80,
+    label: 'Bazin Getzner',
+  },
+  meches: {
+    url: 'https://buy.stripe.com/aFa5kE6INfvG4W3c6TcAo01',
+    unitPrice: 5,
+    label: 'Mèches X-Pression Ultra Braid',
+  },
+};
+
+const STRIPE_PENDING_KEY = 'marteder-stripe-pending';
 const TWINT_NUMBER = '+41 76 842 96 83';
 const WHATSAPP_ORDER = '41765761672';
 
@@ -35,7 +48,7 @@ const fabricProducts = {
     packNote: 'Par coupon de 5 yards',
     previewPrefix: 'Couleur sélectionnée',
     defaultVariant: '0',
-    stripeEligible: true,
+    stripeProduct: 'getzner',
     variants: {
       '0': {
         label: "Vert d'eau / Vert menthe pastel",
@@ -75,7 +88,7 @@ const fabricProducts = {
     packNote: 'Vendu en lot de 5 yards',
     previewPrefix: 'Couleur sélectionnée',
     defaultVariant: 'beige-dore',
-    stripeEligible: true,
+    stripeProduct: 'getzner',
     variants: {
       violet: {
         label: 'Getzner Schwer — Violet',
@@ -263,12 +276,14 @@ const mecheVariants = {
     shortLabel: '1B — Noir naturel',
     imageKey: 'clean',
     price: 5,
+    stripeProduct: 'meches',
   },
   '350': {
     label: 'Teinte 350 (Cuivré / Roux)',
     shortLabel: '350 — Cuivré / Roux',
     imageKey: 'pack350',
     price: 5,
+    stripeProduct: 'meches',
   },
 };
 
@@ -318,6 +333,121 @@ function getCartTotal() {
   return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 }
 
+function normalizeCartItem(item) {
+  if (item.stripeProduct) return item;
+  if (item.stripeEligible && item.price === 80) {
+    return { ...item, stripeProduct: 'getzner' };
+  }
+  if (item.name === mecheProductName || item.price === 5) {
+    return { ...item, stripeProduct: 'meches' };
+  }
+  return { ...item, stripeProduct: null };
+}
+
+function getStripeGroups() {
+  const groups = {};
+  cart.forEach((rawItem) => {
+    const item = normalizeCartItem(rawItem);
+    const key = item.stripeProduct;
+    if (!key || !STRIPE_PRODUCTS[key]) return;
+    if (!groups[key]) {
+      groups[key] = {
+        key,
+        url: STRIPE_PRODUCTS[key].url,
+        label: STRIPE_PRODUCTS[key].label,
+        unitPrice: STRIPE_PRODUCTS[key].unitPrice,
+        quantity: 0,
+        amount: 0,
+      };
+    }
+    groups[key].quantity += item.quantity;
+    groups[key].amount += item.price * item.quantity;
+  });
+  return Object.values(groups);
+}
+
+function getStripePaymentPlan() {
+  const total = getCartTotal();
+  const stripeGroups = getStripeGroups();
+  const stripeAmount = stripeGroups.reduce((sum, group) => sum + group.amount, 0);
+  const hasNonStripe = cart.some((item) => !normalizeCartItem(item).stripeProduct);
+
+  if (cart.length === 0) {
+    return {
+      mode: 'empty',
+      payments: [],
+      total: 0,
+      buttonLabel: 'Payer la commande',
+      note: 'Ajoutez des articles pour payer.',
+    };
+  }
+
+  if (!hasNonStripe && stripeGroups.length === 1) {
+    const payment = stripeGroups[0];
+    return {
+      mode: 'single',
+      payments: [payment],
+      total,
+      buttonLabel: `Payer ${formatPrice(total)}`,
+      note: `Paiement Stripe sécurisé — ${payment.label}.`,
+    };
+  }
+
+  if (!hasNonStripe && stripeGroups.length > 1) {
+    return {
+      mode: 'multi',
+      payments: stripeGroups,
+      total,
+      buttonLabel: `Payer ${formatPrice(total)}`,
+      note: 'Paiement Stripe en plusieurs étapes selon vos articles (Getzner et mèches).',
+    };
+  }
+
+  if (stripeGroups.length > 0) {
+    return {
+      mode: 'mixed',
+      payments: stripeGroups,
+      total,
+      buttonLabel: `Payer ${formatPrice(total)}`,
+      note: 'Les articles Stripe seront payés en ligne ; le reste sera confirmé après commande.',
+    };
+  }
+
+  return {
+    mode: 'manual',
+    payments: [],
+    total,
+    buttonLabel: `Payer ${formatPrice(total)}`,
+    note: 'Nous confirmons le paiement du total après validation de votre commande.',
+  };
+}
+
+function buildStripeUrl(payment, email) {
+  const params = new URLSearchParams();
+  if (email) params.set('prefilled_email', email);
+  if (payment.quantity > 1) params.set('quantity', String(payment.quantity));
+  const query = params.toString();
+  return query ? `${payment.url}?${query}` : payment.url;
+}
+
+function updateCheckoutButton() {
+  const checkoutBtn = document.getElementById('cartCheckoutBtn');
+  const submitBtn = document.getElementById('cartSubmitOrderBtn');
+  const note = document.querySelector('.cart-checkout-note');
+  const plan = getStripePaymentPlan();
+
+  if (checkoutBtn) {
+    checkoutBtn.disabled = cart.length === 0;
+    checkoutBtn.textContent = plan.buttonLabel;
+  }
+  if (submitBtn && !submitBtn.disabled) {
+    submitBtn.textContent = plan.buttonLabel;
+  }
+  if (note && !note.classList.contains('hidden')) {
+    note.textContent = plan.note;
+  }
+}
+
 function renderCart() {
   const cartList = document.getElementById('cartList');
   const cartTotal = document.getElementById('cartTotal');
@@ -357,8 +487,7 @@ function renderCart() {
   });
   if (cartTotal) cartTotal.textContent = formatPrice(getCartTotal());
 
-  const checkoutBtn = document.getElementById('cartCheckoutBtn');
-  if (checkoutBtn) checkoutBtn.disabled = cart.length === 0;
+  updateCheckoutButton();
 }
 
 function addToCart(item) {
@@ -425,7 +554,7 @@ function initCart() {
         variantType: 'Teinte',
         packNote: '5 CHF le paquet',
         price: variant.price,
-        stripeEligible: false,
+        stripeProduct: 'meches',
       });
       return;
     }
@@ -454,7 +583,7 @@ function initCart() {
         variantType: fabric.previewPrefix.replace(' sélectionné', '').replace(' sélectionnée', ''),
         packNote: fabric.packNote,
         price: fabric.price,
-        stripeEligible: Boolean(fabric.stripeEligible),
+        stripeProduct: fabric.stripeProduct || null,
       });
       return;
     }
@@ -475,7 +604,7 @@ function initCart() {
       variantType: null,
       packNote: null,
       price: product.price,
-      stripeEligible: false,
+      stripeProduct: null,
     });
   });
 }
@@ -722,10 +851,12 @@ function initCartCheckout() {
     checkoutForm.classList.toggle('hidden', !show);
     checkoutBtn.classList.toggle('hidden', show);
     document.querySelector('.cart-checkout-note')?.classList.toggle('hidden', show);
+    if (!show) updateCheckoutButton();
   };
 
   checkoutBtn.addEventListener('click', () => {
     if (cart.length === 0) return;
+    updateCheckoutButton();
     showCheckoutForm(true);
   });
 
@@ -746,10 +877,9 @@ function initCartCheckout() {
       return;
     }
 
-    const total = getCartTotal();
+    const plan = getStripePaymentPlan();
+    const total = plan.total;
     const orderSummary = formatCartSummary();
-    const stripeOnly = cart.length > 0 && cart.every((item) => item.stripeEligible && item.price === 80);
-    const stripeQty = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Paiement en cours…';
@@ -768,6 +898,9 @@ function initCartCheckout() {
           address,
           total: formatPrice(total),
           order: orderSummary,
+          paiement: plan.payments.map((payment) => (
+            `${payment.label} × ${payment.quantity} = ${formatPrice(payment.amount)}`
+          )).join(' | ') || 'Confirmation manuelle',
         }),
       });
 
@@ -778,6 +911,12 @@ function initCartCheckout() {
         totalLabel: formatPrice(total),
         order: orderSummary,
         name,
+        planMode: plan.mode,
+      }));
+
+      const payments = plan.payments.map((payment) => ({
+        ...payment,
+        payUrl: buildStripeUrl(payment, email),
       }));
 
       cart = [];
@@ -787,17 +926,28 @@ function initCartCheckout() {
       showCheckoutForm(false);
       closeCartPanel();
 
-      if (stripeOnly) {
-        const payUrl = `${STRIPE_GETZNER_LINK}${STRIPE_GETZNER_LINK.includes('?') ? '&' : '?'}prefilled_email=${encodeURIComponent(email)}&quantity=${stripeQty}`;
-        window.location.href = payUrl;
+      if (payments.length === 1 && plan.mode === 'single') {
+        window.location.href = payments[0].payUrl;
         return;
+      }
+
+      if (payments.length > 0) {
+        sessionStorage.setItem(STRIPE_PENDING_KEY, JSON.stringify({
+          email,
+          name,
+          totalLabel: formatPrice(total),
+          payments,
+          index: 0,
+        }));
+      } else {
+        sessionStorage.removeItem(STRIPE_PENDING_KEY);
       }
 
       window.location.href = 'commande-merci.html';
     } catch {
       showToast('Impossible de finaliser le paiement. Réessayez ou contactez-nous.');
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Payer la commande';
+      updateCheckoutButton();
     }
   });
 }

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260722-cart2">
+  <link rel="stylesheet" href="css/styles.css?v=20260722-stripe2">
 </head>
 <body>
   <header class="header scrolled" id="header">
@@ -29,15 +29,16 @@
       <span class="confirmation-icon" aria-hidden="true">✓</span>
       <h1 class="confirmation-title">Commande enregistrée</h1>
       <p class="confirmation-text">
-        Merci. Votre panier a bien été transmis. Nous vous contactons pour confirmer
-        le paiement du total en une seule fois (CB ou Twint).
+        Merci. Votre panier a bien été transmis.
+        Finalisez le paiement Stripe selon vos articles ci-dessous.
       </p>
       <p class="confirmation-total" id="orderTotalLine" hidden>
         Total à régler : <strong id="orderTotalValue">—</strong>
       </p>
       <p class="confirmation-text" id="orderSummaryLine" hidden></p>
+      <div class="confirmation-actions" id="stripePayActions" hidden></div>
       <div class="confirmation-actions">
-        <a href="tel:+41768429683" class="btn btn-primary">Payer / Twint +41 76 842 96 83</a>
+        <a href="tel:+41768429683" class="btn btn-outline">Twint / Appeler +41 76 842 96 83</a>
         <a href="index.html#articles" class="btn btn-outline">Retour à la boutique</a>
       </div>
     </div>
@@ -52,20 +53,38 @@
   <script>
     (function () {
       try {
-        const raw = sessionStorage.getItem('marteder-last-order');
-        if (!raw) return;
-        const order = JSON.parse(raw);
+        const orderRaw = sessionStorage.getItem('marteder-last-order');
+        const pendingRaw = sessionStorage.getItem('marteder-stripe-pending');
         const totalLine = document.getElementById('orderTotalLine');
         const totalValue = document.getElementById('orderTotalValue');
         const summaryLine = document.getElementById('orderSummaryLine');
+        const payActions = document.getElementById('stripePayActions');
 
-        if (order.totalLabel && totalLine && totalValue) {
-          totalValue.textContent = order.totalLabel;
-          totalLine.hidden = false;
+        if (orderRaw) {
+          const order = JSON.parse(orderRaw);
+          if (order.totalLabel && totalLine && totalValue) {
+            totalValue.textContent = order.totalLabel;
+            totalLine.hidden = false;
+          }
+          if (order.order && summaryLine) {
+            summaryLine.textContent = order.order;
+            summaryLine.hidden = false;
+          }
         }
-        if (order.order && summaryLine) {
-          summaryLine.textContent = order.order;
-          summaryLine.hidden = false;
+
+        if (pendingRaw && payActions) {
+          const pending = JSON.parse(pendingRaw);
+          if (Array.isArray(pending.payments) && pending.payments.length) {
+            payActions.hidden = false;
+            payActions.innerHTML = pending.payments.map((payment) => {
+              const amount = new Intl.NumberFormat('fr-CH', {
+                style: 'currency',
+                currency: 'CHF',
+                minimumFractionDigits: 0,
+              }).format(payment.amount);
+              return `<a class="btn btn-cart" href="${payment.payUrl}" target="_blank" rel="noopener noreferrer">Payer ${payment.label} — ${amount}</a>`;
+            }).join('');
+          }
         }
       } catch (error) {
         // Ignore storage errors
