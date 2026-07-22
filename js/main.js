@@ -603,11 +603,40 @@ function redirectToStripe(payUrl) {
   }
 }
 
+function getSimpleStripeHref() {
+  const groups = getStripeGroups();
+  const hasGetzner = groups.some((group) => group.key === 'getzner');
+  const hasMeches = groups.some((group) => group.key === 'meches');
+
+  if (hasGetzner) return STRIPE_PRODUCTS.getzner.url;
+  if (hasMeches) return STRIPE_PRODUCTS.meches.url;
+  return STRIPE_PRODUCTS.getzner.url;
+}
+
+function updateStripePayLink() {
+  const link = document.getElementById('cartStripePayLink');
+  if (!link) return;
+
+  link.href = getSimpleStripeHref();
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+
+  const empty = cart.length === 0;
+  link.classList.toggle('is-disabled', empty);
+  if (empty) {
+    link.setAttribute('aria-disabled', 'true');
+    link.setAttribute('tabindex', '-1');
+  } else {
+    link.removeAttribute('aria-disabled');
+    link.removeAttribute('tabindex');
+  }
+}
+
 function updateCheckoutButton() {
   updateShippingSelectLabels();
+  updateStripePayLink();
 
   const checkoutBtn = document.getElementById('cartCheckoutBtn');
-  const submitBtn = document.getElementById('cartSubmitOrderBtn');
   const note = document.querySelector('.cart-checkout-note');
   const cartSubtotal = document.getElementById('cartSubtotal');
   const cartShipping = document.getElementById('cartShipping');
@@ -625,10 +654,6 @@ function updateCheckoutButton() {
   if (checkoutBtn) {
     checkoutBtn.disabled = cart.length === 0;
     checkoutBtn.textContent = 'Continuer vers le paiement';
-  }
-  if (submitBtn && !submitBtn.disabled) {
-    submitBtn.textContent = plan.buttonLabel;
-    submitBtn.disabled = cart.length === 0;
   }
   if (note && !note.classList.contains('hidden')) {
     note.textContent = plan.note;
@@ -1036,9 +1061,9 @@ function initCartCheckout() {
   const checkoutBtn = document.getElementById('cartCheckoutBtn');
   const checkoutForm = document.getElementById('cartCheckoutForm');
   const cancelBtn = document.getElementById('cartCheckoutCancel');
-  const submitBtn = document.getElementById('cartSubmitOrderBtn');
+  const stripePayLink = document.getElementById('cartStripePayLink');
 
-  if (!checkoutBtn || !checkoutForm || !submitBtn) return;
+  if (!checkoutBtn || !checkoutForm) return;
 
   const showCheckoutForm = (show) => {
     checkoutForm.classList.toggle('hidden', !show);
@@ -1056,8 +1081,9 @@ function initCartCheckout() {
     }
   };
 
-  const shippingSelect = document.getElementById('checkoutShipping');
-  shippingSelect?.addEventListener('change', () => updateCheckoutButton());
+  document.getElementById('checkoutShipping')?.addEventListener('change', () => {
+    updateCheckoutButton();
+  });
 
   checkoutBtn.addEventListener('click', () => {
     if (cart.length === 0) return;
@@ -1067,110 +1093,15 @@ function initCartCheckout() {
 
   cancelBtn?.addEventListener('click', () => showCheckoutForm(false));
 
-  const startStripePayment = () => {
-    try {
-      if (cart.length === 0) {
-        showToast('Votre panier est vide.');
-        return;
-      }
-
-      const formData = new FormData(checkoutForm);
-      const name = formData.get('name')?.toString().trim();
-      const email = formData.get('email')?.toString().trim();
-      const phone = formData.get('phone')?.toString().trim();
-      const address = formData.get('address')?.toString().trim();
-      const shipping = formData.get('shipping')?.toString() || 'geneve';
-
-      if (!name || !email || !phone || !address) {
-        showToast('Veuillez remplir tous les champs obligatoires.');
-        return;
-      }
-
-      const plan = getStripePaymentPlan();
-      const total = plan.total;
-      const orderSummary = formatCartSummary();
-      const shippingLabel = getShippingLabel(shipping);
-      const payments = (plan.payments || []).map((payment) => ({
-        ...payment,
-        payUrl: buildStripeUrl(payment, email),
-      }));
-      const payUrl = resolveDirectStripeUrl(email);
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Redirection Stripe…';
-
-      try {
-        sessionStorage.setItem('marteder-last-order', JSON.stringify({
-          total,
-          totalLabel: formatPrice(total),
-          subtotalLabel: formatPrice(plan.subtotal),
-          shippingLabel,
-          order: orderSummary,
-          name,
-          planMode: plan.mode,
-          shipping,
-          payUrl,
-        }));
-
-        if (payments.length > 1) {
-          sessionStorage.setItem(STRIPE_PENDING_KEY, JSON.stringify({
-            email,
-            name,
-            totalLabel: formatPrice(total),
-            shippingLabel,
-            payments,
-            index: 0,
-          }));
-        } else {
-          sessionStorage.removeItem(STRIPE_PENDING_KEY);
-        }
-      } catch (storageError) {
-        console.error('sessionStorage', storageError);
-      }
-
-      notifyOrderInBackground({
-        _subject: `Nouvelle commande Marteder Textile — ${name}`,
-        _template: 'table',
-        type: 'Commande boutique',
-        name,
-        email,
-        phone,
-        address,
-        livraison: shippingLabel,
-        sous_total: formatPrice(plan.subtotal),
-        frais_livraison: plan.shipping > 0 ? formatPrice(plan.shipping) : 'Gratuit',
-        total: formatPrice(total),
-        order: orderSummary,
-        paiement_stripe: payUrl,
-        paiement: payments.map((payment) => (
-          `${payment.label} × ${payment.quantity} = ${formatPrice(payment.amount)}`
-        )).join(' | ') || 'Stripe Payment Link',
-      });
-
-      cart = [];
-      saveCart();
-      renderCart();
-
-      // Redirection immédiate vers Stripe (ne dépend pas de FormSubmit)
-      redirectToStripe(payUrl);
-    } catch (error) {
-      console.error('startStripePayment', error);
-      showToast('Redirection vers Stripe…');
-      redirectToStripe(STRIPE_PRODUCTS.getzner.url);
-    }
-  };
-
-  // Bouton dédié : évite les blocages liés au submit HTML / fetch
-  submitBtn.type = 'button';
-  submitBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    startStripePayment();
+  // Lien Stripe natif : aucun preventDefault / validation bloquante
+  updateStripePayLink();
+  stripePayLink?.addEventListener('click', () => {
+    // Met à jour le href juste avant l'ouverture (navigation native conservée)
+    updateStripePayLink();
   });
 
   checkoutForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    startStripePayment();
   });
 }
 

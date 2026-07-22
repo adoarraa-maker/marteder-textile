@@ -1445,6 +1445,7 @@ ul {
 }
 
 .cart-stripe-pay-btn {
+  display: block;
   width: 100%;
   margin-top: 0.35rem;
   margin-bottom: 0.75rem;
@@ -1452,10 +1453,17 @@ ul {
   font-size: 1rem;
   font-weight: 700;
   text-align: center;
+  text-decoration: none;
   cursor: pointer;
   pointer-events: auto;
   position: relative;
-  z-index: 2;
+  z-index: 5;
+}
+
+.cart-stripe-pay-btn.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 .cart-stripe-btn {
