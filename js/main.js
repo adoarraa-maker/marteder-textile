@@ -4,7 +4,13 @@ const CART_STORAGE_KEY = 'marteder-cart';
 
 const products = {
   8: { name: 'Foulard en bazin imprimé', price: 35 },
+  9: { name: 'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)', price: 69 },
+  10: { name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)', price: 30 },
 };
+
+const STRIPE_GETZNER_LINK = 'https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00';
+const TWINT_NUMBER = '+41 76 842 96 83';
+const WHATSAPP_ORDER = '41765761672';
 
 const TISSUS_SCHWER = 'images/tissus';
 
@@ -23,12 +29,53 @@ const schwerFallback = {
 };
 
 const fabricProducts = {
+  'marteder-getzner': {
+    baseName: 'Création exclusive Marteder',
+    price: 80,
+    packNote: 'Par coupon de 5 yards',
+    previewPrefix: 'Couleur sélectionnée',
+    defaultVariant: '0',
+    stripeEligible: true,
+    variants: {
+      '0': {
+        label: "Vert d'eau / Vert menthe pastel",
+        image: 'getzner-ab.jpg',
+        alt: "Création exclusive Marteder — Vert d'eau / Vert menthe pastel",
+      },
+      '1': {
+        label: 'Blanc éclatant / Argenté',
+        image: 'getzner-blanc.png',
+        alt: 'Création exclusive Marteder — Blanc éclatant / Argenté',
+      },
+      '2': {
+        label: 'Bleu turquoise / Turquoise lumineux',
+        image: 'getzner-turquoise.png',
+        alt: 'Création exclusive Marteder — Bleu turquoise',
+      },
+      '3': {
+        label: 'Vert sapin / Vert émeraude',
+        image: 'getzner-vert-sapin.png',
+        alt: 'Création exclusive Marteder — Vert sapin',
+      },
+      '4': {
+        label: 'Rouge royal / Fuchsia',
+        image: 'getzner-fuchsia.png',
+        alt: 'Création exclusive Marteder — Rouge royal / Fuchsia',
+      },
+      '5': {
+        label: 'Bleu nuit / Bleu roi',
+        image: 'getzner-bleu-outremer.png',
+        alt: 'Création exclusive Marteder — Bleu nuit',
+      },
+    },
+  },
   1: {
     baseName: 'Bazin Riche Getzner Authentique (Schwer) – Lot de 5 Yards',
     price: 80,
     packNote: 'Vendu en lot de 5 yards',
     previewPrefix: 'Couleur sélectionnée',
     defaultVariant: 'beige-dore',
+    stripeEligible: true,
     variants: {
       violet: {
         label: 'Getzner Schwer — Violet',
@@ -274,7 +321,7 @@ function getCartTotal() {
 function renderCart() {
   const cartList = document.getElementById('cartList');
   const cartTotal = document.getElementById('cartTotal');
-  const cartCountEl = document.querySelector('.cart-count');
+  const cartCountEls = document.querySelectorAll('.cart-count');
 
   if (!cartList) return;
 
@@ -289,8 +336,12 @@ function renderCart() {
           ${item.packNote ? `<p class="cart-item-note">${item.packNote}</p>` : ''}
         </div>
         <div class="cart-item-meta">
-          <span class="cart-item-price">${formatPrice(item.price)}</span>
-          <span class="cart-item-qty">× ${item.quantity}</span>
+          <span class="cart-item-price">${formatPrice(item.price * item.quantity)}</span>
+          <div class="cart-item-qty-controls">
+            <button type="button" class="cart-qty-btn" data-qty-delta="-1" data-index="${index}" aria-label="Diminuer la quantité">−</button>
+            <span class="cart-item-qty">${item.quantity}</span>
+            <button type="button" class="cart-qty-btn" data-qty-delta="1" data-index="${index}" aria-label="Augmenter la quantité">+</button>
+          </div>
         </div>
         <button type="button" class="cart-item-remove" data-index="${index}" aria-label="Retirer du panier">&times;</button>
       </div>
@@ -298,11 +349,43 @@ function renderCart() {
   }
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  if (cartCountEl) cartCountEl.textContent = totalItems;
+  cartCountEls.forEach((el) => {
+    el.textContent = totalItems;
+    el.hidden = totalItems === 0;
+  });
+  document.querySelectorAll('.cart-btn').forEach((btn) => {
+    btn.classList.toggle('has-items', totalItems > 0);
+  });
   if (cartTotal) cartTotal.textContent = formatPrice(getCartTotal());
 
   const checkoutBtn = document.getElementById('cartCheckoutBtn');
   if (checkoutBtn) checkoutBtn.disabled = cart.length === 0;
+
+  updateStripePayButton();
+}
+
+function isStripeGetznerOnlyCart() {
+  return cart.length > 0 && cart.every((item) => item.stripeEligible && item.price === 80);
+}
+
+function getStripeGetznerQuantity() {
+  return cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+function updateStripePayButton() {
+  const stripeBtn = document.getElementById('cartStripePayBtn');
+  if (!stripeBtn) return;
+
+  if (isStripeGetznerOnlyCart()) {
+    const qty = getStripeGetznerQuantity();
+    stripeBtn.hidden = false;
+    stripeBtn.href = `${STRIPE_GETZNER_LINK}${STRIPE_GETZNER_LINK.includes('?') ? '&' : '?'}quantity=${qty}`;
+    stripeBtn.textContent = qty > 1
+      ? `Payer ${qty * 80} CHF via Stripe`
+      : 'Payer 80 CHF via Stripe';
+  } else {
+    stripeBtn.hidden = true;
+  }
 }
 
 function addToCart(item) {
@@ -332,6 +415,19 @@ function getFabricVariantKey(card) {
 
 function initCart() {
   document.body.addEventListener('click', (e) => {
+    const qtyBtn = e.target.closest('.cart-qty-btn');
+    if (qtyBtn) {
+      const index = parseInt(qtyBtn.dataset.index, 10);
+      const delta = parseInt(qtyBtn.dataset.qtyDelta, 10);
+      const item = cart[index];
+      if (!item) return;
+      item.quantity += delta;
+      if (item.quantity <= 0) cart.splice(index, 1);
+      renderCart();
+      saveCart();
+      return;
+    }
+
     const removeBtn = e.target.closest('.cart-item-remove');
     if (removeBtn) {
       const index = parseInt(removeBtn.dataset.index, 10);
@@ -356,6 +452,7 @@ function initCart() {
         variantType: 'Teinte',
         packNote: '5 CHF le paquet',
         price: variant.price,
+        stripeEligible: false,
       });
       return;
     }
@@ -363,13 +460,17 @@ function initCart() {
     const fabricBtn = e.target.closest('.add-cart-fabric');
     if (fabricBtn) {
       e.preventDefault();
-      const productId = parseInt(fabricBtn.dataset.id, 10);
+      const productId = fabricBtn.dataset.id;
       const fabric = fabricProducts[productId];
-      const card = fabricBtn.closest('.product-card');
-      if (!fabric || !card) return;
+      const card = fabricBtn.closest('.product-card') || fabricBtn.closest('.getzner-product-details');
+      if (!fabric) return;
 
-      const variantKey = getFabricVariantKey(card);
-      const variant = fabric.variants[variantKey];
+      let variantKey = card ? getFabricVariantKey(card) : fabric.defaultVariant;
+      if (productId === 'marteder-getzner') {
+        const martederSelect = document.querySelector('[data-marteder-select]');
+        if (martederSelect) variantKey = martederSelect.value;
+      }
+      const variant = fabric.variants[variantKey] || fabric.variants[fabric.defaultVariant];
       if (!variant) return;
 
       addToCart({
@@ -380,6 +481,7 @@ function initCart() {
         variantType: fabric.previewPrefix.replace(' sélectionné', '').replace(' sélectionnée', ''),
         packNote: fabric.packNote,
         price: fabric.price,
+        stripeEligible: Boolean(fabric.stripeEligible),
       });
       return;
     }
@@ -388,7 +490,7 @@ function initCart() {
     if (!btn) return;
 
     e.preventDefault();
-    const id = parseInt(btn.dataset.id, 10);
+    const id = btn.dataset.id;
     const product = products[id];
     if (!product) return;
 
@@ -400,6 +502,7 @@ function initCart() {
       variantType: null,
       packNote: null,
       price: product.price,
+      stripeEligible: false,
     });
   });
 }
@@ -407,29 +510,34 @@ function initCart() {
 function openCartPanel() {
   const panel = document.getElementById('cartPanel');
   const toggle = document.getElementById('cartToggle');
+  const floatingToggle = document.getElementById('floatingCartToggle');
   if (!panel) return;
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
   if (toggle) toggle.setAttribute('aria-expanded', 'true');
+  if (floatingToggle) floatingToggle.setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
 }
 
 function closeCartPanel() {
   const panel = document.getElementById('cartPanel');
   const toggle = document.getElementById('cartToggle');
+  const floatingToggle = document.getElementById('floatingCartToggle');
   if (!panel) return;
   panel.classList.remove('open');
   panel.setAttribute('aria-hidden', 'true');
   if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  if (floatingToggle) floatingToggle.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
 }
 
 function initCartPanel() {
   const toggle = document.getElementById('cartToggle');
+  const floatingToggle = document.getElementById('floatingCartToggle');
   const close = document.getElementById('cartClose');
   const backdrop = document.getElementById('cartBackdrop');
 
-  toggle?.addEventListener('click', () => {
+  const handleToggle = () => {
     const panel = document.getElementById('cartPanel');
     if (panel?.classList.contains('open')) {
       closeCartPanel();
@@ -437,7 +545,10 @@ function initCartPanel() {
       renderCart();
       openCartPanel();
     }
-  });
+  };
+
+  toggle?.addEventListener('click', handleToggle);
+  floatingToggle?.addEventListener('click', handleToggle);
 
   close?.addEventListener('click', closeCartPanel);
   backdrop?.addEventListener('click', closeCartPanel);
@@ -470,7 +581,7 @@ function syncFabricSwatchImages(card, fabric) {
 }
 
 function updateFabricCard(card, variantKey) {
-  const productId = parseInt(card.dataset.productId, 10);
+  const productId = card.dataset.productId;
   const fabric = fabricProducts[productId];
   if (!fabric) return;
 
@@ -497,9 +608,11 @@ function updateFabricCard(card, variantKey) {
 
 function initFabricVariants() {
   document.querySelectorAll('.product-card[data-product-id]').forEach((card) => {
-    const productId = parseInt(card.dataset.productId, 10);
+    const productId = card.dataset.productId;
     const fabric = fabricProducts[productId];
     if (!fabric) return;
+    // La galerie Marteder gère ses propres variantes
+    if (card.querySelector('[data-marteder-gallery]')) return;
 
     const select = card.querySelector('.fabric-variant-select');
     const swatches = card.querySelectorAll('.fabric-swatch');
@@ -513,9 +626,7 @@ function initFabricVariants() {
     });
 
     swatches.forEach((swatch) => {
-      swatch.addEventListener('click', () => {
-        applyVariant(swatch.dataset.variant);
-      });
+      swatch.addEventListener('click', () => applyVariant(swatch.dataset.variant));
     });
 
     syncFabricSwatchImages(card, fabric);
@@ -646,6 +757,7 @@ function initCartCheckout() {
     checkoutForm.classList.toggle('hidden', !show);
     checkoutBtn.classList.toggle('hidden', show);
     document.querySelector('.cart-checkout-note')?.classList.toggle('hidden', show);
+    document.getElementById('cartStripePayBtn')?.classList.toggle('hidden', show);
   };
 
   checkoutBtn.addEventListener('click', () => {
@@ -653,7 +765,10 @@ function initCartCheckout() {
     showCheckoutForm(true);
   });
 
-  cancelBtn?.addEventListener('click', () => showCheckoutForm(false));
+  cancelBtn?.addEventListener('click', () => {
+    showCheckoutForm(false);
+    updateStripePayButton();
+  });
 
   checkoutForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -670,6 +785,11 @@ function initCartCheckout() {
       return;
     }
 
+    const total = getCartTotal();
+    const orderSummary = formatCartSummary();
+    const stripeOnly = isStripeGetznerOnlyCart();
+    const stripeQty = getStripeGetznerQuantity();
+
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi en cours…';
 
@@ -685,12 +805,21 @@ function initCartCheckout() {
           email,
           phone,
           address,
-          total: formatPrice(getCartTotal()),
-          order: formatCartSummary(),
+          total: formatPrice(total),
+          order: orderSummary,
         }),
       });
 
       if (!response.ok) throw new Error('Erreur réseau');
+
+      sessionStorage.setItem('marteder-last-order', JSON.stringify({
+        total,
+        totalLabel: formatPrice(total),
+        order: orderSummary,
+        name,
+        stripeOnly,
+        stripeQty,
+      }));
 
       cart = [];
       saveCart();
@@ -698,11 +827,18 @@ function initCartCheckout() {
       checkoutForm.reset();
       showCheckoutForm(false);
       closeCartPanel();
+
+      if (stripeOnly) {
+        const payUrl = `${STRIPE_GETZNER_LINK}${STRIPE_GETZNER_LINK.includes('?') ? '&' : '?'}prefilled_email=${encodeURIComponent(email)}&quantity=${stripeQty}`;
+        window.location.href = payUrl;
+        return;
+      }
+
       window.location.href = 'commande-merci.html';
     } catch {
       showToast('Impossible d\'envoyer la commande. Réessayez ou contactez-nous par téléphone.');
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Envoyer la commande';
+      submitBtn.textContent = 'Valider et payer';
     }
   });
 }
@@ -746,7 +882,6 @@ function initMartederGallery() {
   const labelEl = gallery.querySelector('[data-marteder-label]');
   const previewEl = document.querySelector('[data-marteder-preview]');
   const colorSelect = document.querySelector('[data-marteder-select]');
-  const whatsappBtn = document.querySelector('[data-marteder-whatsapp]');
   const thumbs = Array.from(gallery.querySelectorAll('.marteder-thumb'));
   const zoomBtn = gallery.querySelector('[data-marteder-zoom]');
   const lightboxImage = document.getElementById('martederLightboxImage');
@@ -761,12 +896,6 @@ function initMartederGallery() {
     };
   };
 
-  const updateWhatsappLink = (label) => {
-    if (!whatsappBtn) return;
-    const message = `Bonjour, je souhaite commander la Création exclusive Marteder (Getzner) — couleur : ${label}, coupon de 5 yards à 80 CHF.`;
-    whatsappBtn.href = `https://wa.me/41765761672?text=${encodeURIComponent(message)}`;
-  };
-
   const showSlide = (i) => {
     index = (i + thumbs.length) % thumbs.length;
     const slide = getSlide(index);
@@ -777,7 +906,6 @@ function initMartederGallery() {
       previewEl.innerHTML = `Couleur sélectionnée : <strong>${slide.label}</strong>`;
     }
     if (colorSelect) colorSelect.value = String(index);
-    updateWhatsappLink(slide.label);
     thumbs.forEach((thumb, thumbIndex) => {
       const active = thumbIndex === index;
       thumb.classList.toggle('active', active);

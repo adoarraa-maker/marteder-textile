@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260722-stripe">
+  <link rel="stylesheet" href="css/styles.css?v=20260722-cart">
   <link
     rel="preload"
     as="image"
@@ -119,11 +119,19 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/>
           </svg>
-          <span class="cart-count">0</span>
+          <span class="cart-count" hidden>0</span>
         </button>
       </div>
     </nav>
   </header>
+
+  <!-- Icône panier fixe -->
+  <button type="button" class="floating-cart-btn cart-btn" id="floatingCartToggle" aria-label="Ouvrir le panier">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/>
+    </svg>
+    <span class="cart-count" hidden>0</span>
+  </button>
 
   <!-- Panier -->
   <div class="cart-panel" id="cartPanel" aria-hidden="true">
@@ -139,9 +147,17 @@
       <div class="cart-panel-footer">
         <p class="cart-panel-total">Total : <strong id="cartTotal">0 CHF</strong></p>
         <button type="button" class="btn btn-cart cart-checkout-btn" id="cartCheckoutBtn" disabled>
-          Passer commande
+          Valider et payer
         </button>
-        <p class="cart-checkout-note">Paiement CB &amp; Twint — activation prochaine via Stripe</p>
+        <a
+          id="cartStripePayBtn"
+          class="btn btn-stripe cart-stripe-btn"
+          href="https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00"
+          target="_blank"
+          rel="noopener noreferrer"
+          hidden
+        >Payer via Stripe</a>
+        <p class="cart-checkout-note">Ajoutez plusieurs articles puis payez le total en une seule fois (CB / Twint).</p>
         <form class="cart-checkout-form hidden" id="cartCheckoutForm" novalidate>
           <p class="cart-checkout-form-title">Vos coordonnées de livraison</p>
           <label class="form-label" for="checkoutName">Nom complet</label>
@@ -152,7 +168,7 @@
           <input class="form-input" type="tel" id="checkoutPhone" name="phone" required autocomplete="tel">
           <label class="form-label" for="checkoutAddress">Adresse de livraison</label>
           <textarea class="form-input form-textarea" id="checkoutAddress" name="address" rows="3" required placeholder="Rue, numéro, NPA, ville, pays"></textarea>
-          <button type="submit" class="btn btn-cart" id="cartSubmitOrderBtn">Envoyer la commande</button>
+          <button type="submit" class="btn btn-cart" id="cartSubmitOrderBtn">Valider et payer</button>
           <button type="button" class="btn btn-outline cart-checkout-cancel" id="cartCheckoutCancel">Retour au panier</button>
         </form>
       </div>
@@ -257,22 +273,9 @@
             <em>Les stocks sont très limités.</em>
           </p>
           <div class="getzner-order-actions">
-            <a
-              href="https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00"
-              class="btn btn-stripe"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Acheter (80 CHF)
-            </a>
-            <a
-              href="https://wa.me/41765761672"
-              class="btn btn-whatsapp"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Commander sur WhatsApp
-            </a>
+            <button type="button" class="btn btn-cart add-cart-fabric" data-id="marteder-getzner">
+              Ajouter au panier
+            </button>
           </div>
         </div>
       </div>
@@ -382,7 +385,7 @@
               <p class="product-lot-note">Par coupon de 5 yards</p>
               <div class="fabric-variants">
                 <label class="variant-label" for="martederColorSelect">Choisir la couleur</label>
-                <select class="variant-select" id="martederColorSelect" data-marteder-select aria-label="Choisir la couleur Getzner">
+                <select class="variant-select fabric-variant-select" id="martederColorSelect" data-marteder-select aria-label="Choisir la couleur Getzner">
                   <option value="0" selected>Vert d'eau / Vert menthe pastel</option>
                   <option value="1">Blanc éclatant / Argenté</option>
                   <option value="2">Bleu turquoise / Turquoise lumineux</option>
@@ -390,12 +393,10 @@
                   <option value="4">Rouge royal / Fuchsia</option>
                   <option value="5">Bleu nuit / Bleu roi</option>
                 </select>
-                <p class="variant-selected" data-marteder-preview>Couleur sélectionnée : <strong>Vert d'eau / Vert menthe pastel</strong></p>
+                <p class="variant-selected fabric-variant-preview" data-marteder-preview>Couleur sélectionnée : <strong>Vert d'eau / Vert menthe pastel</strong></p>
               </div>
               <div class="product-order-actions">
-                <a href="https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00" class="btn btn-stripe" target="_blank" rel="noopener noreferrer">Acheter (80 CHF)</a>
-                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" data-marteder-whatsapp>💬 Commander via WhatsApp</a>
-                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+                <button type="button" class="btn btn-cart add-cart-fabric product-cart-btn" data-id="marteder-getzner">Ajouter au panier</button>
               </div>
             </div>
           </article>
@@ -448,9 +449,7 @@
                 <p class="variant-selected fabric-variant-preview">Couleur sélectionnée : <strong>Getzner Schwer — Beige / Doré</strong></p>
               </div>
               <div class="product-order-actions">
-                <a href="https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00" class="btn btn-stripe" target="_blank" rel="noopener noreferrer">Acheter (80 CHF)</a>
-                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
-                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+                <button type="button" class="btn btn-cart add-cart-fabric product-cart-btn" data-id="1">Ajouter au panier</button>
               </div>
             </div>
           </article>
@@ -484,14 +483,13 @@
                 <p class="variant-selected fabric-variant-preview">Modèle sélectionné : <strong>Or classique brodé</strong></p>
               </div>
               <div class="product-order-actions">
-                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
-                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+                <button type="button" class="btn btn-cart add-cart-fabric product-cart-btn" data-id="2">Ajouter au panier</button>
               </div>
             </div>
           </article>
 
           <!-- Coffret soin visage OKADY Pearl -->
-          <article class="product-card product-card--care" data-category="soins">
+          <article class="product-card product-card--care" data-category="soins" data-product-id="9">
             <div class="product-image-wrap">
               <img
                 class="product-image"
@@ -532,13 +530,7 @@
                 <p><strong>Soir :</strong> Nettoyant ➔ Lotion ➔ Sérum ➔ Lait ➔ Contour des Yeux ➔ Crème Nourrissante.</p>
               </div>
               <div class="product-order-actions">
-                <a
-                  href="https://wa.me/41765761672?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Coffret%20Soin%20Visage%20OKADY%20Pearl%20%C3%A0%2069%20CHF."
-                  class="btn btn-whatsapp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >💬 Commander via WhatsApp</a>
-                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+                <button type="button" class="btn btn-cart add-cart product-cart-btn" data-id="9">Ajouter au panier</button>
               </div>
             </div>
           </article>
@@ -581,14 +573,13 @@
                 <p class="variant-selected fabric-variant-preview">Modèle sélectionné : <strong>Broderie or</strong></p>
               </div>
               <div class="product-order-actions">
-                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
-                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+                <button type="button" class="btn btn-cart add-cart-fabric product-cart-btn" data-id="7">Ajouter au panier</button>
               </div>
             </div>
           </article>
 
           <!-- Accessoires -->
-          <article class="product-card" data-category="accessoires">
+          <article class="product-card" data-category="accessoires" data-product-id="8">
             <div class="product-image-wrap">
               <img class="product-image" src="https://images.unsplash.com/photo-1768212566108-4ce4f329e4d2?w=800&q=85" alt="Foulard en bazin imprimé" loading="lazy">
             </div>
@@ -598,8 +589,7 @@
               <p class="product-description">Foulard léger en bazin imprimé, idéal pour accessoiriser vos tenues.</p>
               <div class="product-price"><span class="current">35 CHF</span></div>
               <div class="product-order-actions">
-                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
-                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+                <button type="button" class="btn btn-cart add-cart product-cart-btn" data-id="8">Ajouter au panier</button>
               </div>
             </div>
           </article>
@@ -699,8 +689,7 @@
               </select>
               <p class="variant-selected" id="mecheVariantPreview">Teinte sélectionnée : <strong>1B (Noir naturel)</strong></p>
               <div class="product-order-actions">
-                <a href="https://wa.me/41765761672" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">💬 Commander via WhatsApp</a>
-                <a href="#contact" class="btn btn-outline">✉️ Nous contacter par écrit</a>
+                <button type="button" class="btn btn-cart add-cart-meche meche-cart-btn">Ajouter au panier</button>
               </div>
             </div>
           </article>
@@ -993,12 +982,7 @@
               <h3 class="cosmetique-name">Coffret Soin Visage OKADY Pearl</h3>
               <p class="cosmetique-desc">Rituel complet 7 pièces</p>
               <p class="cosmetique-price">69.00 CHF</p>
-              <a
-                href="https://wa.me/41765761672?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Coffret%20OKADY%20Pearl%207%20pi%C3%A8ces%20%C3%A0%2069%20CHF."
-                class="btn btn-whatsapp cosmetique-action"
-                target="_blank"
-                rel="noopener noreferrer"
-              >💬 Commander via WhatsApp</a>
+              <button type="button" class="btn btn-cart add-cart cosmetique-action" data-id="9">Ajouter au panier</button>
             </article>
 
             <article class="cosmetique-card">
@@ -1114,12 +1098,7 @@
               <p class="cosmetique-desc">D-nutrimec · 30 g</p>
               <p class="cosmetique-desc">Soin régénérant, réparateur &amp; anti-imperfections</p>
               <p class="cosmetique-price">30.00 CHF</p>
-              <a
-                href="https://wa.me/41765761672?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Gel%20Essence%20R%C3%A9parateur%20D-nutrimec%20Collag%C3%A8ne%20%C3%A0%2030%20CHF"
-                class="btn btn-whatsapp cosmetique-action"
-                target="_blank"
-                rel="noopener noreferrer"
-              >💬 Commander via WhatsApp</a>
+              <button type="button" class="btn btn-cart add-cart cosmetique-action" data-id="10">Ajouter au panier</button>
             </article>
           </div>
         </div>
@@ -1366,6 +1345,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260721-okady-global"></script>
+  <script src="js/main.js?v=20260722-cart"></script>
 </body>
 </html>
