@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260722-ship4">
+  <link rel="stylesheet" href="css/styles.css?v=20260722-stockout">
   <link
     rel="preload"
     as="image"
@@ -404,10 +404,10 @@
           </article>
 
           <!-- Bazin Getzner Schwer -->
-          <article class="product-card product-card--fabric" data-category="bazin" data-product-id="1">
+          <article class="product-card product-card--fabric is-out-of-stock" data-category="bazin" data-product-id="1">
             <div class="product-image-wrap">
               <img class="product-image" src="https://images.unsplash.com/photo-1631663027473-3671aa7c4503?w=800&q=85" alt="Bazin Getzner Schwer — Beige / Doré" loading="lazy">
-              <span class="product-badge new">Nouveau</span>
+              <span class="product-badge sold-out">Rupture de stock</span>
             </div>
             <div class="product-info">
               <p class="product-category">Bazin Getzner</p>
@@ -451,14 +451,15 @@
                 <p class="variant-selected fabric-variant-preview">Couleur sélectionnée : <strong>Getzner Schwer — Beige / Doré</strong></p>
               </div>
               <div class="product-order-actions">
-                <button type="button" class="btn btn-cart add-cart-fabric product-cart-btn" data-id="1">Ajouter au panier</button>
+                <button type="button" class="btn btn-stock-out" disabled aria-disabled="true">Stock épuisé</button>
               </div>
             </div>
           </article>
 
-          <article class="product-card product-card--fabric" data-category="bazin" data-product-id="2">
+          <article class="product-card product-card--fabric is-out-of-stock" data-category="bazin" data-product-id="2">
             <div class="product-image-wrap">
               <img class="product-image" src="https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?w=800&q=85" alt="Bazin riche doré brodé — Or classique" loading="lazy">
+              <span class="product-badge sold-out">Rupture de stock</span>
             </div>
             <div class="product-info">
               <p class="product-category">Bazin Getzner</p>
@@ -485,13 +486,13 @@
                 <p class="variant-selected fabric-variant-preview">Modèle sélectionné : <strong>Or classique brodé</strong></p>
               </div>
               <div class="product-order-actions">
-                <button type="button" class="btn btn-cart add-cart-fabric product-cart-btn" data-id="2">Ajouter au panier</button>
+                <button type="button" class="btn btn-stock-out" disabled aria-disabled="true">Stock épuisé</button>
               </div>
             </div>
           </article>
 
           <!-- Coffret soin visage OKADY Pearl -->
-          <article class="product-card product-card--care" data-category="soins" data-product-id="9">
+          <article class="product-card product-card--care is-out-of-stock" data-category="soins" data-product-id="9">
             <div class="product-image-wrap">
               <img
                 class="product-image"
@@ -500,7 +501,7 @@
                 loading="lazy"
                 decoding="async"
               >
-              <span class="product-badge new">Nouveau</span>
+              <span class="product-badge sold-out">Rupture de stock</span>
             </div>
             <div class="product-info">
               <p class="product-category">Soins du visage</p>
@@ -532,16 +533,16 @@
                 <p><strong>Soir :</strong> Nettoyant ➔ Lotion ➔ Sérum ➔ Lait ➔ Contour des Yeux ➔ Crème Nourrissante.</p>
               </div>
               <div class="product-order-actions">
-                <button type="button" class="btn btn-cart add-cart product-cart-btn" data-id="9">Ajouter au panier</button>
+                <button type="button" class="btn btn-stock-out" disabled aria-disabled="true">Stock épuisé</button>
               </div>
             </div>
           </article>
 
           <!-- Broderies -->
-          <article class="product-card product-card--fabric" data-category="brodes" data-product-id="7">
+          <article class="product-card product-card--fabric is-out-of-stock" data-category="brodes" data-product-id="7">
             <div class="product-image-wrap">
               <img class="product-image" src="https://images.unsplash.com/photo-1777148783728-510bbeeba075?w=800&q=85" alt="Bazin Riche Getzner Brodé de Luxe — Or" loading="lazy">
-              <span class="product-badge sale">-15%</span>
+              <span class="product-badge sold-out">Rupture de stock</span>
             </div>
             <div class="product-info">
               <p class="product-category">Broderies</p>
@@ -575,15 +576,16 @@
                 <p class="variant-selected fabric-variant-preview">Modèle sélectionné : <strong>Broderie or</strong></p>
               </div>
               <div class="product-order-actions">
-                <button type="button" class="btn btn-cart add-cart-fabric product-cart-btn" data-id="7">Ajouter au panier</button>
+                <button type="button" class="btn btn-stock-out" disabled aria-disabled="true">Stock épuisé</button>
               </div>
             </div>
           </article>
 
           <!-- Accessoires -->
-          <article class="product-card" data-category="accessoires" data-product-id="8">
+          <article class="product-card is-out-of-stock" data-category="accessoires" data-product-id="8">
             <div class="product-image-wrap">
               <img class="product-image" src="https://images.unsplash.com/photo-1768212566108-4ce4f329e4d2?w=800&q=85" alt="Foulard en bazin imprimé" loading="lazy">
+              <span class="product-badge sold-out">Rupture de stock</span>
             </div>
             <div class="product-info">
               <p class="product-category">Accessoires</p>
@@ -591,7 +593,7 @@
               <p class="product-description">Foulard léger en bazin imprimé, idéal pour accessoiriser vos tenues.</p>
               <div class="product-price"><span class="current">35 CHF</span></div>
               <div class="product-order-actions">
-                <button type="button" class="btn btn-cart add-cart product-cart-btn" data-id="8">Ajouter au panier</button>
+                <button type="button" class="btn btn-stock-out" disabled aria-disabled="true">Stock épuisé</button>
               </div>
             </div>
           </article>
@@ -979,7 +981,7 @@
               <h3 class="cosmetique-name">Coffret Soin Visage OKADY Pearl</h3>
               <p class="cosmetique-desc">Rituel complet 7 pièces</p>
               <p class="cosmetique-price">69.00 CHF</p>
-              <button type="button" class="btn btn-cart add-cart cosmetique-action" data-id="9">Ajouter au panier</button>
+              <button type="button" class="btn btn-stock-out cosmetique-action" disabled aria-disabled="true">Stock épuisé</button>
             </article>
 
             <article class="cosmetique-card">
@@ -1008,7 +1010,7 @@
               <h3 class="cosmetique-name">Sérum &amp; Lotion Éclat Repulpante</h3>
               <p class="cosmetique-desc">Soin illuminateur du visage</p>
               <p class="cosmetique-price">Prochainement</p>
-              <a href="#contact" class="btn btn-outline cosmetique-action">Être informé</a>
+              <button type="button" class="btn btn-stock-out cosmetique-action" disabled aria-disabled="true">Stock épuisé</button>
             </article>
 
             <article class="cosmetique-card">
@@ -1342,6 +1344,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260722-ship4"></script>
+  <script src="js/main.js?v=20260722-stockout"></script>
 </body>
 </html>

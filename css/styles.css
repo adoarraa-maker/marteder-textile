@@ -111,6 +111,30 @@ ul {
   box-shadow: var(--shadow-md);
 }
 
+.btn-stock-out,
+.btn-stock-out:hover,
+.btn-stock-out:focus,
+.btn-stock-out:disabled {
+  background: #d0ccc7;
+  border-color: #d0ccc7;
+  color: #6f6a65;
+  cursor: not-allowed;
+  opacity: 1;
+  transform: none;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.product-badge.sold-out {
+  background: #6f6a65;
+  color: #fff;
+}
+
+.product-card.is-out-of-stock .product-image {
+  filter: grayscale(0.35);
+  opacity: 0.85;
+}
+
 .btn-outline {
   background: transparent;
   color: var(--color-text);

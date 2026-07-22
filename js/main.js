@@ -2,6 +2,27 @@ const STORE_EMAIL = 'Adoarraa@gmail.com';
 const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${STORE_EMAIL}`;
 const CART_STORAGE_KEY = 'marteder-cart';
 
+const OUT_OF_STOCK_PRODUCT_IDS = new Set(['1', '2', '7', '8', '9']);
+const OUT_OF_STOCK_NAMES = [
+  'Bazin Riche Getzner Authentique (Schwer) – Lot de 5 Yards',
+  'Bazin riche doré brodé',
+  'Bazin Riche Getzner Brodé de Luxe',
+  'Foulard en bazin imprimé',
+  'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)',
+];
+
+function isOutOfStockProduct(productId, productName) {
+  if (productId != null && OUT_OF_STOCK_PRODUCT_IDS.has(String(productId))) return true;
+  if (!productName) return false;
+  return OUT_OF_STOCK_NAMES.some((name) => productName === name || productName.startsWith(name));
+}
+
+function purgeOutOfStockFromCart() {
+  const before = cart.length;
+  cart = cart.filter((item) => !isOutOfStockProduct(null, item.name));
+  if (cart.length !== before) saveCart();
+}
+
 const products = {
   8: { name: 'Foulard en bazin imprimé', price: 35 },
   9: { name: 'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)', price: 69 },
@@ -671,6 +692,10 @@ function initCart() {
     if (fabricBtn) {
       e.preventDefault();
       const productId = fabricBtn.dataset.id;
+      if (isOutOfStockProduct(productId)) {
+        showToast('Ce produit est en rupture de stock.');
+        return;
+      }
       const fabric = fabricProducts[productId];
       const card = fabricBtn.closest('.product-card') || fabricBtn.closest('.getzner-product-details');
       if (!fabric) return;
@@ -701,6 +726,10 @@ function initCart() {
 
     e.preventDefault();
     const id = btn.dataset.id;
+    if (isOutOfStockProduct(id)) {
+      showToast('Ce produit est en rupture de stock.');
+      return;
+    }
     const product = products[id];
     if (!product) return;
 
@@ -1356,6 +1385,7 @@ function initProductLightbox() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  purgeOutOfStockFromCart();
   renderCart();
   initCart();
   initCartPanel();
