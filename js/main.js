@@ -2,13 +2,14 @@ const STORE_EMAIL = 'Adoarraa@gmail.com';
 const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${STORE_EMAIL}`;
 const CART_STORAGE_KEY = 'marteder-cart';
 
-const OUT_OF_STOCK_PRODUCT_IDS = new Set(['1', '2', '7', '8', '9']);
+const OUT_OF_STOCK_PRODUCT_IDS = new Set(['1', '2', '7', '8', '9', '10']);
 const OUT_OF_STOCK_NAMES = [
   'Bazin Riche Getzner Authentique (Schwer) – Lot de 5 Yards',
   'Bazin riche doré brodé',
   'Bazin Riche Getzner Brodé de Luxe',
   'Foulard en bazin imprimé',
   'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)',
+  'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
 ];
 
 function isOutOfStockProduct(productId, productName) {
