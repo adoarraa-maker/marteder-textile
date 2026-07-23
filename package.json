@@ -1,0 +1,5 @@
+{
+  "name": "marteder-textile",
+  "private": true,
+  "description": "Boutique Marteder Textile — site statique + Checkout Stripe (Netlify Functions)"
+}

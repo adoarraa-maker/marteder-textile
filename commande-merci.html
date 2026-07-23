@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260722-stripe2">
+  <link rel="stylesheet" href="css/styles.css?v=20260723-checkout-session">
 </head>
 <body>
   <header class="header scrolled" id="header">
@@ -27,17 +27,15 @@
   <main class="page-confirmation">
     <div class="container confirmation-inner">
       <span class="confirmation-icon" aria-hidden="true">✓</span>
-      <h1 class="confirmation-title">Commande enregistrée</h1>
-      <p class="confirmation-text">
+      <h1 class="confirmation-title" id="confirmationTitle">Commande enregistrée</h1>
+      <p class="confirmation-text" id="confirmationText">
         Merci. Votre panier a bien été transmis.
-        Finalisez le paiement Stripe selon vos articles ci-dessous.
       </p>
       <p class="confirmation-total" id="orderTotalLine" hidden>
-        Total à régler : <strong id="orderTotalValue">—</strong>
+        Total : <strong id="orderTotalValue">—</strong>
       </p>
       <p class="confirmation-text" id="orderShippingLine" hidden></p>
       <p class="confirmation-text" id="orderSummaryLine" hidden></p>
-      <div class="confirmation-actions" id="stripePayActions" hidden></div>
       <div class="confirmation-actions">
         <a href="tel:+41768429683" class="btn btn-outline">Twint / Appeler +41 76 842 96 83</a>
         <a href="index.html#articles" class="btn btn-outline">Retour à la boutique</a>
@@ -54,13 +52,28 @@
   <script>
     (function () {
       try {
+        const params = new URLSearchParams(window.location.search);
+        const paid = params.get('paid') === '1' || params.has('session_id');
+        const title = document.getElementById('confirmationTitle');
+        const text = document.getElementById('confirmationText');
         const orderRaw = sessionStorage.getItem('marteder-last-order');
-        const pendingRaw = sessionStorage.getItem('marteder-stripe-pending');
         const totalLine = document.getElementById('orderTotalLine');
         const totalValue = document.getElementById('orderTotalValue');
         const summaryLine = document.getElementById('orderSummaryLine');
         const shippingLine = document.getElementById('orderShippingLine');
-        const payActions = document.getElementById('stripePayActions');
+
+        if (paid) {
+          if (title) title.textContent = 'Paiement confirmé';
+          if (text) {
+            text.textContent =
+              'Merci ! Votre paiement Stripe a bien été reçu. Nous préparons votre commande.';
+          }
+          try {
+            localStorage.removeItem('marteder-cart');
+          } catch (error) {
+            /* ignore */
+          }
+        }
 
         if (orderRaw) {
           const order = JSON.parse(orderRaw);
@@ -78,20 +91,7 @@
           }
         }
 
-        if (pendingRaw && payActions) {
-          const pending = JSON.parse(pendingRaw);
-          if (Array.isArray(pending.payments) && pending.payments.length) {
-            payActions.hidden = false;
-            payActions.innerHTML = pending.payments.map((payment) => {
-              const amount = new Intl.NumberFormat('fr-CH', {
-                style: 'currency',
-                currency: 'CHF',
-                minimumFractionDigits: 0,
-              }).format(payment.amount);
-              return `<a class="btn btn-cart" href="${payment.payUrl}" target="_blank" rel="noopener noreferrer">Payer ${payment.label} — ${amount}</a>`;
-            }).join('');
-          }
-        }
+        sessionStorage.removeItem('marteder-stripe-pending');
       } catch (error) {
         // Ignore storage errors
       }

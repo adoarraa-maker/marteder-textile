@@ -1444,6 +1444,20 @@ ul {
   line-height: 1.4;
 }
 
+.cart-stripe-qty-hint {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  color: var(--color-text);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.cart-stripe-qty-hint[hidden] {
+  display: none !important;
+}
+
 .cart-stripe-pay-btn {
   display: block;
   width: 100%;
@@ -1454,13 +1468,15 @@ ul {
   font-weight: 700;
   text-align: center;
   text-decoration: none;
+  border: none;
   cursor: pointer;
   pointer-events: auto;
   position: relative;
   z-index: 5;
 }
 
-.cart-stripe-pay-btn.is-disabled {
+.cart-stripe-pay-btn.is-disabled,
+.cart-stripe-pay-btn:disabled {
   opacity: 0.45;
   pointer-events: none;
   cursor: not-allowed;
@@ -2861,6 +2877,14 @@ ul {
 
 .confirmation-actions .btn {
   width: 100%;
+}
+
+.confirmation-qty-note {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.85;
 }
 
 /* ---- Newsletter ---- */

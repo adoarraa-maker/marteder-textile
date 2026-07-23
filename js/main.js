@@ -32,16 +32,23 @@ const products = {
 
 const STRIPE_PRODUCTS = {
   getzner: {
-    url: 'https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00',
     unitPrice: 80,
     label: 'Bazin Getzner',
   },
   meches: {
-    url: 'https://buy.stripe.com/aFa5kE6INfvG4W3c6TcAo01',
     unitPrice: 5,
     label: 'Mèches X-Pression Ultra Braid',
   },
 };
+
+/**
+ * URL de l'API qui crée la Checkout Session Stripe.
+ * - Sur Netlify : chemin relatif ci-dessous (recommandé).
+ * - Sinon : URL absolue de votre fonction (ex. Worker Cloudflare).
+ */
+const STRIPE_CHECKOUT_API_URL =
+  window.MARTEDER_STRIPE_CHECKOUT_URL ||
+  '/.netlify/functions/create-checkout-session';
 
 const STRIPE_PENDING_KEY = 'marteder-stripe-pending';
 const TWINT_NUMBER = '+41 76 842 96 83';
@@ -458,7 +465,6 @@ function getStripeGroups() {
     if (!groups[key]) {
       groups[key] = {
         key,
-        url: STRIPE_PRODUCTS[key].url,
         label: STRIPE_PRODUCTS[key].label,
         unitPrice: STRIPE_PRODUCTS[key].unitPrice,
         quantity: 0,
@@ -487,95 +493,161 @@ function getStripePaymentPlan() {
       total: 0,
       buttonLabel: 'Payer par carte (Stripe)',
       note: 'Ajoutez des articles pour payer.',
+      canCheckout: false,
     };
   }
 
   const payLabel = `Payer par carte (Stripe) — ${formatPrice(total)}`;
 
-  if (!hasNonStripe && stripeGroups.length === 1) {
-    const payment = stripeGroups[0];
+  if (hasNonStripe) {
     return {
-      mode: 'single',
-      payments: [payment],
-      subtotal,
-      shipping,
-      total,
-      buttonLabel: payLabel,
-      note: `Paiement Stripe — ${payment.label}. Livraison : ${getShippingLabel()}.`,
-    };
-  }
-
-  if (!hasNonStripe && stripeGroups.length > 1) {
-    return {
-      mode: 'multi',
+      mode: 'manual',
       payments: stripeGroups,
       subtotal,
       shipping,
       total,
       buttonLabel: payLabel,
-      note: `Paiement Stripe selon vos articles. Livraison : ${getShippingLabel()}.`,
+      note: `Certains articles ne sont pas payables en ligne. Livraison : ${getShippingLabel()}.`,
+      canCheckout: false,
     };
   }
 
-  if (stripeGroups.length > 0) {
+  if (stripeGroups.length === 0) {
     return {
-      mode: 'mixed',
-      payments: stripeGroups,
+      mode: 'manual',
+      payments: [],
       subtotal,
       shipping,
       total,
       buttonLabel: payLabel,
-      note: `Paiement carte pour les articles Stripe. Livraison : ${getShippingLabel()}.`,
+      note: `Commande enregistrée. Livraison : ${getShippingLabel()}.`,
+      canCheckout: false,
     };
   }
 
   return {
-    mode: 'manual',
-    payments: [],
+    mode: 'checkout',
+    payments: stripeGroups,
     subtotal,
     shipping,
     total,
     buttonLabel: payLabel,
-    note: `Commande enregistrée. Livraison : ${getShippingLabel()}.`,
+    note: `Paiement Stripe sécurisé du montant exact. Livraison : ${getShippingLabel()}.`,
+    canCheckout: true,
   };
 }
 
-function buildStripeUrl(payment, email) {
+function getCheckoutEmail() {
+  return document.getElementById('checkoutEmail')?.value?.trim() || '';
+}
+
+function getCheckoutCustomer() {
+  return {
+    name: document.getElementById('checkoutName')?.value?.trim() || '',
+    email: getCheckoutEmail(),
+    phone: document.getElementById('checkoutPhone')?.value?.trim() || '',
+    address: document.getElementById('checkoutAddress')?.value?.trim() || '',
+    shipping: getSelectedShippingKey(),
+  };
+}
+
+function validateCheckoutForm() {
+  const customer = getCheckoutCustomer();
+  if (!customer.name) return 'Indiquez votre nom complet.';
+  if (!customer.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email)) {
+    return 'Indiquez un e-mail valide.';
+  }
+  if (!customer.phone) return 'Indiquez votre téléphone.';
+  if (!customer.address) return 'Indiquez votre adresse de livraison.';
+  if (!customer.shipping) return 'Choisissez un mode de livraison.';
+  return '';
+}
+
+function buildCheckoutSessionPayload() {
+  const customer = getCheckoutCustomer();
+  const items = cart
+    .map((rawItem) => {
+      const item = normalizeCartItem(rawItem);
+      return {
+        productKey: item.stripeProduct,
+        quantity: item.quantity,
+        variantLabel: item.variantLabel || '',
+        name: item.displayName || item.name,
+      };
+    })
+    .filter((item) => item.productKey && STRIPE_PRODUCTS[item.productKey]);
+
+  return {
+    items,
+    email: customer.email,
+    name: customer.name,
+    phone: customer.phone,
+    address: customer.address,
+    shipping: customer.shipping,
+    origin: getSiteOriginPath(),
+  };
+}
+
+function getSiteOriginPath() {
   try {
-    const base = payment?.url || STRIPE_PRODUCTS.getzner.url;
-    const params = new URLSearchParams();
-    if (email) params.set('prefilled_email', String(email));
-    const quantity = Number(payment?.quantity) || 1;
-    if (quantity > 1) params.set('quantity', String(quantity));
-    const query = params.toString();
-    return query ? `${base}?${query}` : base;
-  } catch (error) {
-    console.error('buildStripeUrl', error);
-    return STRIPE_PRODUCTS.getzner.url;
+    const { origin, pathname } = window.location;
+    // GitHub Pages project site: /marteder-textile/index.html → /marteder-textile
+    if (pathname.endsWith('.html')) {
+      return origin + pathname.replace(/\/[^/]*$/, '');
+    }
+    return origin + pathname.replace(/\/$/, '');
+  } catch {
+    return window.location.origin;
   }
 }
 
-function resolveDirectStripeUrl(email) {
-  try {
-    const plan = getStripePaymentPlan();
-    const payments = Array.isArray(plan.payments) ? plan.payments : [];
-
-    if (payments.length === 0) {
-      return buildStripeUrl({ url: STRIPE_PRODUCTS.getzner.url, quantity: 1 }, email);
-    }
-
-    // Un seul type d'article Stripe → lien correspondant (Bazin ou mèches)
-    if (payments.length === 1) {
-      return buildStripeUrl(payments[0], email);
-    }
-
-    // Panier mixte : prioriser Getzner, sinon premier lien disponible
-    const preferred = payments.find((payment) => payment.key === 'getzner') || payments[0];
-    return buildStripeUrl(preferred, email);
-  } catch (error) {
-    console.error('resolveDirectStripeUrl', error);
-    return STRIPE_PRODUCTS.getzner.url;
+async function createStripeCheckoutSession() {
+  const plan = getStripePaymentPlan();
+  if (!plan.canCheckout) {
+    throw new Error(plan.note || 'Paiement Stripe indisponible pour ce panier.');
   }
+
+  const formError = validateCheckoutForm();
+  if (formError) throw new Error(formError);
+
+  const payload = buildCheckoutSessionPayload();
+
+  // Garde une copie locale pour la page de confirmation
+  try {
+    sessionStorage.setItem(
+      'marteder-last-order',
+      JSON.stringify({
+        totalLabel: formatPrice(plan.total),
+        shippingLabel: getShippingLabel(),
+        order: formatCartSummary(),
+      })
+    );
+    sessionStorage.removeItem(STRIPE_PENDING_KEY);
+  } catch (error) {
+    console.error('sessionStorage order', error);
+  }
+
+  const response = await fetch(STRIPE_CHECKOUT_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  let data = {};
+  try {
+    data = await response.json();
+  } catch {
+    data = {};
+  }
+
+  if (!response.ok || !data.url) {
+    throw new Error(data.error || 'Impossible de créer le paiement Stripe.');
+  }
+
+  return data;
 }
 
 function notifyOrderInBackground(payload) {
@@ -594,7 +666,8 @@ function notifyOrderInBackground(payload) {
 }
 
 function redirectToStripe(payUrl) {
-  const url = payUrl || STRIPE_PRODUCTS.getzner.url;
+  const url = payUrl;
+  if (!url) return;
   try {
     window.location.assign(url);
   } catch (error) {
@@ -603,33 +676,45 @@ function redirectToStripe(payUrl) {
   }
 }
 
-function getSimpleStripeHref() {
-  const groups = getStripeGroups();
-  const hasGetzner = groups.some((group) => group.key === 'getzner');
-  const hasMeches = groups.some((group) => group.key === 'meches');
+function updateStripeQtyHint(plan) {
+  const hint = document.getElementById('cartStripeQtyHint');
+  if (!hint) return;
 
-  if (hasGetzner) return STRIPE_PRODUCTS.getzner.url;
-  if (hasMeches) return STRIPE_PRODUCTS.meches.url;
-  return STRIPE_PRODUCTS.getzner.url;
+  if (!plan?.canCheckout || plan.total <= 0) {
+    hint.hidden = true;
+    hint.textContent = '';
+    return;
+  }
+
+  const details = (plan.payments || [])
+    .map((payment) => `${payment.quantity} × ${payment.label} = ${formatPrice(payment.amount)}`)
+    .join(' · ');
+
+  hint.hidden = false;
+  hint.innerHTML =
+    `<strong>Total Stripe :</strong> ${formatPrice(plan.total)}` +
+    (details ? ` (${details}` + (plan.shipping > 0 ? ` + livraison ${formatPrice(plan.shipping)}` : '') + ')' : '') +
+    '. Le montant exact sera prérempli sur la page de paiement.';
 }
 
 function updateStripePayLink() {
   const link = document.getElementById('cartStripePayLink');
   if (!link) return;
 
-  link.href = getSimpleStripeHref();
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
+  const plan = getStripePaymentPlan();
+  const empty = cart.length === 0 || !plan.canCheckout;
 
-  const empty = cart.length === 0;
+  link.textContent = plan.buttonLabel || 'Payer par carte (Stripe)';
   link.classList.toggle('is-disabled', empty);
   if (empty) {
     link.setAttribute('aria-disabled', 'true');
-    link.setAttribute('tabindex', '-1');
+    link.setAttribute('disabled', 'disabled');
   } else {
     link.removeAttribute('aria-disabled');
-    link.removeAttribute('tabindex');
+    link.removeAttribute('disabled');
   }
+
+  updateStripeQtyHint(plan);
 }
 
 function updateCheckoutButton() {
@@ -1093,15 +1178,47 @@ function initCartCheckout() {
 
   cancelBtn?.addEventListener('click', () => showCheckoutForm(false));
 
-  // Lien Stripe natif : aucun preventDefault / validation bloquante
+  // Bouton Stripe → Checkout Session (montant exact du panier)
   updateStripePayLink();
-  stripePayLink?.addEventListener('click', () => {
-    // Met à jour le href juste avant l'ouverture (navigation native conservée)
-    updateStripePayLink();
+
+  stripePayLink?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (cart.length === 0 || stripePayLink.classList.contains('is-disabled')) return;
+
+    const previousLabel = stripePayLink.textContent;
+    stripePayLink.classList.add('is-disabled');
+    stripePayLink.setAttribute('disabled', 'disabled');
+    stripePayLink.textContent = 'Redirection vers Stripe…';
+
+    try {
+      const customer = getCheckoutCustomer();
+      const plan = getStripePaymentPlan();
+
+      notifyOrderInBackground({
+        _subject: `Commande Marteder — ${formatPrice(plan.total)}`,
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone,
+        address: customer.address,
+        shipping: getShippingLabel(),
+        order: formatCartSummary(),
+        total: formatPrice(plan.total),
+        payment: 'Stripe Checkout Session',
+      });
+
+      const session = await createStripeCheckoutSession();
+      redirectToStripe(session.url);
+    } catch (error) {
+      console.error('stripe checkout', error);
+      showToast(error.message || 'Paiement Stripe indisponible. Réessayez ou contactez-nous.');
+      stripePayLink.textContent = previousLabel;
+      updateStripePayLink();
+    }
   });
 
   checkoutForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    stripePayLink?.click();
   });
 }
 
@@ -1396,4 +1513,16 @@ document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initBackToTop();
   initNewsletter();
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('checkout') === 'cancel') {
+      showToast('Paiement annulé. Votre panier est toujours disponible.');
+      params.delete('checkout');
+      const clean = `${window.location.pathname}${params.toString() ? `?${params}` : ''}${window.location.hash}`;
+      window.history.replaceState({}, '', clean);
+    }
+  } catch (error) {
+    /* ignore */
+  }
 });

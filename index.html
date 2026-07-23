@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260722-payicons">
+  <link rel="stylesheet" href="css/styles.css?v=20260723-checkout-session">
   <link
     rel="preload"
     as="image"
@@ -167,15 +167,15 @@
               Total final : <strong id="cartFinalTotal">0 CHF</strong>
             </p>
 
-            <a
+            <p class="cart-stripe-qty-hint" id="cartStripeQtyHint" hidden></p>
+
+            <button
+              type="button"
               id="cartStripePayLink"
               class="btn btn-stripe cart-stripe-pay-btn"
-              href="https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               Payer par carte (Stripe)
-            </a>
+            </button>
             <div class="payment-methods" aria-label="Moyens de paiement acceptés">
               <div class="payment-methods-icons">
                 <span class="payment-icon payment-icon--visa" title="Visa" aria-label="Visa">
@@ -1392,6 +1392,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260722-stripe-a"></script>
+  <script src="js/main.js?v=20260723-checkout-session"></script>
 </body>
 </html>
