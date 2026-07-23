@@ -37,7 +37,7 @@ const STRIPE_PRODUCTS = {
     label: 'Bazin Getzner',
   },
   meches: {
-    url: 'https://buy.stripe.com/aFa5kE6INfvG4W3c6TcAo01',
+    url: 'https://buy.stripe.com/4gY6oI2xx34Ycov5IVcAo0M',
     unitPrice: 5,
     label: 'Mèches X-Pression Ultra Braid',
   },
