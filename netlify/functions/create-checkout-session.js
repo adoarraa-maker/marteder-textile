@@ -242,6 +242,9 @@ exports.handler = async (event) => {
     return json(200, {
       id: data.id,
       url: data.url,
+      amountTotal: data.amount_total,
+      currency: data.currency,
+      itemCount: itemCount,
     });
   } catch (error) {
     console.error('create-checkout-session', error);
