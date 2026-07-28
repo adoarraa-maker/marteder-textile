@@ -97,6 +97,23 @@ exports.handler = async (event) => {
     return { statusCode: 204, headers: corsHeaders, body: '' };
   }
 
+  // Diagnostic sans exposer la clé : GET → { keyType: 'secret' | 'publishable' | ... }
+  if (event.httpMethod === 'GET') {
+    const raw = String(process.env.STRIPE_SECRET_KEY || '').trim();
+    let keyType = 'missing';
+    if (raw.startsWith('sk_live_') || raw.startsWith('sk_test_')) keyType = 'secret';
+    else if (raw.startsWith('pk_live_') || raw.startsWith('pk_test_')) keyType = 'publishable';
+    else if (raw) keyType = 'invalid';
+    return json(200, {
+      ok: keyType === 'secret',
+      keyType,
+      hint:
+        keyType === 'secret'
+          ? 'Clé secrète détectée.'
+          : 'STRIPE_SECRET_KEY doit être sk_live_… ou sk_test_… (pas pk_…). Modifiez la variable puis Trigger deploy.',
+    });
+  }
+
   if (event.httpMethod !== 'POST') {
     return json(405, { error: 'Méthode non autorisée' });
   }
