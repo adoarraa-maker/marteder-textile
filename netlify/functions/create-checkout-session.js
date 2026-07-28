@@ -47,6 +47,40 @@ function sanitizeText(value, max = 200) {
     .slice(0, max);
 }
 
+function validateStripeSecretKey(secret) {
+  const key = String(secret || '').trim();
+  if (!key) {
+    return {
+      ok: false,
+      error:
+        'STRIPE_SECRET_KEY manquante. Ajoutez-la dans Netlify → Site configuration → Environment variables.',
+    };
+  }
+  if (key.startsWith('pk_')) {
+    return {
+      ok: false,
+      error:
+        'Mauvaise clé Stripe : une clé publique (pk_live_/pk_test_) a été configurée. Remplacez STRIPE_SECRET_KEY par la clé secrète (sk_live_… ou sk_test_…) dans Netlify, puis redéployez.',
+    };
+  }
+  if (!key.startsWith('sk_live_') && !key.startsWith('sk_test_')) {
+    return {
+      ok: false,
+      error:
+        'STRIPE_SECRET_KEY invalide. Elle doit commencer par sk_live_ ou sk_test_ (Dashboard Stripe → Développeurs → Clés API).',
+    };
+  }
+  return { ok: true, key };
+}
+
+function mapStripeError(data) {
+  const message = data?.error?.message || '';
+  if (/Invalid API Key/i.test(message) || /api key/i.test(message)) {
+    return 'Clé Stripe invalide. Vérifiez que STRIPE_SECRET_KEY est bien une clé secrète sk_live_… (pas pk_live_…) dans Netlify.';
+  }
+  return message || 'Impossible de créer la session Stripe';
+}
+
 function resolveOrigin(event, body) {
   const fromBody = sanitizeText(body.origin, 300);
   if (fromBody.startsWith('http://') || fromBody.startsWith('https://')) {
@@ -67,12 +101,11 @@ exports.handler = async (event) => {
     return json(405, { error: 'Méthode non autorisée' });
   }
 
-  const secret = process.env.STRIPE_SECRET_KEY;
-  if (!secret) {
-    return json(500, {
-      error: 'STRIPE_SECRET_KEY manquante. Ajoutez-la dans les variables d’environnement Netlify.',
-    });
+  const keyCheck = validateStripeSecretKey(process.env.STRIPE_SECRET_KEY);
+  if (!keyCheck.ok) {
+    return json(500, { error: keyCheck.error });
   }
+  const secret = keyCheck.key;
 
   let body;
   try {
@@ -185,7 +218,7 @@ exports.handler = async (event) => {
     if (!stripeRes.ok || !data.url) {
       console.error('stripe session error', data);
       return json(500, {
-        error: data.error?.message || 'Impossible de créer la session Stripe',
+        error: mapStripeError(data),
       });
     }
 

@@ -43,12 +43,18 @@ const STRIPE_PRODUCTS = {
 
 /**
  * URL de l'API qui crée la Checkout Session Stripe.
- * - Sur Netlify : chemin relatif ci-dessous (recommandé).
- * - Sinon : URL absolue de votre fonction (ex. Worker Cloudflare).
+ * - Sur Netlify : chemins relatifs ci-dessous.
+ * - Sinon : définir window.MARTEDER_STRIPE_CHECKOUT_URL avant main.js.
  */
 const STRIPE_CHECKOUT_API_URL =
   window.MARTEDER_STRIPE_CHECKOUT_URL ||
   '/.netlify/functions/create-checkout-session';
+
+const STRIPE_CHECKOUT_API_FALLBACKS = [
+  STRIPE_CHECKOUT_API_URL,
+  '/api/create-checkout-session',
+  '/.netlify/functions/create-checkout-session',
+].filter((url, index, list) => url && list.indexOf(url) === index);
 
 const STRIPE_PENDING_KEY = 'marteder-stripe-pending';
 const TWINT_NUMBER = '+41 76 842 96 83';
@@ -611,6 +617,9 @@ async function createStripeCheckoutSession() {
   if (formError) throw new Error(formError);
 
   const payload = buildCheckoutSessionPayload();
+  if (!payload.items.length) {
+    throw new Error('Aucun article payable en ligne dans le panier.');
+  }
 
   // Garde une copie locale pour la page de confirmation
   try {
@@ -627,27 +636,51 @@ async function createStripeCheckoutSession() {
     console.error('sessionStorage order', error);
   }
 
-  const response = await fetch(STRIPE_CHECKOUT_API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
+  let lastError = 'Impossible de créer le paiement Stripe.';
 
-  let data = {};
-  try {
-    data = await response.json();
-  } catch {
-    data = {};
+  for (const endpoint of STRIPE_CHECKOUT_API_FALLBACKS) {
+    let response;
+    try {
+      response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (error) {
+      lastError = 'Réseau indisponible. Vérifiez votre connexion puis réessayez.';
+      console.error('checkout fetch', endpoint, error);
+      continue;
+    }
+
+    let data = {};
+    try {
+      data = await response.json();
+    } catch {
+      data = {};
+    }
+
+    if (response.ok && data.url) {
+      return data;
+    }
+
+    if (response.status === 404) {
+      lastError = 'API de paiement introuvable sur ce déploiement.';
+      continue;
+    }
+
+    lastError =
+      data.error ||
+      (response.status === 500
+        ? 'Erreur serveur Stripe. Vérifiez STRIPE_SECRET_KEY (sk_live_…) sur Netlify.'
+        : 'Impossible de créer le paiement Stripe.');
+    // Erreur métier / config : inutile d'essayer un autre endpoint
+    break;
   }
 
-  if (!response.ok || !data.url) {
-    throw new Error(data.error || 'Impossible de créer le paiement Stripe.');
-  }
-
-  return data;
+  throw new Error(lastError);
 }
 
 function notifyOrderInBackground(payload) {
@@ -1185,6 +1218,12 @@ function initCartCheckout() {
     e.preventDefault();
     if (cart.length === 0 || stripePayLink.classList.contains('is-disabled')) return;
 
+    const formError = validateCheckoutForm();
+    if (formError) {
+      showToast(formError);
+      return;
+    }
+
     const previousLabel = stripePayLink.textContent;
     stripePayLink.classList.add('is-disabled');
     stripePayLink.setAttribute('disabled', 'disabled');
@@ -1193,7 +1232,9 @@ function initCartCheckout() {
     try {
       const customer = getCheckoutCustomer();
       const plan = getStripePaymentPlan();
+      const session = await createStripeCheckoutSession();
 
+      // Notification boutique seulement après création réussie de la session
       notifyOrderInBackground({
         _subject: `Commande Marteder — ${formatPrice(plan.total)}`,
         name: customer.name,
@@ -1204,9 +1245,9 @@ function initCartCheckout() {
         order: formatCartSummary(),
         total: formatPrice(plan.total),
         payment: 'Stripe Checkout Session',
+        stripe_session_id: session.id || '',
       });
 
-      const session = await createStripeCheckoutSession();
       redirectToStripe(session.url);
     } catch (error) {
       console.error('stripe checkout', error);
