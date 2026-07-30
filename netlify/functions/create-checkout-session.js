@@ -21,7 +21,7 @@ const CATALOG = {
 
 const SHIPPING = {
   geneve: { label: 'Livraison / Retrait sur Genève', amountCents: 0 },
-  suisse: { label: 'Envoi postal en Suisse', amountCents: 1800, freeFromItems: 3 },
+  suisse: { label: 'Envoi postal en Suisse', amountCents: 850, freeFromItems: 2 },
   europe: { label: 'Envoi postal en Europe', amountCents: 2500 },
   monde: { label: 'Envoi postal Reste du monde', amountCents: 3500 },
 };

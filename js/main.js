@@ -1,16 +1,9 @@
 const STORE_EMAIL = 'Adoarraa@gmail.com';
 const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${STORE_EMAIL}`;
-const CART_STORAGE_KEY = 'marteder-cart';
+const CART_STORAGE_KEY = 'animosuisse-cart';
 
-const OUT_OF_STOCK_PRODUCT_IDS = new Set(['1', '2', '7', '8', '9', '10']);
-const OUT_OF_STOCK_NAMES = [
-  'Bazin Riche Getzner Authentique (Schwer) – Lot de 5 Yards',
-  'Bazin riche doré brodé',
-  'Bazin Riche Getzner Brodé de Luxe',
-  'Foulard en bazin imprimé',
-  'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)',
-  'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
-];
+const OUT_OF_STOCK_PRODUCT_IDS = new Set();
+const OUT_OF_STOCK_NAMES = [];
 
 function isOutOfStockProduct(productId, productName) {
   if (productId != null && OUT_OF_STOCK_PRODUCT_IDS.has(String(productId))) return true;
@@ -25,9 +18,8 @@ function purgeOutOfStockFromCart() {
 }
 
 const products = {
-  8: { name: 'Foulard en bazin imprimé', price: 35 },
-  9: { name: 'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)', price: 69 },
-  10: { name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)', price: 30 },
+  'brosse-vapeur': { name: 'Brosse à vapeur pour animaux', price: 49 },
+  'laisse-ceinture': { name: 'Laisse ceinture mains libres', price: 39 },
 };
 
 const STRIPE_PRODUCTS = {
@@ -59,6 +51,15 @@ const STRIPE_CHECKOUT_API_FALLBACKS = [
 const STRIPE_PENDING_KEY = 'marteder-stripe-pending';
 const TWINT_NUMBER = '+41 76 842 96 83';
 const WHATSAPP_ORDER = '41765761672';
+const WHATSAPP_ORDER_MESSAGE = 'Bonjour, je souhaite commander un article sur AnimoSuisse';
+
+function getWhatsAppOrderUrl(message = WHATSAPP_ORDER_MESSAGE) {
+  return `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(message)}`;
+}
+
+function openWhatsAppOrder(message = WHATSAPP_ORDER_MESSAGE) {
+  window.open(getWhatsAppOrderUrl(message), '_blank', 'noopener,noreferrer');
+}
 
 const TISSUS_SCHWER = 'images/tissus';
 
@@ -371,8 +372,8 @@ const SHIPPING_OPTIONS = {
   },
   suisse: {
     label: 'Envoi postal en Suisse',
-    baseCost: 18,
-    freeFromItems: 3,
+    baseCost: 8.5,
+    freeFromItems: 2,
   },
   europe: {
     label: 'Envoi postal en Europe',
@@ -413,8 +414,8 @@ function getShippingLabel(key = getSelectedShippingKey()) {
   if (!option) return 'Livraison / Retrait sur Genève — Gratuit';
   const cost = getShippingCost(key);
   if (cost === 0) {
-    if (key === 'suisse' && getCartItemCount() >= 3) {
-      return `${option.label} — GRATUIT (dès 3 articles)`;
+    if (key === 'suisse' && getCartItemCount() >= 2) {
+      return `${option.label} — GRATUIT (dès 2 articles)`;
     }
     return `${option.label} — GRATUIT`;
   }
@@ -429,9 +430,9 @@ function updateShippingSelectLabels() {
   const itemCount = getCartItemCount();
   const labels = {
     geneve: 'Livraison / Retrait sur Genève — GRATUIT (0 CHF)',
-    suisse: itemCount >= 3
-      ? 'Envoi postal en Suisse — GRATUIT (dès 3 articles)'
-      : 'Envoi postal en Suisse — 18.00 CHF (GRATUIT dès 3 articles)',
+    suisse: itemCount >= 2
+      ? 'Envoi postal en Suisse — GRATUIT (dès 2 articles)'
+      : 'Envoi postal en Suisse — 8.50 CHF (GRATUIT dès 2 articles)',
     europe: 'Envoi postal en Europe — 25.00 CHF',
     monde: 'Envoi postal Reste du monde — 35.00 CHF',
   };
@@ -441,10 +442,10 @@ function updateShippingSelectLabels() {
   });
 
   if (hint) {
-    if (select.value === 'suisse' && itemCount >= 3) {
-      hint.textContent = 'Livraison Suisse offerte : vous avez 3 articles ou plus.';
+    if (select.value === 'suisse' && itemCount >= 2) {
+      hint.textContent = 'Livraison Suisse offerte : vous avez 2 articles ou plus.';
     } else if (select.value === 'suisse') {
-      hint.textContent = `Ajoutez encore ${3 - itemCount} article(s) pour une livraison Suisse gratuite.`;
+      hint.textContent = `Ajoutez encore ${2 - itemCount} article(s) pour une livraison Suisse gratuite.`;
     } else {
       hint.textContent = '';
     }
@@ -924,24 +925,7 @@ function initCart() {
     if (!btn) return;
 
     e.preventDefault();
-    const id = btn.dataset.id;
-    if (isOutOfStockProduct(id)) {
-      showToast('Ce produit est en rupture de stock.');
-      return;
-    }
-    const product = products[id];
-    if (!product) return;
-
-    addToCart({
-      name: product.name,
-      displayName: product.name,
-      variantKey: null,
-      variantLabel: null,
-      variantType: null,
-      packNote: null,
-      price: product.price,
-      stripeProduct: null,
-    });
+    openWhatsAppOrder(WHATSAPP_ORDER_MESSAGE);
   });
 }
 
@@ -1267,18 +1251,18 @@ function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
-  const nextInput = form.querySelector('input[name="_next"]');
-  if (nextInput && window.location.protocol !== 'file:') {
-    nextInput.value = new URL('contact-merci.html', window.location.href).href;
-  }
-
-  form.addEventListener('submit', () => {
-    const btn = form.querySelector('.contact-submit-btn');
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = 'Envoi en cours…';
-    }
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    openWhatsAppOrder(WHATSAPP_ORDER_MESSAGE);
   });
+
+  const contactSubmit = form.querySelector('.contact-submit-btn');
+  if (contactSubmit) {
+    contactSubmit.addEventListener('click', (e) => {
+      e.preventDefault();
+      openWhatsAppOrder(WHATSAPP_ORDER_MESSAGE);
+    });
+  }
 }
 
 function initNewsletter() {
