@@ -11,9 +11,9 @@
     {
       "@context": "https://schema.org/",
       "@type": "Product",
-      "name": "Brosse à vapeur pour animaux",
-      "image": "images/produit-brosse-vapeur.jpg",
-      "description": "Brosse à vapeur AnimoSuisse pour un toilettage doux, une fourrure brillante et moins de poils à la maison.",
+      "name": "Brosse Vapeur 3-en-1 pour Chats et Chiens",
+      "image": "images/hero-brosse-vapeur.png",
+      "description": "Brosse Vapeur 3-en-1 AnimoSuisse pour un toilettage doux, une fourrure brillante et moins de poils à la maison.",
       "brand": {
         "@type": "Brand",
         "name": "AnimoSuisse"
@@ -21,17 +21,17 @@
       "offers": {
         "@type": "Offer",
         "priceCurrency": "CHF",
-        "price": "49.00",
+        "price": "24.90",
         "availability": "https://schema.org/InStock",
-        "url": "https://adoarraa-maker.github.io/marteder-textile/#articles"
+        "url": "#articles"
       }
     },
     {
       "@context": "https://schema.org/",
       "@type": "Product",
-      "name": "Laisse ceinture mains libres",
-      "image": "images/produit-laisse-mains-libres.jpg",
-      "description": "Laisse ceinture mains libres AnimoSuisse pour promener votre chien en toute liberté, idéale pour la marche et le jogging.",
+      "name": "Gourde Multifonction 3-en-1 (Eau, Croquettes & Sacs)",
+      "image": "images/gourde-bouteille.jpg",
+      "description": "Gourde multifonction 3-en-1 AnimoSuisse : réservoir d'eau anti-fuite, compartiment croquettes et distributeur de sacs poubelle intégré, idéale pour les balades.",
       "brand": {
         "@type": "Brand",
         "name": "AnimoSuisse"
@@ -39,9 +39,9 @@
       "offers": {
         "@type": "Offer",
         "priceCurrency": "CHF",
-        "price": "39.00",
+        "price": "19.00",
         "availability": "https://schema.org/InStock",
-        "url": "https://adoarraa-maker.github.io/marteder-textile/#articles"
+        "url": "#articles"
       }
     }
   ]
@@ -49,12 +49,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260730-animosuisse">
+  <link rel="stylesheet" href="css/styles.css?v=20260730-gourde-demo">
   <link
     rel="preload"
     as="image"
     type="image/jpeg"
-    href="https://images.unsplash.com/photo-1450778869180-47d82c7e0e0e?w=1600&q=85"
+    href="images/animal3.jpg"
   >
 </head>
 <body>
@@ -130,10 +130,9 @@
 
             <label class="form-label" for="checkoutShipping">Choix de la livraison</label>
             <select class="form-input variant-select cart-shipping-select" id="checkoutShipping" name="shipping" required aria-label="Choix de la livraison">
-              <option value="geneve" selected>Livraison / Retrait sur Genève — GRATUIT (0 CHF)</option>
-              <option value="suisse">Envoi postal en Suisse — 8.50 CHF (GRATUIT dès 2 articles)</option>
-              <option value="europe">Envoi postal en Europe — 25.00 CHF</option>
-              <option value="monde">Envoi postal Reste du monde — 35.00 CHF</option>
+              <option value="suisse" selected>Suisse — Gratuit (0.00 CHF)</option>
+              <option value="europe">Europe — 9.90 CHF</option>
+              <option value="monde">Reste du monde — 15.00 CHF</option>
             </select>
             <p class="cart-shipping-hint" id="cartShippingHint"></p>
 
@@ -175,35 +174,30 @@
   </div>
 
   <main>
-    <!-- Hero -->
-    <section class="hero" id="accueil">
-      <div class="hero-bg" aria-hidden="true">
-        <picture class="hero-bg-picture">
-          <img
-            class="hero-bg-image"
-            src="https://images.unsplash.com/photo-1450778869180-47d82c7e0e0e?w=1600&q=85"
-            alt=""
-            width="1600"
-            height="1067"
-            fetchpriority="high"
-            decoding="async"
-          >
-        </picture>
+    <!-- Couverture de bienvenue (présentation uniquement) -->
+    <section class="hero hero--welcome hero--cover-duo" id="accueil">
+      <div class="hero-bg hero-cover-slideshow" aria-hidden="true">
+        <img
+          class="hero-bg-image hero-cover-slide is-active"
+          src="images/animal3.jpg"
+          alt=""
+          width="1600"
+          height="1200"
+          fetchpriority="high"
+          decoding="async"
+          onerror="if(this.src.indexOf('animal3.jpg')!==-1){this.src='images/animaux3.jpg';}else if(this.src.indexOf('animaux3.jpg')!==-1){this.src='images/animal3.png';}else{this.onerror=null;this.src='images/animaux3.png';}"
+        >
         <div class="hero-overlay"></div>
       </div>
       <div class="hero-content container">
-        <span class="hero-badge">Suisse · Chiens &amp; chats</span>
         <h1 class="hero-title">
-          AnimoSuisse<br>
-          <em>Bien-être &amp; Accessoires pour Animaux en Suisse</em>
+          AnimoSuisse
         </h1>
         <p class="hero-text">
-          Des accessoires pensés pour le confort de vos compagnons :
-          toilettage doux, promenades libres et quotidien plus serein.
+          Bien-être &amp; accessoires pour animaux en Suisse
         </p>
         <div class="hero-actions">
-          <a href="#articles" class="btn btn-primary">Découvrir la boutique</a>
-          <a href="#collections" class="btn btn-outline">Voir les sélections</a>
+          <a href="#articles" class="btn btn-primary">Voir nos produits</a>
         </div>
       </div>
       <div class="hero-scroll">
@@ -212,86 +206,16 @@
       </div>
     </section>
 
-    <!-- Vitrine -->
-    <section class="cover-sections" aria-labelledby="cover-accessoires-title">
-      <div class="container">
-        <div class="cover-tissus">
-          <div class="section-header centered">
-            <span class="section-label">Boutique</span>
-            <h2 class="section-title" id="cover-accessoires-title">Accessoires pour le bien-être animal</h2>
-          </div>
-          <figure class="cover-tissus-figure">
-            <img
-              src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=1000&q=85"
-              alt="Chien heureux — accessoires AnimoSuisse"
-              width="1000"
-              height="1000"
-              loading="lazy"
-              decoding="async"
-            >
-          </figure>
-          <p class="cover-tissus-text">
-            Qualité soignée, usage quotidien et livraison en Suisse.
-            Tout pour prendre soin de ceux qui comptent.
-          </p>
-          <a href="#articles" class="btn btn-outline cover-cta">Voir le catalogue</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Mise en avant nouveautés -->
-    <section class="getzner-arrival" id="nouveautes" aria-labelledby="nouveautes-title">
-      <div class="container getzner-arrival-inner">
-        <span class="section-label">Nouveautés</span>
-        <h2 class="getzner-arrival-title" id="nouveautes-title">Deux essentiels AnimoSuisse</h2>
-        <p class="getzner-arrival-tagline">Toilettage doux — Promenade libre — Confort au quotidien</p>
-
-        <div class="getzner-product-details">
-          <p class="getzner-meta">
-            Livraison en Suisse · Retrait possible sur Genève<br>
-            <em>Brosse à vapeur &amp; laisse ceinture mains libres.</em>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Avantages -->
-    <section class="features">
-      <div class="container features-grid">
-        <div class="feature">
-          <div class="feature-icon">✦</div>
-          <h3>Bien-être animal</h3>
-          <p>Accessoires choisis pour le confort, la santé et le plaisir de vos compagnons</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">♡</div>
-          <h3>Qualité soignée</h3>
-          <p>Matériaux durables et design pensé pour un usage quotidien en Suisse</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">↺</div>
-          <h3>Livraison en Suisse</h3>
-          <p>Envoi soigné partout en Suisse, avec options Europe et international</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">✉</div>
-          <h3>Conseil personnalisé</h3>
-          <p>Notre équipe vous guide pour choisir l’accessoire adapté à votre animal</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Articles -->
-    <section class="products" id="articles">
+    <!-- Produits à vendre -->
+    <section class="products products--after-hero" id="articles">
       <div class="container">
         <div class="section-header">
           <div>
-            <span class="section-label">Notre sélection</span>
-            <h2 class="section-title">Nos accessoires</h2>
+            <span class="section-label">Boutique</span>
+            <h2 class="section-title">Nos produits</h2>
           </div>
           <p class="section-desc">
-            Brosse à vapeur et laisse ceinture mains libres :
-            deux essentiels pour le bien-être et les promenades de vos animaux.
+            Brosse Vapeur 3-en-1 et Gourde Multifonction — choisissez, commandez via WhatsApp.
           </p>
         </div>
 
@@ -299,25 +223,33 @@
           <button class="filter-btn active" data-filter="all">Tous</button>
           <button class="filter-btn" data-filter="toilettage">Toilettage</button>
           <button class="filter-btn" data-filter="promenade">Promenade</button>
+          <button class="filter-btn" data-filter="chiens">Accessoires chiens</button>
         </div>
 
         <div class="products-grid" id="productsGrid">
 
-          <!-- Brosse à vapeur -->
-          <article class="product-card" data-category="toilettage" data-product-id="brosse-vapeur">
+          <!-- Brosse Vapeur 3-en-1 -->
+          <article
+            class="product-card"
+            data-category="toilettage"
+            data-product-id="brosse-vapeur"
+            data-product-name="Brosse Vapeur 3-en-1 pour Chats et Chiens"
+            data-product-price="24.90"
+          >
             <div class="product-image-wrap">
               <img
-                class="product-image"
-                src="images/produit-brosse-vapeur.jpg"
-                alt="Brosse à vapeur pour chiens et chats — AnimoSuisse"
+                class="product-image product-image--brosse-crop"
+                src="images/hero-brosse-vapeur.png"
+                alt="Brosse Vapeur 3-en-1 pour Chats et Chiens — AnimoSuisse"
                 loading="lazy"
                 decoding="async"
+                onerror="this.onerror=null;this.src='images/produit-brosse-vapeur.jpg'"
               >
               <span class="product-badge new">Nouveau</span>
             </div>
             <div class="product-info">
               <p class="product-category">Toilettage</p>
-              <h3 class="product-name">Brosse à vapeur pour animaux</h3>
+              <h3 class="product-name">Brosse Vapeur 3-en-1 pour Chats et Chiens</h3>
               <p class="product-description">
                 Toilettage en douceur grâce à la vapeur : démêlage facilité,
                 fourrure plus brillante et moins de poils dans la maison.
@@ -329,16 +261,29 @@
                 <li>Convient aux chiens et aux chats</li>
                 <li>Poignée ergonomique pour un usage confortable</li>
               </ul>
-              <div class="product-price"><span class="current">49 CHF</span></div>
-              <p class="product-lot-note">Livraison en Suisse disponible</p>
+              <div class="product-price"><span class="current">24.90 CHF</span></div>
+              <div class="fabric-variants product-shipping-box">
+                <label class="variant-label" for="brosseShippingSelect">Adresse de livraison</label>
+                <select
+                  class="variant-select product-shipping-select"
+                  id="brosseShippingSelect"
+                  data-shipping-select
+                  aria-label="Choisir l’adresse de livraison"
+                >
+                  <option value="suisse" selected>Suisse — Gratuit (0.00 CHF)</option>
+                  <option value="europe">Europe — 9.90 CHF</option>
+                  <option value="monde">Reste du monde — 15.00 CHF</option>
+                </select>
+                <p class="variant-selected product-order-summary" data-order-summary>
+                  Produit 24.90 CHF + livraison 0.00 CHF = <strong>Total 24.90 CHF</strong>
+                </p>
+              </div>
               <div class="product-order-actions">
-                <a
-                  href="https://wa.me/41765761672?text=Bonjour%2C%20je%20souhaite%20commander%20un%20article%20sur%20AnimoSuisse"
-                  class="btn btn-cart add-cart product-cart-btn"
+                <button
+                  type="button"
+                  class="btn btn-cart product-cart-btn btn-order-whatsapp"
                   data-id="brosse-vapeur"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >Ajouter au panier</a>
+                >Commander maintenant</button>
                 <div class="payment-methods payment-methods--compact" aria-label="Moyens de paiement acceptés">
                   <div class="payment-methods-icons">
                     <span class="payment-icon payment-icon--visa" title="Visa" aria-label="Visa">
@@ -354,48 +299,153 @@
                       <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#003087"/><text x="24" y="20" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="9" font-weight="700">PayPal</text></svg>
                     </span>
                   </div>
-                  <p class="payment-methods-note">Paiement sécurisé par Carte Bancaire, Apple Pay et PayPal</p>
+                  <p class="payment-methods-note">Commande via WhatsApp · Paiement Twint / carte</p>
                 </div>
               </div>
             </div>
           </article>
 
-          <!-- Laisse ceinture mains libres -->
-          <article class="product-card" data-category="promenade" data-product-id="laisse-ceinture">
+          <!-- Gourde Multifonction 3-en-1 -->
+          <article
+            class="product-card"
+            data-category="promenade"
+            data-product-id="gourde-multifonction"
+            data-product-name="Gourde Multifonction 3-en-1 (Eau, Croquettes & Sacs)"
+            data-product-price="19.00"
+          >
+            <div class="product-image-wrap">
+              <img
+                class="product-image"
+                src="images/gourde-bouteille.jpg"
+                alt="Gourde Multifonction 3-en-1 Eau, Croquettes et Sacs — AnimoSuisse"
+                loading="lazy"
+                decoding="async"
+              >
+              <span class="product-badge new">Nouveau</span>
+            </div>
+            <div class="product-demo-wrap">
+              <video
+                class="product-demo-video"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+                aria-label="Démonstration de la gourde multifonction 3-en-1"
+              >
+                <source src="images/gourde-demo.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="product-info">
+              <p class="product-category">Promenade</p>
+              <h3 class="product-name">Gourde Multifonction 3-en-1 (Eau, Croquettes &amp; Sacs)</h3>
+              <p class="product-description">
+                Tout pour les balades dans un seul accessoire : eau, croquettes
+                et sacs à portée de main. Pratique, compacte et pensée pour
+                les sorties quotidiennes avec votre animal.
+              </p>
+              <ul class="product-features">
+                <li>Réservoir d’eau anti-fuite</li>
+                <li>Compartiment croquettes</li>
+                <li>Distributeur de sacs poubelle intégré</li>
+                <li>Idéale pour les balades</li>
+              </ul>
+              <div class="product-price"><span class="current">19.00 CHF</span></div>
+              <div class="fabric-variants product-shipping-box">
+                <label class="variant-label" for="gourdeShippingSelect">Adresse de livraison</label>
+                <select
+                  class="variant-select product-shipping-select"
+                  id="gourdeShippingSelect"
+                  data-shipping-select
+                  aria-label="Choisir l’adresse de livraison"
+                >
+                  <option value="suisse" selected>Suisse — Gratuit (0.00 CHF)</option>
+                  <option value="europe">Europe — 9.90 CHF</option>
+                  <option value="monde">Reste du monde — 15.00 CHF</option>
+                </select>
+                <p class="variant-selected product-order-summary" data-order-summary>
+                  Produit 19.00 CHF + livraison 0.00 CHF = <strong>Total 19.00 CHF</strong>
+                </p>
+              </div>
+              <div class="product-order-actions">
+                <button
+                  type="button"
+                  class="btn btn-cart product-cart-btn btn-order-whatsapp"
+                  data-id="gourde-multifonction"
+                >Commander maintenant</button>
+                <div class="payment-methods payment-methods--compact" aria-label="Moyens de paiement acceptés">
+                  <div class="payment-methods-icons">
+                    <span class="payment-icon payment-icon--visa" title="Visa" aria-label="Visa">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#1A1F71"/><text x="24" y="21" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="11" font-weight="700" letter-spacing="1">VISA</text></svg>
+                    </span>
+                    <span class="payment-icon payment-icon--mastercard" title="Mastercard" aria-label="Mastercard">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#111"/><circle cx="19" cy="16" r="8" fill="#EB001B"/><circle cx="29" cy="16" r="8" fill="#F79E1B"/><path d="M24 10.2a8 8 0 0 1 0 11.6 8 8 0 0 1 0-11.6z" fill="#FF5F00"/></svg>
+                    </span>
+                    <span class="payment-icon payment-icon--applepay" title="Apple Pay" aria-label="Apple Pay">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#000"/><text x="27" y="20" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="8" font-weight="600">Pay</text><path fill="#fff" d="M14.2 11.2c.5-.6.9-1.5.8-2.4-.8 0-1.8.5-2.3 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.4 2.3-1.2zm.8 1.1c-1.2-.1-2.3.7-2.9.7-.6 0-1.5-.7-2.5-.6-1.3 0-2.4.7-3.1 1.9-1.3 2.3-.3 5.7.9 7.5.6.9 1.3 1.9 2.3 1.8.9-.1 1.3-.6 2.4-.6s1.4.6 2.4.6c1 0 1.6-.9 2.3-1.8.7-.9 1-1.8 1-1.9-.1 0-1.9-.7-1.9-2.9 0-1.8 1.5-2.7 1.6-2.7-.9-1.3-2.2-1.4-2.5-1.4z"/></svg>
+                    </span>
+                    <span class="payment-icon payment-icon--paypal" title="PayPal" aria-label="PayPal">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#003087"/><text x="24" y="20" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="9" font-weight="700">PayPal</text></svg>
+                    </span>
+                  </div>
+                  <p class="payment-methods-note">Commande via WhatsApp · Paiement Twint / carte</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Laisse Mains Libres avec Sac Banane -->
+          <article
+            class="product-card"
+            data-category="chiens"
+            data-product-id="accessoire-chien-1"
+            data-product-name="Laisse Mains Libres avec Sac Banane (Poche Téléphone)"
+            data-product-price="29.90"
+          >
             <div class="product-image-wrap">
               <img
                 class="product-image"
                 src="images/produit-laisse-mains-libres.jpg"
-                alt="Chien en promenade avec laisse ceinture mains libres — AnimoSuisse"
+                alt="Laisse Mains Libres avec Sac Banane — AnimoSuisse"
                 loading="lazy"
                 decoding="async"
               >
               <span class="product-badge new">Nouveau</span>
             </div>
             <div class="product-info">
-              <p class="product-category">Promenade</p>
-              <h3 class="product-name">Laisse ceinture mains libres</h3>
+              <p class="product-category">Accessoires pour chiens</p>
+              <h3 class="product-name">Laisse Mains Libres avec Sac Banane (Poche Téléphone)</h3>
               <p class="product-description">
-                Promenez votre chien sans tenir la laisse : ceinture réglable,
-                laisse élastique amortie et liberté de mouvement pour la marche,
-                le footing ou les sorties quotidiennes.
+                Laisse rétractable et élastique avec ceinture banane intégrée pour ranger smartphone, clés et sacoches. Idéale pour les promenades, le jogging et les randonnées mains libres.
               </p>
               <ul class="product-features">
-                <li>Ceinture ajustable, confortable et stable</li>
-                <li>Laisse élastique pour absorber les à-coups</li>
-                <li>Mains libres pour téléphone, jogging ou courses</li>
-                <li>Idéale pour chiens de petite à grande taille</li>
+                <li>Ceinture ajustable avec poche téléphone &amp; pochette</li>
+                <li>Laisse élastique anti-traction pour réduire les chocs</li>
+                <li>Bandes réfléchissantes pour la sécurité de nuit</li>
               </ul>
-              <div class="product-price"><span class="current">39 CHF</span></div>
-              <p class="product-lot-note">Livraison en Suisse disponible</p>
+              <div class="product-price"><span class="current">29.90 CHF</span></div>
+              <div class="fabric-variants product-shipping-box">
+                <label class="variant-label" for="chien1ShippingSelect">Adresse de livraison</label>
+                <select
+                  class="variant-select product-shipping-select"
+                  id="chien1ShippingSelect"
+                  data-shipping-select
+                  aria-label="Choisir l’adresse de livraison"
+                >
+                  <option value="suisse" selected>Suisse — Gratuit (0.00 CHF)</option>
+                  <option value="europe">Europe — 9.90 CHF</option>
+                  <option value="monde">Reste du monde — 15.00 CHF</option>
+                </select>
+                <p class="variant-selected product-order-summary" data-order-summary>
+                  Produit 29.90 CHF + livraison 0.00 CHF = <strong>Total 29.90 CHF</strong>
+                </p>
+              </div>
               <div class="product-order-actions">
-                <a
-                  href="https://wa.me/41765761672?text=Bonjour%2C%20je%20souhaite%20commander%20un%20article%20sur%20AnimoSuisse"
-                  class="btn btn-cart add-cart product-cart-btn"
-                  data-id="laisse-ceinture"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >Ajouter au panier</a>
+                <button
+                  type="button"
+                  class="btn btn-cart product-cart-btn btn-order-whatsapp"
+                  data-id="accessoire-chien-1"
+                >Commander maintenant</button>
                 <div class="payment-methods payment-methods--compact" aria-label="Moyens de paiement acceptés">
                   <div class="payment-methods-icons">
                     <span class="payment-icon payment-icon--visa" title="Visa" aria-label="Visa">
@@ -411,7 +461,82 @@
                       <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#003087"/><text x="24" y="20" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="9" font-weight="700">PayPal</text></svg>
                     </span>
                   </div>
-                  <p class="payment-methods-note">Paiement sécurisé par Carte Bancaire, Apple Pay et PayPal</p>
+                  <p class="payment-methods-note">Commande via WhatsApp · Paiement Twint / carte</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Accessoire Chien - Modèle 2 -->
+          <article
+            class="product-card"
+            data-category="chiens"
+            data-product-id="accessoire-chien-2"
+            data-product-name="Accessoire Chien - Modèle 2"
+            data-product-price="24.90"
+          >
+            <div class="product-image-wrap">
+              <img
+                class="product-image"
+                src="images/animaux1.jpg"
+                alt="Accessoire Chien - Modèle 2 — AnimoSuisse"
+                loading="lazy"
+                decoding="async"
+                onerror="this.onerror=null;this.src='images/animaux1.png'"
+              >
+              <span class="product-badge new">Nouveau</span>
+            </div>
+            <div class="product-info">
+              <p class="product-category">Accessoires pour chiens</p>
+              <h3 class="product-name">Accessoire Chien - Modèle 2</h3>
+              <p class="product-description">
+                Deuxième modèle de notre sélection accessoires pour chiens.
+                Un compagnon de balade utile, simple et soigné.
+              </p>
+              <ul class="product-features">
+                <li>Conçu pour chiens</li>
+                <li>Usage quotidien</li>
+                <li>Livraison gratuite en Suisse</li>
+              </ul>
+              <div class="product-price"><span class="current">24.90 CHF</span></div>
+              <div class="fabric-variants product-shipping-box">
+                <label class="variant-label" for="chien2ShippingSelect">Adresse de livraison</label>
+                <select
+                  class="variant-select product-shipping-select"
+                  id="chien2ShippingSelect"
+                  data-shipping-select
+                  aria-label="Choisir l’adresse de livraison"
+                >
+                  <option value="suisse" selected>Suisse — Gratuit (0.00 CHF)</option>
+                  <option value="europe">Europe — 9.90 CHF</option>
+                  <option value="monde">Reste du monde — 15.00 CHF</option>
+                </select>
+                <p class="variant-selected product-order-summary" data-order-summary>
+                  Produit 24.90 CHF + livraison 0.00 CHF = <strong>Total 24.90 CHF</strong>
+                </p>
+              </div>
+              <div class="product-order-actions">
+                <button
+                  type="button"
+                  class="btn btn-cart product-cart-btn btn-order-whatsapp"
+                  data-id="accessoire-chien-2"
+                >Commander maintenant</button>
+                <div class="payment-methods payment-methods--compact" aria-label="Moyens de paiement acceptés">
+                  <div class="payment-methods-icons">
+                    <span class="payment-icon payment-icon--visa" title="Visa" aria-label="Visa">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#1A1F71"/><text x="24" y="21" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="11" font-weight="700" letter-spacing="1">VISA</text></svg>
+                    </span>
+                    <span class="payment-icon payment-icon--mastercard" title="Mastercard" aria-label="Mastercard">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#111"/><circle cx="19" cy="16" r="8" fill="#EB001B"/><circle cx="29" cy="16" r="8" fill="#F79E1B"/><path d="M24 10.2a8 8 0 0 1 0 11.6 8 8 0 0 1 0-11.6z" fill="#FF5F00"/></svg>
+                    </span>
+                    <span class="payment-icon payment-icon--applepay" title="Apple Pay" aria-label="Apple Pay">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#000"/><text x="27" y="20" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="8" font-weight="600">Pay</text><path fill="#fff" d="M14.2 11.2c.5-.6.9-1.5.8-2.4-.8 0-1.8.5-2.3 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.4 2.3-1.2zm.8 1.1c-1.2-.1-2.3.7-2.9.7-.6 0-1.5-.7-2.5-.6-1.3 0-2.4.7-3.1 1.9-1.3 2.3-.3 5.7.9 7.5.6.9 1.3 1.9 2.3 1.8.9-.1 1.3-.6 2.4-.6s1.4.6 2.4.6c1 0 1.6-.9 2.3-1.8.7-.9 1-1.8 1-1.9-.1 0-1.9-.7-1.9-2.9 0-1.8 1.5-2.7 1.6-2.7-.9-1.3-2.2-1.4-2.5-1.4z"/></svg>
+                    </span>
+                    <span class="payment-icon payment-icon--paypal" title="PayPal" aria-label="PayPal">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#003087"/><text x="24" y="20" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="9" font-weight="700">PayPal</text></svg>
+                    </span>
+                  </div>
+                  <p class="payment-methods-note">Commande via WhatsApp · Paiement Twint / carte</p>
                 </div>
               </div>
             </div>
@@ -434,17 +559,17 @@
         </div>
         <div class="collections-grid">
           <a href="#articles" class="collection-card collection-large">
-            <div class="collection-img" style="background-image: url('images/produit-brosse-vapeur.jpg')"></div>
+            <div class="collection-img" style="background-image: url('images/hero-brosse-vapeur.png')"></div>
             <div class="collection-overlay">
               <span>Toilettage</span>
-              <h3>Brosse à vapeur</h3>
+              <h3>Brosse Vapeur 3-en-1</h3>
             </div>
           </a>
           <a href="#articles" class="collection-card">
-            <div class="collection-img" style="background-image: url('images/produit-laisse-mains-libres.jpg')"></div>
+            <div class="collection-img" style="background-image: url('images/gourde-bouteille.jpg')"></div>
             <div class="collection-overlay">
               <span>Promenade</span>
-              <h3>Laisse mains libres</h3>
+              <h3>Gourde 3-en-1</h3>
             </div>
           </a>
           <a href="#contact" class="collection-card">
@@ -462,8 +587,8 @@
     <section class="testimonial">
       <div class="container testimonial-inner">
         <blockquote>
-          « La laisse ceinture a changé nos promenades : je peux courir
-          les mains libres et mon chien est plus détendu. AnimoSuisse,
+          « La gourde 3-en-1 a changé nos balades : eau, croquettes
+          et sacs toujours à portée de main. AnimoSuisse,
           c’est devenu notre référence bien-être. »
         </blockquote>
         <cite>— Sophie M., cliente à Genève</cite>
@@ -486,20 +611,16 @@
             </p>
             <ul class="horaires-liste">
               <li>
-                <strong>Genève :</strong>
-                livraison / retrait — gratuit.
-              </li>
-              <li>
                 <strong>Suisse :</strong>
-                envoi postal à 8.50&nbsp;CHF (gratuit dès 2 articles).
+                livraison gratuite (0.00&nbsp;CHF).
               </li>
               <li>
                 <strong>Europe :</strong>
-                25&nbsp;CHF · Reste du monde : 35&nbsp;CHF.
+                9.90&nbsp;CHF.
               </li>
               <li>
-                <strong>Paiement :</strong>
-                carte bancaire, Apple Pay, PayPal ou Twint.
+                <strong>Reste du monde :</strong>
+                15.00&nbsp;CHF.
               </li>
             </ul>
             <a href="#articles" class="btn btn-primary">
@@ -537,7 +658,7 @@
         <div class="section-header centered">
           <span class="section-label">Contact</span>
           <p class="section-desc contact-intro">
-            Une question sur la brosse à vapeur, la laisse mains libres ou une commande ? Écrivez-nous ou appelez-nous.
+            Une question sur la brosse vapeur, la gourde multifonction ou une commande ? Écrivez-nous ou appelez-nous.
           </p>
         </div>
         <div class="contact-layout">
@@ -614,8 +735,10 @@
               <label class="form-label" for="contactSubject">Sujet</label>
               <select class="form-input form-select" id="contactSubject" name="subject" required>
                 <option value="">Choisir un sujet</option>
-                <option value="Brosse à vapeur">Brosse à vapeur</option>
-                <option value="Laisse ceinture mains libres">Laisse ceinture mains libres</option>
+                <option value="Brosse Vapeur 3-en-1">Brosse Vapeur 3-en-1</option>
+                <option value="Gourde Multifonction 3-en-1">Gourde Multifonction 3-en-1</option>
+                <option value="Laisse Mains Libres avec Sac Banane">Laisse Mains Libres avec Sac Banane</option>
+                <option value="Accessoire Chien - Modèle 2">Accessoire Chien - Modèle 2</option>
                 <option value="Commande / disponibilité">Commande / disponibilité</option>
                 <option value="Livraison">Livraison</option>
                 <option value="Autre">Autre</option>
@@ -648,7 +771,7 @@
             <article class="review-card">
               <div class="review-stars" aria-label="Évaluation à compléter sur cinq étoiles">☆☆☆☆☆</div>
               <h3>Qualité des accessoires</h3>
-              <p>Partagez votre retour sur la brosse à vapeur, la laisse ou tout autre accessoire AnimoSuisse.</p>
+              <p>Partagez votre retour sur la brosse vapeur, la gourde ou tout autre accessoire AnimoSuisse.</p>
             </article>
             <article class="review-card">
               <div class="review-stars" aria-label="Évaluation à compléter sur cinq étoiles">☆☆☆☆☆</div>
@@ -674,14 +797,16 @@
     <div class="container footer-grid">
       <div class="footer-brand">
         <a href="#" class="logo">AnimoSuisse</a>
-        <p>Bien-être &amp; accessoires pour animaux en Suisse. Brosse à vapeur, laisse ceinture mains libres et conseils pour chiens et chats.</p>
+        <p>Bien-être &amp; accessoires pour animaux en Suisse. Brosse Vapeur 3-en-1, gourde multifonction et conseils pour chiens et chats.</p>
       </div>
       <div class="footer-links">
         <h4>Boutique</h4>
         <ul>
           <li><a href="#articles">Nouveautés</a></li>
-          <li><a href="#articles">Brosse à vapeur</a></li>
-          <li><a href="#articles">Laisse mains libres</a></li>
+          <li><a href="#articles">Brosse Vapeur 3-en-1</a></li>
+          <li><a href="#articles">Gourde Multifonction 3-en-1</a></li>
+          <li><a href="#articles">Laisse Mains Libres avec Sac Banane</a></li>
+          <li><a href="#articles">Accessoire Chien - Modèle 2</a></li>
           <li><a href="#collections">Sélections</a></li>
         </ul>
       </div>
@@ -744,6 +869,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260730-whatsapp-order"></script>
+  <script src="js/main.js?v=20260730-cover-animal34"></script>
 </body>
 </html>
