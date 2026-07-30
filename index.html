@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260730-gourde-demo">
+  <link rel="stylesheet" href="css/styles.css?v=20260730-gourde-banner">
   <link
     rel="preload"
     as="image"
@@ -323,19 +323,6 @@
               >
               <span class="product-badge new">Nouveau</span>
             </div>
-            <div class="product-demo-wrap">
-              <video
-                class="product-demo-video"
-                autoplay
-                loop
-                muted
-                playsinline
-                preload="metadata"
-                aria-label="Démonstration de la gourde multifonction 3-en-1"
-              >
-                <source src="images/gourde-demo.mp4" type="video/mp4">
-              </video>
-            </div>
             <div class="product-info">
               <p class="product-category">Promenade</p>
               <h3 class="product-name">Gourde Multifonction 3-en-1 (Eau, Croquettes &amp; Sacs)</h3>
@@ -565,8 +552,18 @@
               <h3>Brosse Vapeur 3-en-1</h3>
             </div>
           </a>
-          <a href="#articles" class="collection-card">
-            <div class="collection-img" style="background-image: url('images/gourde-bouteille.jpg')"></div>
+          <a href="#articles" class="collection-card collection-card--video" aria-label="Voir la gourde multifonction 3-en-1">
+            <video
+              class="collection-video"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+              aria-hidden="true"
+            >
+              <source src="images/gourde-demo.mp4" type="video/mp4">
+            </video>
             <div class="collection-overlay">
               <span>Promenade</span>
               <h3>Gourde 3-en-1</h3>

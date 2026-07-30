@@ -674,23 +674,6 @@ ul {
   background: var(--color-bg-alt);
 }
 
-.product-demo-wrap {
-  position: relative;
-  width: calc(100% - 20px);
-  margin: 10px 10px 0;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #111;
-}
-
-.product-demo-video {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  object-position: center;
-}
-
 .product-image {
   width: 100%;
   height: 100%;
@@ -2599,6 +2582,25 @@ ul {
 }
 
 .collection-card:hover .collection-img {
+  transform: scale(1.05);
+}
+
+.collection-card--video {
+  background: #111;
+}
+
+.collection-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  transition: transform 0.6s ease;
+}
+
+.collection-card--video:hover .collection-video {
   transform: scale(1.05);
 }
 
