@@ -34,16 +34,19 @@ const STRIPE_PRODUCTS = {
   getzner: {
     unitPrice: 80,
     label: 'Bazin Getzner',
+    url: 'https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00',
   },
   meches: {
     unitPrice: 5,
     label: 'Mèches X-Pression Ultra Braid',
+    url: 'https://buy.stripe.com/4gY6oI2xx34Ycov5IVcAo0M',
   },
 };
 
 /**
  * URL de l'API qui crée la Checkout Session Stripe.
  * - Sur Netlify : chemins relatifs ci-dessous.
+ * - Sur GitHub Pages : repli automatique vers les Payment Links Stripe.
  * - Sinon : définir window.MARTEDER_STRIPE_CHECKOUT_URL avant main.js.
  */
 const STRIPE_CHECKOUT_API_URL =
@@ -471,6 +474,7 @@ function getStripeGroups() {
     if (!groups[key]) {
       groups[key] = {
         key,
+        url: STRIPE_PRODUCTS[key].url,
         label: STRIPE_PRODUCTS[key].label,
         unitPrice: STRIPE_PRODUCTS[key].unitPrice,
         quantity: 0,
@@ -726,14 +730,16 @@ function getSiteOriginPath() {
   }
 }
 
-async function createStripeCheckoutSession() {
+async function createStripeCheckoutSession(options = {}) {
   const plan = getStripePaymentPlan();
   if (!plan.canCheckout) {
     throw new Error(plan.note || 'Paiement Stripe indisponible pour ce panier.');
   }
 
-  const formError = validateCheckoutForm();
-  if (formError) throw new Error(formError);
+  if (!options.skipValidation) {
+    const formError = validateCheckoutForm();
+    if (formError) throw new Error(formError);
+  }
 
   const payload = buildCheckoutSessionPayload();
   if (!payload.items.length) {
@@ -773,7 +779,7 @@ async function createStripeCheckoutSession() {
       return data;
     }
 
-    if (response.status === 404) {
+    if (response.status === 404 || response.status === 405) {
       lastError = 'API de paiement introuvable sur ce déploiement.';
       continue;
     }
@@ -790,6 +796,65 @@ async function createStripeCheckoutSession() {
   throw new Error(lastError);
 }
 
+function buildStripeUrl(payment, email) {
+  try {
+    const base = payment?.url || STRIPE_PRODUCTS.getzner.url;
+    const params = new URLSearchParams();
+    if (email) params.set('prefilled_email', String(email));
+    const quantity = Number(payment?.quantity) || 1;
+    if (quantity > 1) params.set('quantity', String(quantity));
+    const query = params.toString();
+    return query ? `${base}?${query}` : base;
+  } catch (error) {
+    console.error('buildStripeUrl', error);
+    return STRIPE_PRODUCTS.getzner.url;
+  }
+}
+
+function resolveDirectStripeUrl(email) {
+  try {
+    const plan = getStripePaymentPlan();
+    const payments = Array.isArray(plan.payments) ? plan.payments : [];
+
+    if (payments.length === 0) {
+      return buildStripeUrl({ url: STRIPE_PRODUCTS.getzner.url, quantity: 1 }, email);
+    }
+
+    if (payments.length === 1) {
+      return buildStripeUrl(payments[0], email);
+    }
+
+    const preferred = payments.find((payment) => payment.key === 'getzner') || payments[0];
+    return buildStripeUrl(preferred, email);
+  } catch (error) {
+    console.error('resolveDirectStripeUrl', error);
+    return STRIPE_PRODUCTS.getzner.url;
+  }
+}
+
+function showCartPayError(message) {
+  const formError = document.getElementById('cartCheckoutFormError');
+  if (formError) {
+    formError.textContent = message || 'Paiement Stripe indisponible. Réessayez.';
+    formError.hidden = false;
+    formError.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  showToast(message);
+}
+
+function redirectToStripe(payUrl) {
+  const url = String(payUrl || '').trim() || resolveDirectStripeUrl(getCheckoutEmail());
+  if (!url) {
+    throw new Error('Lien de paiement Stripe introuvable.');
+  }
+  try {
+    window.location.href = url;
+  } catch (error) {
+    console.error('redirectToStripe', error);
+    window.location.assign(url);
+  }
+}
+
 function notifyOrderInBackground(payload) {
   try {
     fetch(FORMSUBMIT_URL, {
@@ -802,17 +867,6 @@ function notifyOrderInBackground(payload) {
     });
   } catch (error) {
     console.error('notifyOrderInBackground', error);
-  }
-}
-
-function redirectToStripe(payUrl) {
-  const url = payUrl;
-  if (!url) return;
-  try {
-    window.location.assign(url);
-  } catch (error) {
-    console.error('redirectToStripe', error);
-    window.location.href = url;
   }
 }
 
@@ -1324,11 +1378,32 @@ function initCartCheckout() {
   stripePayLink?.addEventListener('click', async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (cart.length === 0 || stripePayLink.classList.contains('is-disabled')) return;
+
+    // Réactive le bouton s'il était resté désactivé après une tentative précédente
+    if (stripePayLink.classList.contains('is-disabled') && cart.length > 0) {
+      const planCheck = getStripePaymentPlan();
+      if (planCheck.canCheckout) {
+        stripePayLink.classList.remove('is-disabled');
+        stripePayLink.removeAttribute('disabled');
+        stripePayLink.removeAttribute('aria-disabled');
+      }
+    }
+
+    if (cart.length === 0) return;
+    if (stripePayLink.classList.contains('is-disabled') || stripePayLink.hasAttribute('disabled')) {
+      return;
+    }
 
     const formError = validateCheckoutForm();
     if (formError) {
-      showToast(formError);
+      showCartPayError(formError);
+      return;
+    }
+
+    const customer = getCheckoutCustomer();
+    const plan = getStripePaymentPlan();
+    if (!plan.canCheckout) {
+      showCartPayError(plan.note || 'Paiement Stripe indisponible pour ce panier.');
       return;
     }
 
@@ -1337,38 +1412,58 @@ function initCartCheckout() {
     stripePayLink.setAttribute('disabled', 'disabled');
     stripePayLink.textContent = 'Redirection vers Stripe…';
 
+    // Sauvegarde immédiate des champs saisis au clic "Payer"
+    saveCheckoutCustomerSnapshot(customer, plan);
+
+    let payUrl = '';
+    let stripeSessionId = '';
+    let paymentMode = 'Stripe Payment Link';
+
     try {
-      const customer = getCheckoutCustomer();
-      const plan = getStripePaymentPlan();
-
-      // Sauvegarde immédiate des champs saisis au clic "Payer"
-      saveCheckoutCustomerSnapshot(customer, plan);
-
-      const session = await createStripeCheckoutSession();
-
-      // Notification boutique seulement après création réussie de la session
-      notifyOrderInBackground({
-        _subject: `Commande Marteder — ${formatPrice(plan.total)}`,
-        name: customer.name,
-        firstName: customer.firstName,
-        lastName: customer.lastName,
-        email: customer.email,
-        phone: customer.phone,
-        address: customer.address,
-        street: customer.street,
-        postal: customer.postal,
-        city: customer.city,
-        shipping: getShippingLabel(),
-        order: formatCartSummary(),
-        total: formatPrice(plan.total),
-        payment: 'Stripe Checkout Session',
-        stripe_session_id: session.id || '',
-      });
-
-      redirectToStripe(session.url);
+      const session = await createStripeCheckoutSession({ skipValidation: true });
+      if (session?.url) {
+        payUrl = session.url;
+        stripeSessionId = session.id || '';
+        paymentMode = 'Stripe Checkout Session';
+      }
     } catch (error) {
-      console.error('stripe checkout', error);
-      showToast(error.message || 'Paiement Stripe indisponible. Réessayez ou contactez-nous.');
+      console.warn('Checkout Session indisponible, repli Payment Link', error);
+    }
+
+    if (!payUrl) {
+      payUrl = resolveDirectStripeUrl(customer.email);
+    }
+
+    if (!payUrl) {
+      showCartPayError('Impossible d’ouvrir le paiement Stripe. Réessayez ou contactez-nous.');
+      stripePayLink.textContent = previousLabel;
+      updateStripePayLink();
+      return;
+    }
+
+    notifyOrderInBackground({
+      _subject: `Commande Marteder — ${formatPrice(plan.total)}`,
+      name: customer.name,
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      email: customer.email,
+      phone: customer.phone,
+      address: customer.address,
+      street: customer.street,
+      postal: customer.postal,
+      city: customer.city,
+      shipping: getShippingLabel(),
+      order: formatCartSummary(),
+      total: formatPrice(plan.total),
+      payment: paymentMode,
+      stripe_session_id: stripeSessionId,
+    });
+
+    try {
+      redirectToStripe(payUrl);
+    } catch (error) {
+      console.error('stripe redirect', error);
+      showCartPayError(error.message || 'Redirection Stripe impossible.');
       stripePayLink.textContent = previousLabel;
       updateStripePayLink();
     }
