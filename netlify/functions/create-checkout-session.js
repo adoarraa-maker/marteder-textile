@@ -138,8 +138,18 @@ exports.handler = async (event) => {
 
   const email = sanitizeText(body.email, 254);
   const name = sanitizeText(body.name, 120);
+  const firstName = sanitizeText(body.firstName, 60);
+  const lastName = sanitizeText(body.lastName, 60);
   const phone = sanitizeText(body.phone, 40);
-  const address = sanitizeText(body.address, 400);
+  const street = sanitizeText(body.street, 160);
+  const postal = sanitizeText(body.postal, 20);
+  const city = sanitizeText(body.city, 80);
+  const addressFromParts = [street, [postal, city].filter(Boolean).join(' ')]
+    .filter(Boolean)
+    .join(', ');
+  const address = sanitizeText(body.address || addressFromParts, 400);
+  const fullName =
+    name || [firstName, lastName].filter(Boolean).join(' ').trim();
   const shippingKey = sanitizeText(body.shipping, 20) || 'geneve';
   const shippingOption = SHIPPING[shippingKey] || SHIPPING.geneve;
   const origin = resolveOrigin(event, body);
@@ -151,12 +161,20 @@ exports.handler = async (event) => {
   params.set('cancel_url', `${origin}/index.html?checkout=cancel`);
   params.set('phone_number_collection[enabled]', 'true');
   if (email) params.set('customer_email', email);
-  params.set('metadata[customer_name]', name);
+  params.set('metadata[customer_name]', fullName);
+  params.set('metadata[customer_first_name]', firstName);
+  params.set('metadata[customer_last_name]', lastName);
   params.set('metadata[customer_phone]', phone);
+  params.set('metadata[customer_email]', email);
   params.set('metadata[customer_address]', address);
+  params.set('metadata[customer_street]', street);
+  params.set('metadata[customer_postal]', postal);
+  params.set('metadata[customer_city]', city);
   params.set('metadata[shipping]', shippingKey);
-  params.set('payment_intent_data[metadata][customer_name]', name);
+  params.set('payment_intent_data[metadata][customer_name]', fullName);
   params.set('payment_intent_data[metadata][customer_phone]', phone);
+  params.set('payment_intent_data[metadata][customer_email]', email);
+  params.set('payment_intent_data[metadata][customer_address]', address);
   params.set('payment_intent_data[metadata][shipping]', shippingKey);
 
   let itemCount = 0;

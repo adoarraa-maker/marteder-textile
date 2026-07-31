@@ -34,6 +34,9 @@
       <p class="confirmation-total" id="orderTotalLine" hidden>
         Total : <strong id="orderTotalValue">—</strong>
       </p>
+      <p class="confirmation-text" id="orderCustomerLine" hidden></p>
+      <p class="confirmation-text" id="orderContactLine" hidden></p>
+      <p class="confirmation-text" id="orderAddressLine" hidden></p>
       <p class="confirmation-text" id="orderShippingLine" hidden></p>
       <p class="confirmation-text" id="orderSummaryLine" hidden></p>
       <div class="confirmation-actions">
@@ -56,11 +59,17 @@
         const paid = params.get('paid') === '1' || params.has('session_id');
         const title = document.getElementById('confirmationTitle');
         const text = document.getElementById('confirmationText');
-        const orderRaw = sessionStorage.getItem('marteder-last-order');
+        const orderRaw =
+          sessionStorage.getItem('marteder-last-order') ||
+          sessionStorage.getItem('marteder-last-customer') ||
+          localStorage.getItem('marteder-last-customer');
         const totalLine = document.getElementById('orderTotalLine');
         const totalValue = document.getElementById('orderTotalValue');
         const summaryLine = document.getElementById('orderSummaryLine');
         const shippingLine = document.getElementById('orderShippingLine');
+        const customerLine = document.getElementById('orderCustomerLine');
+        const contactLine = document.getElementById('orderContactLine');
+        const addressLine = document.getElementById('orderAddressLine');
 
         if (paid) {
           if (title) title.textContent = 'Paiement confirmé';
@@ -80,6 +89,18 @@
           if (order.totalLabel && totalLine && totalValue) {
             totalValue.textContent = order.totalLabel;
             totalLine.hidden = false;
+          }
+          if (order.name && customerLine) {
+            customerLine.textContent = `Client : ${order.name}`;
+            customerLine.hidden = false;
+          }
+          if ((order.email || order.phone) && contactLine) {
+            contactLine.textContent = [order.email, order.phone].filter(Boolean).join(' · ');
+            contactLine.hidden = false;
+          }
+          if (order.address && addressLine) {
+            addressLine.textContent = `Adresse : ${order.address}`;
+            addressLine.hidden = false;
           }
           if (order.shippingLabel && shippingLine) {
             shippingLine.textContent = `Livraison : ${order.shippingLabel}`;

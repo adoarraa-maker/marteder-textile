@@ -548,25 +548,104 @@ function getCheckoutEmail() {
 }
 
 function getCheckoutCustomer() {
+  const lastName = document.getElementById('checkoutLastName')?.value?.trim() || '';
+  const firstName = document.getElementById('checkoutFirstName')?.value?.trim() || '';
+  const street = document.getElementById('checkoutStreet')?.value?.trim() || '';
+  const postal = document.getElementById('checkoutPostal')?.value?.trim() || '';
+  const city = document.getElementById('checkoutCity')?.value?.trim() || '';
+  const name = [firstName, lastName].filter(Boolean).join(' ').trim();
+  const address = [street, [postal, city].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+
   return {
-    name: document.getElementById('checkoutName')?.value?.trim() || '',
+    lastName,
+    firstName,
+    name,
     email: getCheckoutEmail(),
     phone: document.getElementById('checkoutPhone')?.value?.trim() || '',
-    address: document.getElementById('checkoutAddress')?.value?.trim() || '',
+    street,
+    postal,
+    city,
+    address,
     shipping: getSelectedShippingKey(),
   };
 }
 
-function validateCheckoutForm() {
-  const customer = getCheckoutCustomer();
-  if (!customer.name) return 'Indiquez votre nom complet.';
-  if (!customer.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email)) {
-    return 'Indiquez un e-mail valide.';
+const CHECKOUT_REQUIRED_FIELDS = [
+  { id: 'checkoutLastName', message: 'Veuillez remplir ce champ obligatoirement.' },
+  { id: 'checkoutFirstName', message: 'Veuillez remplir ce champ obligatoirement.' },
+  { id: 'checkoutEmail', message: 'Veuillez indiquer un e-mail valide.', type: 'email' },
+  { id: 'checkoutPhone', message: 'Veuillez remplir ce champ obligatoirement.' },
+  { id: 'checkoutStreet', message: 'Veuillez remplir ce champ obligatoirement.' },
+  { id: 'checkoutPostal', message: 'Veuillez remplir ce champ obligatoirement.' },
+  { id: 'checkoutCity', message: 'Veuillez remplir ce champ obligatoirement.' },
+  { id: 'checkoutShipping', message: 'Veuillez choisir un mode de livraison.' },
+];
+
+function clearCheckoutFieldErrors() {
+  const formError = document.getElementById('cartCheckoutFormError');
+  if (formError) {
+    formError.hidden = true;
+    formError.textContent = '';
   }
-  if (!customer.phone) return 'Indiquez votre téléphone.';
-  if (!customer.address) return 'Indiquez votre adresse de livraison.';
-  if (!customer.shipping) return 'Choisissez un mode de livraison.';
-  return '';
+
+  CHECKOUT_REQUIRED_FIELDS.forEach(({ id }) => {
+    const field = document.getElementById(id);
+    const error = document.getElementById(`${id}Error`);
+    field?.classList.remove('is-invalid');
+    field?.removeAttribute('aria-invalid');
+    if (error) error.hidden = true;
+  });
+}
+
+function markCheckoutFieldInvalid(id, message) {
+  const field = document.getElementById(id);
+  const error = document.getElementById(`${id}Error`);
+  field?.classList.add('is-invalid');
+  field?.setAttribute('aria-invalid', 'true');
+  if (error) {
+    if (message) error.textContent = message;
+    error.hidden = false;
+  }
+}
+
+function isCheckoutFieldValid(fieldConfig) {
+  const field = document.getElementById(fieldConfig.id);
+  if (!field) return true;
+  const value = String(field.value || '').trim();
+  if (!value) return false;
+  if (fieldConfig.type === 'email') {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+  return true;
+}
+
+function validateCheckoutForm() {
+  clearCheckoutFieldErrors();
+
+  let firstInvalidId = '';
+  let invalidCount = 0;
+
+  CHECKOUT_REQUIRED_FIELDS.forEach((fieldConfig) => {
+    if (!isCheckoutFieldValid(fieldConfig)) {
+      markCheckoutFieldInvalid(fieldConfig.id, fieldConfig.message);
+      invalidCount += 1;
+      if (!firstInvalidId) firstInvalidId = fieldConfig.id;
+    }
+  });
+
+  if (invalidCount === 0) return '';
+
+  const formError = document.getElementById('cartCheckoutFormError');
+  if (formError) {
+    formError.textContent =
+      invalidCount === 1
+        ? 'Veuillez remplir ce champ obligatoirement.'
+        : 'Veuillez remplir tous les champs obligatoires.';
+    formError.hidden = false;
+  }
+
+  document.getElementById(firstInvalidId)?.focus();
+  return formError?.textContent || 'Veuillez remplir tous les champs obligatoires.';
 }
 
 function buildCheckoutSessionPayload() {
@@ -587,11 +666,51 @@ function buildCheckoutSessionPayload() {
     items,
     email: customer.email,
     name: customer.name,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
     phone: customer.phone,
     address: customer.address,
+    street: customer.street,
+    postal: customer.postal,
+    city: customer.city,
     shipping: customer.shipping,
     origin: getSiteOriginPath(),
   };
+}
+
+function saveCheckoutCustomerSnapshot(customer, plan) {
+  const snapshot = {
+    savedAt: new Date().toISOString(),
+    name: customer.name || '',
+    firstName: customer.firstName || '',
+    lastName: customer.lastName || '',
+    email: customer.email || '',
+    phone: customer.phone || '',
+    address: customer.address || '',
+    street: customer.street || '',
+    postal: customer.postal || '',
+    city: customer.city || '',
+    shipping: customer.shipping || '',
+    shippingLabel: getShippingLabel(),
+    totalLabel: plan ? formatPrice(plan.total) : '',
+    order: formatCartSummary(),
+  };
+
+  try {
+    sessionStorage.setItem('marteder-last-order', JSON.stringify(snapshot));
+    sessionStorage.setItem('marteder-last-customer', JSON.stringify(snapshot));
+    sessionStorage.removeItem(STRIPE_PENDING_KEY);
+  } catch (error) {
+    console.error('sessionStorage order', error);
+  }
+
+  try {
+    localStorage.setItem('marteder-last-customer', JSON.stringify(snapshot));
+  } catch (error) {
+    console.error('localStorage customer', error);
+  }
+
+  return snapshot;
 }
 
 function getSiteOriginPath() {
@@ -621,20 +740,8 @@ async function createStripeCheckoutSession() {
     throw new Error('Aucun article payable en ligne dans le panier.');
   }
 
-  // Garde une copie locale pour la page de confirmation
-  try {
-    sessionStorage.setItem(
-      'marteder-last-order',
-      JSON.stringify({
-        totalLabel: formatPrice(plan.total),
-        shippingLabel: getShippingLabel(),
-        order: formatCartSummary(),
-      })
-    );
-    sessionStorage.removeItem(STRIPE_PENDING_KEY);
-  } catch (error) {
-    console.error('sessionStorage order', error);
-  }
+  // Sauvegarde locale des coordonnées avant redirection Stripe
+  saveCheckoutCustomerSnapshot(getCheckoutCustomer(), plan);
 
   let lastError = 'Impossible de créer le paiement Stripe.';
 
@@ -1216,6 +1323,7 @@ function initCartCheckout() {
 
   stripePayLink?.addEventListener('click', async (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (cart.length === 0 || stripePayLink.classList.contains('is-disabled')) return;
 
     const formError = validateCheckoutForm();
@@ -1232,15 +1340,24 @@ function initCartCheckout() {
     try {
       const customer = getCheckoutCustomer();
       const plan = getStripePaymentPlan();
+
+      // Sauvegarde immédiate des champs saisis au clic "Payer"
+      saveCheckoutCustomerSnapshot(customer, plan);
+
       const session = await createStripeCheckoutSession();
 
       // Notification boutique seulement après création réussie de la session
       notifyOrderInBackground({
         _subject: `Commande Marteder — ${formatPrice(plan.total)}`,
         name: customer.name,
+        firstName: customer.firstName,
+        lastName: customer.lastName,
         email: customer.email,
         phone: customer.phone,
         address: customer.address,
+        street: customer.street,
+        postal: customer.postal,
+        city: customer.city,
         shipping: getShippingLabel(),
         order: formatCartSummary(),
         total: formatPrice(plan.total),
@@ -1260,6 +1377,24 @@ function initCartCheckout() {
   checkoutForm.addEventListener('submit', (e) => {
     e.preventDefault();
     stripePayLink?.click();
+  });
+
+  CHECKOUT_REQUIRED_FIELDS.forEach(({ id }) => {
+    const field = document.getElementById(id);
+    if (!field) return;
+    const clearOnEdit = () => {
+      field.classList.remove('is-invalid');
+      field.removeAttribute('aria-invalid');
+      const error = document.getElementById(`${id}Error`);
+      if (error) error.hidden = true;
+      const formError = document.getElementById('cartCheckoutFormError');
+      if (formError && !checkoutForm.querySelector('.form-input.is-invalid')) {
+        formError.hidden = true;
+        formError.textContent = '';
+      }
+    };
+    field.addEventListener('input', clearOnEdit);
+    field.addEventListener('change', clearOnEdit);
   });
 }
 

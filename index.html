@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260723-checkout-session">
+  <link rel="stylesheet" href="css/styles.css?v=20260731-checkout-address">
   <link
     rel="preload"
     as="image"
@@ -145,22 +145,56 @@
           <p class="cart-checkout-note">Choisissez ensuite votre livraison et payez par carte (Stripe).</p>
           <form class="cart-checkout-form hidden" id="cartCheckoutForm" novalidate>
             <p class="cart-checkout-form-title">Coordonnées pour finaliser le paiement</p>
-            <label class="form-label" for="checkoutName">Nom complet</label>
-            <input class="form-input" type="text" id="checkoutName" name="name" required autocomplete="name">
-            <label class="form-label" for="checkoutEmail">E-mail</label>
-            <input class="form-input" type="email" id="checkoutEmail" name="email" required autocomplete="email">
-            <label class="form-label" for="checkoutPhone">Téléphone</label>
-            <input class="form-input" type="tel" id="checkoutPhone" name="phone" required autocomplete="tel">
-            <label class="form-label" for="checkoutAddress">Adresse de livraison</label>
-            <textarea class="form-input form-textarea" id="checkoutAddress" name="address" rows="3" required placeholder="Rue, numéro, NPA, ville, pays"></textarea>
+            <p class="cart-checkout-form-error" id="cartCheckoutFormError" hidden role="alert"></p>
 
-            <label class="form-label" for="checkoutShipping">Choix de la livraison</label>
-            <select class="form-input variant-select cart-shipping-select" id="checkoutShipping" name="shipping" required aria-label="Choix de la livraison">
+            <div class="form-field">
+              <label class="form-label" for="checkoutLastName">Nom</label>
+              <input class="form-input" type="text" id="checkoutLastName" name="lastName" required autocomplete="family-name" aria-required="true">
+              <p class="form-field-error" id="checkoutLastNameError" hidden>Veuillez remplir ce champ obligatoirement.</p>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="checkoutFirstName">Prénom</label>
+              <input class="form-input" type="text" id="checkoutFirstName" name="firstName" required autocomplete="given-name" aria-required="true">
+              <p class="form-field-error" id="checkoutFirstNameError" hidden>Veuillez remplir ce champ obligatoirement.</p>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="checkoutEmail">E-mail</label>
+              <input class="form-input" type="email" id="checkoutEmail" name="email" required autocomplete="email" aria-required="true">
+              <p class="form-field-error" id="checkoutEmailError" hidden>Veuillez indiquer un e-mail valide.</p>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="checkoutPhone">Téléphone</label>
+              <input class="form-input" type="tel" id="checkoutPhone" name="phone" required autocomplete="tel" aria-required="true">
+              <p class="form-field-error" id="checkoutPhoneError" hidden>Veuillez remplir ce champ obligatoirement.</p>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="checkoutStreet">Adresse (Rue et numéro)</label>
+              <input class="form-input" type="text" id="checkoutStreet" name="street" required autocomplete="street-address" aria-required="true" placeholder="Ex. Rue de la Golette 12">
+              <p class="form-field-error" id="checkoutStreetError" hidden>Veuillez remplir ce champ obligatoirement.</p>
+            </div>
+            <div class="form-row form-row--2">
+              <div class="form-field">
+                <label class="form-label" for="checkoutPostal">Code postal (NPA)</label>
+                <input class="form-input" type="text" id="checkoutPostal" name="postal" required autocomplete="postal-code" inputmode="numeric" aria-required="true" placeholder="Ex. 1217">
+                <p class="form-field-error" id="checkoutPostalError" hidden>Veuillez remplir ce champ obligatoirement.</p>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="checkoutCity">Ville</label>
+                <input class="form-input" type="text" id="checkoutCity" name="city" required autocomplete="address-level2" aria-required="true" placeholder="Ex. Meyrin">
+                <p class="form-field-error" id="checkoutCityError" hidden>Veuillez remplir ce champ obligatoirement.</p>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="checkoutShipping">Choix de la livraison</label>
+              <select class="form-input variant-select cart-shipping-select" id="checkoutShipping" name="shipping" required aria-label="Choix de la livraison" aria-required="true">
               <option value="geneve" selected>Livraison / Retrait sur Genève — GRATUIT (0 CHF)</option>
               <option value="suisse">Envoi postal en Suisse — 18.00 CHF (GRATUIT dès 3 articles)</option>
               <option value="europe">Envoi postal en Europe — 25.00 CHF</option>
               <option value="monde">Envoi postal Reste du monde — 35.00 CHF</option>
             </select>
+              <p class="form-field-error" id="checkoutShippingError" hidden>Veuillez choisir un mode de livraison.</p>
+            </div>
             <p class="cart-shipping-hint" id="cartShippingHint"></p>
 
             <p class="cart-panel-total cart-panel-total--final">
@@ -1387,6 +1421,6 @@
     ▲
   </button>
 
-  <script src="js/main.js?v=20260728-stripe-keycheck"></script>
+  <script src="js/main.js?v=20260731-checkout-save"></script>
 </body>
 </html>

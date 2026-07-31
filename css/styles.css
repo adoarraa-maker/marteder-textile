@@ -1610,6 +1610,44 @@ ul {
   margin-bottom: 0.25rem;
 }
 
+.cart-checkout-form-error {
+  margin: 0 0 0.5rem;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid #c62828;
+  border-radius: var(--radius-sm);
+  background: #fdecea;
+  color: #8a1f1f;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.cart-checkout-form .form-field {
+  margin-bottom: 0.35rem;
+}
+
+.cart-checkout-form .form-row--2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.form-field-error {
+  margin: 0.35rem 0 0;
+  color: #c62828;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.form-input.is-invalid {
+  border-color: #c62828;
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.14);
+}
+
+.form-input.is-invalid:focus {
+  border-color: #c62828;
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.18);
+}
+
 .cart-checkout-cancel {
   width: 100%;
   margin-top: 0.25rem;
@@ -3654,6 +3692,10 @@ ul {
 
   .hero-actions .btn {
     width: 100%;
+  }
+
+  .cart-checkout-form .form-row--2 {
+    grid-template-columns: 1fr;
   }
 }
 
