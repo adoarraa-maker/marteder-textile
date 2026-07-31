@@ -1,9 +1,16 @@
 const STORE_EMAIL = 'Adoarraa@gmail.com';
 const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${STORE_EMAIL}`;
-const CART_STORAGE_KEY = 'animosuisse-cart';
+const CART_STORAGE_KEY = 'marteder-cart';
 
-const OUT_OF_STOCK_PRODUCT_IDS = new Set();
-const OUT_OF_STOCK_NAMES = [];
+const OUT_OF_STOCK_PRODUCT_IDS = new Set(['1', '2', '7', '8', '9', '10']);
+const OUT_OF_STOCK_NAMES = [
+  'Bazin Riche Getzner Authentique (Schwer) – Lot de 5 Yards',
+  'Bazin riche doré brodé',
+  'Bazin Riche Getzner Brodé de Luxe',
+  'Foulard en bazin imprimé',
+  'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)',
+  'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
+];
 
 function isOutOfStockProduct(productId, productName) {
   if (productId != null && OUT_OF_STOCK_PRODUCT_IDS.has(String(productId))) return true;
@@ -18,10 +25,9 @@ function purgeOutOfStockFromCart() {
 }
 
 const products = {
-  'brosse-vapeur': { name: 'Brosse Vapeur 3-en-1 pour Chats et Chiens', price: 24.9 },
-  'gourde-multifonction': { name: 'Gourde Multifonction 3-en-1 (Eau, Croquettes & Sacs)', price: 19 },
-  'accessoire-chien-1': { name: 'Laisse Mains Libres avec Sac Banane (Poche Téléphone)', price: 29.9 },
-  'accessoire-chien-2': { name: 'Accessoire Chien - Modèle 2', price: 24.9 },
+  8: { name: 'Foulard en bazin imprimé', price: 35 },
+  9: { name: 'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)', price: 69 },
+  10: { name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)', price: 30 },
 };
 
 const STRIPE_PRODUCTS = {
@@ -53,90 +59,6 @@ const STRIPE_CHECKOUT_API_FALLBACKS = [
 const STRIPE_PENDING_KEY = 'marteder-stripe-pending';
 const TWINT_NUMBER = '+41 76 842 96 83';
 const WHATSAPP_ORDER = '41765761672';
-const WHATSAPP_ORDER_MESSAGE = 'Bonjour, je souhaite commander un article sur AnimoSuisse';
-
-const SHIPPING_OPTIONS = {
-  suisse: {
-    label: 'Suisse — Gratuit',
-    shortLabel: 'Suisse',
-    baseCost: 0,
-  },
-  europe: {
-    label: 'Europe',
-    shortLabel: 'Europe',
-    baseCost: 9.9,
-  },
-  monde: {
-    label: 'Reste du monde',
-    shortLabel: 'Reste du monde',
-    baseCost: 15,
-  },
-};
-
-function formatMoneyCHF(amount) {
-  return `${Number(amount).toFixed(2)} CHF`;
-}
-
-function getWhatsAppOrderUrl(message = WHATSAPP_ORDER_MESSAGE) {
-  return `https://wa.me/${WHATSAPP_ORDER}?text=${encodeURIComponent(message)}`;
-}
-
-function openWhatsAppOrder(message = WHATSAPP_ORDER_MESSAGE) {
-  window.open(getWhatsAppOrderUrl(message), '_blank', 'noopener,noreferrer');
-}
-
-function getShippingCostForZone(zoneKey, itemCount = 1) {
-  const option = SHIPPING_OPTIONS[zoneKey] || SHIPPING_OPTIONS.suisse;
-  if (option.freeFromItems && itemCount >= option.freeFromItems) return 0;
-  return option.baseCost;
-}
-
-function buildProductWhatsAppMessage(card) {
-  const name = card.dataset.productName || card.querySelector('.product-name')?.textContent?.trim() || 'Article AnimoSuisse';
-  const price = parseFloat(card.dataset.productPrice || '0') || 0;
-  const select = card.querySelector('[data-shipping-select]');
-  const zoneKey = select?.value || 'suisse';
-  const zone = SHIPPING_OPTIONS[zoneKey] || SHIPPING_OPTIONS.suisse;
-  const shipping = getShippingCostForZone(zoneKey, 1);
-  const total = price + shipping;
-  const shippingText = shipping === 0 ? 'Gratuite (0.00 CHF)' : formatMoneyCHF(shipping);
-
-  return [
-    'Bonjour, je souhaite commander sur AnimoSuisse :',
-    '',
-    `Article : ${name} — ${formatMoneyCHF(price)}`,
-    `Livraison : ${zone.shortLabel || zone.label} — ${shippingText}`,
-    `Total : ${formatMoneyCHF(total)}`,
-  ].join('\n');
-}
-
-function updateProductOrderSummary(card) {
-  const summary = card.querySelector('[data-order-summary]');
-  if (!summary) return;
-  const price = parseFloat(card.dataset.productPrice || '0') || 0;
-  const select = card.querySelector('[data-shipping-select]');
-  const zoneKey = select?.value || 'suisse';
-  const shipping = getShippingCostForZone(zoneKey, 1);
-  const total = price + shipping;
-  summary.innerHTML = `Produit ${formatMoneyCHF(price)} + livraison ${formatMoneyCHF(shipping)} = <strong>Total ${formatMoneyCHF(total)}</strong>`;
-}
-
-function initWhatsAppProductOrders() {
-  document.querySelectorAll('.product-card[data-product-price]').forEach((card) => {
-    updateProductOrderSummary(card);
-    const select = card.querySelector('[data-shipping-select]');
-    select?.addEventListener('change', () => updateProductOrderSummary(card));
-  });
-
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.btn-order-whatsapp');
-    if (!btn) return;
-    e.preventDefault();
-    const card = btn.closest('.product-card');
-    if (!card) return;
-    openWhatsAppOrder(buildProductWhatsAppMessage(card));
-  });
-}
 
 const TISSUS_SCHWER = 'images/tissus';
 
@@ -442,6 +364,26 @@ function filterProducts(category) {
   });
 }
 
+const SHIPPING_OPTIONS = {
+  geneve: {
+    label: 'Livraison / Retrait sur Genève',
+    baseCost: 0,
+  },
+  suisse: {
+    label: 'Envoi postal en Suisse',
+    baseCost: 18,
+    freeFromItems: 3,
+  },
+  europe: {
+    label: 'Envoi postal en Europe',
+    baseCost: 25,
+  },
+  monde: {
+    label: 'Envoi postal Reste du monde',
+    baseCost: 35,
+  },
+};
+
 function getCartItemCount() {
   return cart.reduce((sum, item) => sum + item.quantity, 0);
 }
@@ -456,7 +398,7 @@ function getCartTotal() {
 
 function getSelectedShippingKey() {
   const select = document.getElementById('checkoutShipping');
-  return select?.value || 'suisse';
+  return select?.value || 'geneve';
 }
 
 function getShippingCost(key = getSelectedShippingKey()) {
@@ -468,10 +410,13 @@ function getShippingCost(key = getSelectedShippingKey()) {
 
 function getShippingLabel(key = getSelectedShippingKey()) {
   const option = SHIPPING_OPTIONS[key];
-  if (!option) return 'Suisse — Gratuit';
+  if (!option) return 'Livraison / Retrait sur Genève — Gratuit';
   const cost = getShippingCost(key);
   if (cost === 0) {
-    return `${option.label}`;
+    if (key === 'suisse' && getCartItemCount() >= 3) {
+      return `${option.label} — GRATUIT (dès 3 articles)`;
+    }
+    return `${option.label} — GRATUIT`;
   }
   return `${option.label} — ${formatPrice(cost)}`;
 }
@@ -481,10 +426,14 @@ function updateShippingSelectLabels() {
   const hint = document.getElementById('cartShippingHint');
   if (!select) return;
 
+  const itemCount = getCartItemCount();
   const labels = {
-    suisse: 'Suisse — Gratuit (0.00 CHF)',
-    europe: 'Europe — 9.90 CHF',
-    monde: 'Reste du monde — 15.00 CHF',
+    geneve: 'Livraison / Retrait sur Genève — GRATUIT (0 CHF)',
+    suisse: itemCount >= 3
+      ? 'Envoi postal en Suisse — GRATUIT (dès 3 articles)'
+      : 'Envoi postal en Suisse — 18.00 CHF (GRATUIT dès 3 articles)',
+    europe: 'Envoi postal en Europe — 25.00 CHF',
+    monde: 'Envoi postal Reste du monde — 35.00 CHF',
   };
 
   Array.from(select.options).forEach((option) => {
@@ -492,8 +441,10 @@ function updateShippingSelectLabels() {
   });
 
   if (hint) {
-    if (select.value === 'suisse') {
-      hint.textContent = 'Livraison offerte en Suisse.';
+    if (select.value === 'suisse' && itemCount >= 3) {
+      hint.textContent = 'Livraison Suisse offerte : vous avez 3 articles ou plus.';
+    } else if (select.value === 'suisse') {
+      hint.textContent = `Ajoutez encore ${3 - itemCount} article(s) pour une livraison Suisse gratuite.`;
     } else {
       hint.textContent = '';
     }
@@ -973,7 +924,24 @@ function initCart() {
     if (!btn) return;
 
     e.preventDefault();
-    openWhatsAppOrder(WHATSAPP_ORDER_MESSAGE);
+    const id = btn.dataset.id;
+    if (isOutOfStockProduct(id)) {
+      showToast('Ce produit est en rupture de stock.');
+      return;
+    }
+    const product = products[id];
+    if (!product) return;
+
+    addToCart({
+      name: product.name,
+      displayName: product.name,
+      variantKey: null,
+      variantLabel: null,
+      variantType: null,
+      packNote: null,
+      price: product.price,
+      stripeProduct: null,
+    });
   });
 }
 
@@ -1299,18 +1267,18 @@ function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    openWhatsAppOrder(WHATSAPP_ORDER_MESSAGE);
-  });
-
-  const contactSubmit = form.querySelector('.contact-submit-btn');
-  if (contactSubmit) {
-    contactSubmit.addEventListener('click', (e) => {
-      e.preventDefault();
-      openWhatsAppOrder(WHATSAPP_ORDER_MESSAGE);
-    });
+  const nextInput = form.querySelector('input[name="_next"]');
+  if (nextInput && window.location.protocol !== 'file:') {
+    nextInput.value = new URL('contact-merci.html', window.location.href).href;
   }
+
+  form.addEventListener('submit', () => {
+    const btn = form.querySelector('.contact-submit-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours…';
+    }
+  });
 }
 
 function initNewsletter() {
@@ -1569,26 +1537,12 @@ function initProductLightbox() {
   });
 }
 
-function initHeroCoverSlideshow() {
-  const slides = Array.from(document.querySelectorAll('.hero-cover-slide'));
-  if (slides.length < 2) return;
-  let index = slides.findIndex((slide) => slide.classList.contains('is-active'));
-  if (index < 0) index = 0;
-
-  setInterval(() => {
-    slides[index].classList.remove('is-active');
-    index = (index + 1) % slides.length;
-    slides[index].classList.add('is-active');
-  }, 5500);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   purgeOutOfStockFromCart();
   renderCart();
   initCart();
   initCartPanel();
   initCartCheckout();
-  initWhatsAppProductOrders();
   initContactForm();
   initFabricVariants();
   initMecheVariant();
@@ -1600,7 +1554,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initBackToTop();
   initNewsletter();
-  initHeroCoverSlideshow();
 
   try {
     const params = new URLSearchParams(window.location.search);
