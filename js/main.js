@@ -43,19 +43,44 @@ const STRIPE_PRODUCTS = {
 
 /**
  * URL de l'API qui crée la Checkout Session Stripe (panier complet).
- * - Sur Netlify : chemins relatifs ci-dessous.
- * - Sinon : définir window.MARTEDER_STRIPE_CHECKOUT_URL avant main.js
- *   (ex. URL absolue d'une Function Netlify / Worker).
+ * - Hébergé sur Netlify : chemins relatifs /.netlify/functions/...
+ * - Hébergé sur GitHub Pages : window.MARTEDER_STRIPE_CHECKOUT_URL
+ *   (voir js/stripe-config.js) vers l’URL absolue Netlify.
  */
+function isGitHubPagesHost() {
+  try {
+    return /\.github\.io$/i.test(window.location.hostname);
+  } catch {
+    return false;
+  }
+}
+
+function getConfiguredCheckoutApiUrl() {
+  return String(window.MARTEDER_STRIPE_CHECKOUT_URL || '').trim();
+}
+
 const STRIPE_CHECKOUT_API_URL =
-  window.MARTEDER_STRIPE_CHECKOUT_URL ||
+  getConfiguredCheckoutApiUrl() ||
   '/.netlify/functions/create-checkout-session';
 
-const STRIPE_CHECKOUT_API_FALLBACKS = [
-  STRIPE_CHECKOUT_API_URL,
-  '/api/create-checkout-session',
-  '/.netlify/functions/create-checkout-session',
-].filter((url, index, list) => url && list.indexOf(url) === index);
+function getStripeCheckoutApiFallbacks() {
+  const list = [];
+  const configured = getConfiguredCheckoutApiUrl();
+  if (configured) list.push(configured);
+
+  // Sur GitHub Pages, les chemins Netlify relatifs ne marchent jamais.
+  if (!isGitHubPagesHost()) {
+    list.push('/.netlify/functions/create-checkout-session');
+    list.push('/api/create-checkout-session');
+  }
+
+  // Toujours tenter aussi l’URL relative si l’hôte n’est pas GH Pages
+  if (STRIPE_CHECKOUT_API_URL && !list.includes(STRIPE_CHECKOUT_API_URL)) {
+    list.unshift(STRIPE_CHECKOUT_API_URL);
+  }
+
+  return list.filter((url, index, arr) => url && arr.indexOf(url) === index);
+}
 
 const STRIPE_PENDING_KEY = 'marteder-stripe-pending';
 const TWINT_NUMBER = '+41 76 842 96 83';
@@ -673,6 +698,7 @@ function buildCheckoutSessionPayload() {
 
   return {
     items: Object.values(merged),
+    shop: 'marteder',
     email: customer.email,
     name: customer.name,
     firstName: customer.firstName,
@@ -756,7 +782,7 @@ async function createStripeCheckoutSession(options = {}) {
 
   let lastError = 'Impossible de créer le paiement Stripe.';
 
-  for (const endpoint of STRIPE_CHECKOUT_API_FALLBACKS) {
+  for (const endpoint of getStripeCheckoutApiFallbacks()) {
     let response;
     try {
       response = await fetch(endpoint, {
