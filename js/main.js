@@ -34,20 +34,18 @@ const STRIPE_PRODUCTS = {
   getzner: {
     unitPrice: 80,
     label: 'Bazin Getzner',
-    url: 'https://buy.stripe.com/aFa5kEebfgzK4W39YLcAo00',
   },
   meches: {
     unitPrice: 5,
     label: 'Mèches X-Pression Ultra Braid',
-    url: 'https://buy.stripe.com/4gY6oI2xx34Ycov5IVcAo0M',
   },
 };
 
 /**
- * URL de l'API qui crée la Checkout Session Stripe.
+ * URL de l'API qui crée la Checkout Session Stripe (panier complet).
  * - Sur Netlify : chemins relatifs ci-dessous.
- * - Sur GitHub Pages : repli automatique vers les Payment Links Stripe.
- * - Sinon : définir window.MARTEDER_STRIPE_CHECKOUT_URL avant main.js.
+ * - Sinon : définir window.MARTEDER_STRIPE_CHECKOUT_URL avant main.js
+ *   (ex. URL absolue d'une Function Netlify / Worker).
  */
 const STRIPE_CHECKOUT_API_URL =
   window.MARTEDER_STRIPE_CHECKOUT_URL ||
@@ -474,7 +472,6 @@ function getStripeGroups() {
     if (!groups[key]) {
       groups[key] = {
         key,
-        url: STRIPE_PRODUCTS[key].url,
         label: STRIPE_PRODUCTS[key].label,
         unitPrice: STRIPE_PRODUCTS[key].unitPrice,
         quantity: 0,
@@ -654,20 +651,28 @@ function validateCheckoutForm() {
 
 function buildCheckoutSessionPayload() {
   const customer = getCheckoutCustomer();
-  const items = cart
-    .map((rawItem) => {
-      const item = normalizeCartItem(rawItem);
-      return {
-        productKey: item.stripeProduct,
-        quantity: item.quantity,
-        variantLabel: item.variantLabel || '',
+  // Fusionne les lignes identiques (même produit + variante) pour Stripe
+  const merged = {};
+  cart.forEach((rawItem) => {
+    const item = normalizeCartItem(rawItem);
+    const productKey = item.stripeProduct;
+    if (!productKey || !STRIPE_PRODUCTS[productKey]) return;
+
+    const variantLabel = item.variantLabel || '';
+    const mergeKey = `${productKey}::${variantLabel}`;
+    if (!merged[mergeKey]) {
+      merged[mergeKey] = {
+        productKey,
+        quantity: 0,
+        variantLabel,
         name: item.displayName || item.name,
       };
-    })
-    .filter((item) => item.productKey && STRIPE_PRODUCTS[item.productKey]);
+    }
+    merged[mergeKey].quantity += Math.max(1, Math.round(Number(item.quantity) || 0));
+  });
 
   return {
-    items,
+    items: Object.values(merged),
     email: customer.email,
     name: customer.name,
     firstName: customer.firstName,
@@ -780,7 +785,8 @@ async function createStripeCheckoutSession(options = {}) {
     }
 
     if (response.status === 404 || response.status === 405) {
-      lastError = 'API de paiement introuvable sur ce déploiement.';
+      lastError =
+        'API de paiement introuvable. Déployez le site sur Netlify (function create-checkout-session) ou définissez window.MARTEDER_STRIPE_CHECKOUT_URL.';
       continue;
     }
 
@@ -796,42 +802,6 @@ async function createStripeCheckoutSession(options = {}) {
   throw new Error(lastError);
 }
 
-function buildStripeUrl(payment, email) {
-  try {
-    const base = payment?.url || STRIPE_PRODUCTS.getzner.url;
-    const params = new URLSearchParams();
-    if (email) params.set('prefilled_email', String(email));
-    const quantity = Number(payment?.quantity) || 1;
-    if (quantity > 1) params.set('quantity', String(quantity));
-    const query = params.toString();
-    return query ? `${base}?${query}` : base;
-  } catch (error) {
-    console.error('buildStripeUrl', error);
-    return STRIPE_PRODUCTS.getzner.url;
-  }
-}
-
-function resolveDirectStripeUrl(email) {
-  try {
-    const plan = getStripePaymentPlan();
-    const payments = Array.isArray(plan.payments) ? plan.payments : [];
-
-    if (payments.length === 0) {
-      return buildStripeUrl({ url: STRIPE_PRODUCTS.getzner.url, quantity: 1 }, email);
-    }
-
-    if (payments.length === 1) {
-      return buildStripeUrl(payments[0], email);
-    }
-
-    const preferred = payments.find((payment) => payment.key === 'getzner') || payments[0];
-    return buildStripeUrl(preferred, email);
-  } catch (error) {
-    console.error('resolveDirectStripeUrl', error);
-    return STRIPE_PRODUCTS.getzner.url;
-  }
-}
-
 function showCartPayError(message) {
   const formError = document.getElementById('cartCheckoutFormError');
   if (formError) {
@@ -843,9 +813,9 @@ function showCartPayError(message) {
 }
 
 function redirectToStripe(payUrl) {
-  const url = String(payUrl || '').trim() || resolveDirectStripeUrl(getCheckoutEmail());
+  const url = String(payUrl || '').trim();
   if (!url) {
-    throw new Error('Lien de paiement Stripe introuvable.');
+    throw new Error('Session de paiement Stripe introuvable.');
   }
   try {
     window.location.href = url;
@@ -1417,25 +1387,27 @@ function initCartCheckout() {
 
     let payUrl = '';
     let stripeSessionId = '';
-    let paymentMode = 'Stripe Payment Link';
+    let paymentMode = 'Stripe Checkout Session';
+    let checkoutError = '';
 
     try {
       const session = await createStripeCheckoutSession({ skipValidation: true });
       if (session?.url) {
         payUrl = session.url;
         stripeSessionId = session.id || '';
-        paymentMode = 'Stripe Checkout Session';
+      } else {
+        checkoutError = 'Réponse Stripe invalide (URL manquante).';
       }
     } catch (error) {
-      console.warn('Checkout Session indisponible, repli Payment Link', error);
+      checkoutError = error?.message || 'Impossible de créer la session Stripe.';
+      console.error('Checkout Session', error);
     }
 
     if (!payUrl) {
-      payUrl = resolveDirectStripeUrl(customer.email);
-    }
-
-    if (!payUrl) {
-      showCartPayError('Impossible d’ouvrir le paiement Stripe. Réessayez ou contactez-nous.');
+      showCartPayError(
+        checkoutError ||
+          'Impossible d’ouvrir le paiement Stripe. Vérifiez le déploiement Netlify et STRIPE_SECRET_KEY.'
+      );
       stripePayLink.textContent = previousLabel;
       updateStripePayLink();
       return;

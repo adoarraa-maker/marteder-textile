@@ -131,7 +131,34 @@ exports.handler = async (event) => {
     return json(400, { error: 'JSON invalide' });
   }
 
-  const items = Array.isArray(body.items) ? body.items : [];
+  const rawItems = Array.isArray(body.items) ? body.items : [];
+  if (rawItems.length === 0) {
+    return json(400, { error: 'Panier vide' });
+  }
+
+  // Fusionne les lignes identiques (même produit + variante) pour un panier multi-articles fiable
+  const mergedLines = {};
+  for (const raw of rawItems) {
+    const productKey = sanitizeText(raw.productKey, 40);
+    if (!CATALOG[productKey]) {
+      return json(400, { error: `Produit non autorisé : ${productKey || '?'}` });
+    }
+    const quantity = Math.min(99, Math.max(0, Math.round(Number(raw.quantity) || 0)));
+    if (!quantity) {
+      return json(400, { error: `Quantité invalide pour ${productKey}` });
+    }
+    const variantLabel = sanitizeText(raw.variantLabel, 120);
+    const mergeKey = `${productKey}::${variantLabel}`;
+    if (!mergedLines[mergeKey]) {
+      mergedLines[mergeKey] = { productKey, variantLabel, quantity: 0 };
+    }
+    mergedLines[mergeKey].quantity = Math.min(
+      99,
+      mergedLines[mergeKey].quantity + quantity
+    );
+  }
+
+  const items = Object.values(mergedLines);
   if (items.length === 0) {
     return json(400, { error: 'Panier vide' });
   }
@@ -180,25 +207,14 @@ exports.handler = async (event) => {
   let itemCount = 0;
   let lineIndex = 0;
 
-  for (const raw of items) {
-    const productKey = sanitizeText(raw.productKey, 40);
-    const catalogItem = CATALOG[productKey];
-    if (!catalogItem) {
-      return json(400, { error: `Produit non autorisé : ${productKey || '?'}` });
-    }
-
-    const quantity = Math.min(99, Math.max(1, Math.round(Number(raw.quantity) || 0)));
-    if (!quantity) {
-      return json(400, { error: `Quantité invalide pour ${productKey}` });
-    }
-
-    itemCount += quantity;
-    const variantLabel = sanitizeText(raw.variantLabel, 120);
-    const productName = variantLabel
-      ? `${catalogItem.name} — ${variantLabel}`
+  for (const line of items) {
+    const catalogItem = CATALOG[line.productKey];
+    itemCount += line.quantity;
+    const productName = line.variantLabel
+      ? `${catalogItem.name} — ${line.variantLabel}`
       : catalogItem.name;
 
-    params.set(`line_items[${lineIndex}][quantity]`, String(quantity));
+    params.set(`line_items[${lineIndex}][quantity]`, String(line.quantity));
     params.set(`line_items[${lineIndex}][price_data][currency]`, 'chf');
     params.set(
       `line_items[${lineIndex}][price_data][unit_amount]`,
@@ -207,12 +223,12 @@ exports.handler = async (event) => {
     params.set(`line_items[${lineIndex}][price_data][product_data][name]`, productName);
     params.set(
       `line_items[${lineIndex}][price_data][product_data][metadata][product_key]`,
-      productKey
+      line.productKey
     );
-    if (variantLabel) {
+    if (line.variantLabel) {
       params.set(
         `line_items[${lineIndex}][price_data][product_data][metadata][variant]`,
-        variantLabel
+        line.variantLabel
       );
     }
     lineIndex += 1;
