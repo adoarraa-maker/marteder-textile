@@ -17,6 +17,10 @@ const CATALOG = {
     name: 'Mèches X-Pression Ultra Braid',
     unitAmountCents: 500,
   },
+  okady: {
+    name: 'Coffret Soin Visage OKADY Pearl (7 pièces)',
+    unitAmountCents: 6900,
+  },
 };
 
 const SHIPPING = {

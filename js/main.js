@@ -2,13 +2,12 @@ const STORE_EMAIL = 'Adoarraa@gmail.com';
 const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${STORE_EMAIL}`;
 const CART_STORAGE_KEY = 'marteder-cart';
 
-const OUT_OF_STOCK_PRODUCT_IDS = new Set(['1', '2', '7', '8', '9', '10']);
+const OUT_OF_STOCK_PRODUCT_IDS = new Set(['1', '2', '7', '8', '10']);
 const OUT_OF_STOCK_NAMES = [
   'Bazin Riche Getzner Authentique (Schwer) – Lot de 5 Yards',
   'Bazin riche doré brodé',
   'Bazin Riche Getzner Brodé de Luxe',
   'Foulard en bazin imprimé',
-  'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)',
   'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
 ];
 
@@ -26,7 +25,11 @@ function purgeOutOfStockFromCart() {
 
 const products = {
   8: { name: 'Foulard en bazin imprimé', price: 35 },
-  9: { name: 'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)', price: 69 },
+  9: {
+    name: 'Coffret Soin Visage OKADY Pearl – Rituel Éclat & Anti-Âge (7 pièces)',
+    price: 69,
+    stripeProduct: 'okady',
+  },
   10: { name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)', price: 30 },
 };
 
@@ -38,6 +41,10 @@ const STRIPE_PRODUCTS = {
   meches: {
     unitPrice: 5,
     label: 'Mèches X-Pression Ultra Braid',
+  },
+  okady: {
+    unitPrice: 69,
+    label: 'Coffret OKADY Pearl',
   },
 };
 
@@ -484,6 +491,9 @@ function normalizeCartItem(item) {
   }
   if (item.name === mecheProductName || item.price === 5) {
     return { ...item, stripeProduct: 'meches' };
+  }
+  if (item.name && String(item.name).includes('OKADY Pearl')) {
+    return { ...item, stripeProduct: 'okady' };
   }
   return { ...item, stripeProduct: null };
 }
@@ -1097,7 +1107,7 @@ function initCart() {
       variantType: null,
       packNote: null,
       price: product.price,
-      stripeProduct: null,
+      stripeProduct: product.stripeProduct || null,
     });
   });
 }

@@ -12,6 +12,7 @@
 const CATALOG = {
   getzner: { name: 'Bazin Getzner (Lot de 5 yards)', unitAmountCents: 8000 },
   meches: { name: 'Mèches X-Pression Ultra Braid', unitAmountCents: 500 },
+  okady: { name: 'Coffret Soin Visage OKADY Pearl (7 pièces)', unitAmountCents: 6900 },
 };
 
 const SHIPPING = {
