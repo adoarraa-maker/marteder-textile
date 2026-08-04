@@ -27,6 +27,7 @@
 
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --header-height: 72px;
+  --top-banner-height: 2.75rem;
 }
 
 *, *::before, *::after {
@@ -147,10 +148,57 @@ ul {
   transform: translateY(-2px);
 }
 
+/* ---- Top announcement banner ---- */
+.top-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 110;
+  background-color: #8b1e3f;
+  color: #fff;
+  text-align: center;
+  padding: 0.65rem 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+.top-banner a {
+  color: #ffd700;
+  text-decoration: underline;
+  margin-left: 0.65rem;
+  white-space: nowrap;
+}
+
+.top-banner a:hover {
+  color: #ffe566;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --top-banner-height: 3.75rem;
+  }
+
+  .top-banner {
+    font-size: 0.8rem;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .top-banner a {
+    display: inline-block;
+    margin-left: 0.35rem;
+    margin-top: 0.15rem;
+    white-space: normal;
+  }
+}
+
 /* ---- Header ---- */
 .header {
   position: fixed;
-  top: 0;
+  top: var(--top-banner-height);
   left: 0;
   right: 0;
   z-index: 100;
@@ -343,7 +391,7 @@ ul {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding-top: var(--header-height);
+  padding-top: calc(var(--header-height) + var(--top-banner-height));
   overflow: hidden;
 }
 
@@ -942,6 +990,10 @@ ul {
 
 .product-card--care .product-image {
   object-position: center;
+}
+
+#okady {
+  scroll-margin-top: calc(var(--header-height) + var(--top-banner-height) + 1rem);
 }
 
 .product-detail-block {
@@ -3519,7 +3571,7 @@ ul {
 @media (max-width: 768px) {
   .nav-links {
     position: fixed;
-    top: var(--header-height);
+    top: calc(var(--header-height) + var(--top-banner-height));
     left: 0;
     right: 0;
     background: var(--color-bg);
