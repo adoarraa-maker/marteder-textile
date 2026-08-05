@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Marteder Textile — Bazin Getzner, tissus wax africains de luxe et extensions French Curls à Meyrin, Genève.">
+  <meta name="description" content="Marteder Textile — Bazin Getzner, tissus wax africains de luxe, mèches X-Pression et extensions French Curls à Meyrin, Genève.">
   <meta name="google-site-verification" content="h5BlgO8CKe4C0uGJOctm-luuIMi0fmcjPRbhF5nYBcI">
   <title>Marteder Textile — Accueil</title>
   <script type="application/ld+json">
@@ -24,6 +24,24 @@
         "price": "80.00",
         "availability": "https://schema.org/InStock",
         "url": "https://adoarraa-maker.github.io/marteder-textile/#articles"
+      }
+    },
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Mèches X-Pression Ultra Braid",
+      "image": "https://adoarraa-maker.github.io/marteder-textile/xpression-paquets-propres.png",
+      "description": "Mèches de coiffure X-Pression de qualité supérieure chez Marteder Textile.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Marteder Textile"
+      },
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "CHF",
+        "price": "5.00",
+        "availability": "https://schema.org/InStock",
+        "url": "https://adoarraa-maker.github.io/marteder-textile/#meches"
       }
     },
     {
@@ -380,9 +398,7 @@
           <button class="filter-btn active" data-filter="all">Tous</button>
           <button class="filter-btn" data-filter="bazin">Bazin Getzner</button>
           <button class="filter-btn" data-filter="soins">Soins visage</button>
-          <button class="filter-btn" data-filter="brodes">Broderies</button>
-          <button class="filter-btn" data-filter="meches" data-scroll="#meches">Mèches</button>
-          <button class="filter-btn" data-filter="accessoires">Accessoires</button>
+          <button class="filter-btn" data-filter="meches" data-scroll="#articles">Mèches</button>
         </div>
 
         <div class="products-grid" id="productsGrid">
@@ -619,90 +635,8 @@
             </div>
           </article>
 
-          <!-- Broderies -->
-          <article class="product-card product-card--fabric is-out-of-stock" data-category="brodes" data-product-id="7">
-            <div class="product-image-wrap">
-              <img class="product-image" src="https://images.unsplash.com/photo-1777148783728-510bbeeba075?w=800&q=85" alt="Bazin Riche Getzner Brodé de Luxe — Or" loading="lazy">
-              <span class="product-badge sold-out">Rupture de stock</span>
-            </div>
-            <div class="product-info">
-              <p class="product-category">Broderies</p>
-              <h3 class="product-name">Bazin Riche Getzner Brodé de Luxe</h3>
-              <p class="product-description">Tissu riche, lourd et structuré avec broderies fines pour grandes cérémonies.</p>
-              <div class="product-price">
-                <span class="current">165 CHF</span>
-                <span class="original">195 CHF</span>
-              </div>
-              <div class="fabric-variants">
-                <span class="variant-label">Choisir le modèle</span>
-                <div class="fabric-swatch-list" role="listbox" aria-label="Modèles bazin brodé de luxe">
-                  <button type="button" class="fabric-swatch active" data-variant="brode-or" title="Broderie or" aria-label="Broderie or">
-                    <img src="https://images.unsplash.com/photo-1777148783728-510bbeeba075?w=120&q=80" alt="">
-                    <span class="fabric-swatch-name">Or</span>
-                  </button>
-                  <button type="button" class="fabric-swatch" data-variant="brode-blanc" title="Broderie blanc &amp; or" aria-label="Broderie blanc et or">
-                    <img src="https://images.unsplash.com/photo-1744502671977-702d9105533d?w=120&q=80" alt="">
-                    <span class="fabric-swatch-name">Blanc &amp; or</span>
-                  </button>
-                  <button type="button" class="fabric-swatch" data-variant="brode-violet" title="Broderie violet" aria-label="Broderie violet">
-                    <img src="https://images.unsplash.com/photo-1607300110843-b3994a493d98?w=120&q=80" alt="">
-                    <span class="fabric-swatch-name">Violet</span>
-                  </button>
-                </div>
-                <select class="variant-select fabric-variant-select" aria-label="Choisir le modèle bazin brodé">
-                  <option value="brode-or" selected>Broderie or</option>
-                  <option value="brode-blanc">Broderie blanc &amp; or</option>
-                  <option value="brode-violet">Broderie violet</option>
-                </select>
-                <p class="variant-selected fabric-variant-preview">Modèle sélectionné : <strong>Broderie or</strong></p>
-              </div>
-              <div class="product-order-actions">
-                <button type="button" class="btn btn-stock-out" disabled aria-disabled="true">Stock épuisé</button>
-              </div>
-            </div>
-          </article>
-
-          <!-- Accessoires -->
-          <article class="product-card is-out-of-stock" data-category="accessoires" data-product-id="8">
-            <div class="product-image-wrap">
-              <img class="product-image" src="https://images.unsplash.com/photo-1768212566108-4ce4f329e4d2?w=800&q=85" alt="Foulard en bazin imprimé" loading="lazy">
-              <span class="product-badge sold-out">Rupture de stock</span>
-            </div>
-            <div class="product-info">
-              <p class="product-category">Accessoires</p>
-              <h3 class="product-name">Foulard en bazin imprimé</h3>
-              <p class="product-description">Foulard léger en bazin imprimé, idéal pour accessoiriser vos tenues.</p>
-              <div class="product-price"><span class="current">35 CHF</span></div>
-              <div class="product-order-actions">
-                <button type="button" class="btn btn-stock-out" disabled aria-disabled="true">Stock épuisé</button>
-              </div>
-            </div>
-          </article>
-
-        </div>
-
-        <div class="products-footer">
-          <a href="#" class="btn btn-outline">Voir tout le catalogue</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Mèches French Curls -->
-    <section class="meches" id="meches">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <span class="section-label">Coiffure</span>
-            <h2 class="section-title">Extensions French Curls</h2>
-          </div>
-          <p class="section-desc">
-            Extensions de cheveux tressés frisés — French Curls 24 pouces / 150g.
-            Parcourez la galerie pour découvrir tous les modèles et coloris.
-          </p>
-        </div>
-
-        <div class="meches-grid meches-grid--single">
-          <article class="meche-card" id="mecheProduct">
+          <!-- French Curls -->
+          <article class="product-card product-card--french-curls meche-card" id="mecheProduct" data-category="meches">
             <div class="meche-image-wrap product-zoom-wrap">
               <button
                 type="button"
@@ -766,6 +700,124 @@
                     </span>
                   </div>
                   <p class="payment-methods-note">Paiement sécurisé par Carte Bancaire, Apple Pay et PayPal (Stripe)</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="products-footer">
+          <a href="#" class="btn btn-outline">Voir tout le catalogue</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mèches X-Pression -->
+    <section class="meches" id="meches">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <span class="section-label">Coiffure</span>
+            <h2 class="section-title">Mèches X-Pression Ultra Braid</h2>
+          </div>
+          <p class="section-desc">
+            Mèches synthétiques premium pour tresses et coiffures protectrices.
+            Qualité X-Pression, disponibles en plusieurs teintes — 5.00&nbsp;CHF le paquet.
+          </p>
+        </div>
+
+        <div class="meches-grid meches-grid--single">
+          <article class="meche-card" id="xpressionProduct">
+            <div class="meche-image-wrap product-zoom-wrap">
+              <button
+                type="button"
+                class="product-zoom-trigger"
+                id="xpressionMainZoom"
+                data-product-zoom
+                data-product-gallery="xpression"
+                data-gallery-index="0"
+                data-image-key="clean"
+                data-caption="X-Pression Ultra Braid — trois paquets"
+                aria-label="Agrandir la photo principale des paquets X-Pression Ultra Braid"
+              >
+                <img
+                  id="xpressionVariantImage"
+                  class="is-pack-shot"
+                  src="xpression-paquets-propres.png?v=20260721-gallery"
+                  alt="Trois paquets propres de mèches X-Pression Ultra Braid noires"
+                  loading="lazy"
+                >
+                <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+              </button>
+            </div>
+            <div class="meche-gallery" role="group" aria-label="Galerie photos mèches X-Pression">
+              <div class="meche-gallery-row">
+                <button type="button" class="meche-thumb" data-image-key="portrait" data-product-zoom data-product-gallery="xpression" data-gallery-index="1" data-caption="X-Pression Ultra Braid — coiffure portée" aria-label="Agrandir la photo du modèle avec coiffure portée">
+                  <img src="https://images.unsplash.com/photo-1763256377889-c4e85bdd1a6c?w=240&q=85" alt="Modèle avec coiffure X-Pression portée">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+                </button>
+                <button type="button" class="meche-thumb" data-image-key="closeup" data-product-zoom data-product-gallery="xpression" data-gallery-index="2" data-caption="X-Pression Ultra Braid — gros plan des mèches" aria-label="Agrandir le gros plan sur les mèches">
+                  <img src="https://images.unsplash.com/photo-1759756655332-d66200497312?w=240&q=85" alt="Gros plan sur les mèches X-Pression">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+                </button>
+                <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack1b" data-product-zoom data-product-gallery="xpression" data-gallery-index="3" data-caption="X-Pression Ultra Braid — paquet teinte 1B" aria-label="Agrandir le paquet teinte 1B — Noir naturel">
+                  <img src="images/meches/xpression-pack-1b.jpg" alt="Paquet X-Pression teinte 1B">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+                </button>
+                <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack350" data-product-zoom data-product-gallery="xpression" data-gallery-index="4" data-caption="X-Pression Ultra Braid — paquet teinte 350" aria-label="Agrandir le paquet teinte 350 — Cuivré Roux">
+                  <img src="images/meches/xpression-pack-350.jpg" alt="Paquet X-Pression teinte 350">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+                </button>
+                <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack2" data-product-zoom data-product-gallery="xpression" data-gallery-index="5" data-caption="X-Pression Ultra Braid — paquet teinte 2" aria-label="Agrandir le paquet teinte 2 — Brun foncé">
+                  <img src="images/meches/xpression-pack-2-brun.jpg" alt="Paquet X-Pression teinte 2 Brun foncé">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+                </button>
+                <button type="button" class="meche-thumb" data-image-key="color1" data-product-zoom data-product-gallery="xpression" data-gallery-index="6" data-caption="X-Pression Ultra Braid — coque Color 1" aria-label="Agrandir la coque Color 1">
+                  <img src="xpression-color-1.png" alt="Coque de mèches X-Pression Color 1">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+                </button>
+                <button type="button" class="meche-thumb" data-image-key="color1b" data-product-zoom data-product-gallery="xpression" data-gallery-index="7" data-caption="X-Pression Ultra Braid — coque Color 1B" aria-label="Agrandir la coque Color 1B">
+                  <img src="xpression-color-1b.png" alt="Coque de mèches X-Pression Color 1B">
+                  <span class="product-zoom-icon" aria-hidden="true">⌕</span>
+                </button>
+              </div>
+              <p class="meche-gallery-caption">Coiffure portée · Gros plan · Paquets produit · Coques Color 1 et Color 1B</p>
+            </div>
+            <div class="meche-info">
+              <p class="product-category">Mèches</p>
+              <h3 class="product-name">X-Pression Ultra Braid</h3>
+              <p class="product-description">
+                Mèches synthétiques premium pour tresses et coiffures protectrices. Choisissez votre teinte ci-dessous.
+              </p>
+              <div class="meche-price">
+                <span class="current" id="xpressionPriceDisplay">5.00 CHF</span>
+                <span class="price-note">(le paquet)</span>
+              </div>
+              <label class="variant-label" for="xpressionVariantSelect">Choisir la teinte</label>
+              <select class="variant-select" id="xpressionVariantSelect" aria-label="Choisir la teinte des mèches X-Pression">
+                <option value="1b" selected>Teinte 1B — Noir naturel</option>
+                <option value="350">Teinte 350 — Cuivré / Roux</option>
+              </select>
+              <p class="variant-selected" id="xpressionVariantPreview">Teinte sélectionnée : <strong>1B (Noir naturel)</strong></p>
+              <div class="product-order-actions">
+                <button type="button" class="btn btn-cart add-cart-meche meche-cart-btn">Ajouter au panier</button>
+                <div class="payment-methods payment-methods--compact" aria-label="Moyens de paiement acceptés">
+                  <div class="payment-methods-icons">
+                    <span class="payment-icon payment-icon--visa" title="Visa" aria-label="Visa">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#1A1F71"/><text x="24" y="21" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="11" font-weight="700" letter-spacing="1">VISA</text></svg>
+                    </span>
+                    <span class="payment-icon payment-icon--mastercard" title="Mastercard" aria-label="Mastercard">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#111"/><circle cx="19" cy="16" r="8" fill="#EB001B"/><circle cx="29" cy="16" r="8" fill="#F79E1B"/><path d="M24 10.2a8 8 0 0 1 0 11.6 8 8 0 0 1 0-11.6z" fill="#FF5F00"/></svg>
+                    </span>
+                    <span class="payment-icon payment-icon--applepay" title="Apple Pay" aria-label="Apple Pay">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#000"/><text x="27" y="20" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="8" font-weight="600">Pay</text><path fill="#fff" d="M14.2 11.2c.5-.6.9-1.5.8-2.4-.8 0-1.8.5-2.3 1.2-.5.6-.9 1.5-.8 2.4.9.1 1.8-.4 2.3-1.2zm.8 1.1c-1.2-.1-2.3.7-2.9.7-.6 0-1.5-.7-2.5-.6-1.3 0-2.4.7-3.1 1.9-1.3 2.3-.3 5.7.9 7.5.6.9 1.3 1.9 2.3 1.8.9-.1 1.3-.6 2.4-.6s1.4.6 2.4.6c1 0 1.6-.9 2.3-1.8.7-.9 1-1.8 1-1.9-.1 0-1.9-.7-1.9-2.9 0-1.8 1.5-2.7 1.6-2.7-.9-1.3-2.2-1.4-2.5-1.4z"/></svg>
+                    </span>
+                    <span class="payment-icon payment-icon--paypal" title="PayPal" aria-label="PayPal">
+                      <svg viewBox="0 0 48 32" role="img" aria-hidden="true"><rect width="48" height="32" rx="4" fill="#003087"/><text x="24" y="20" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="9" font-weight="700">PayPal</text></svg>
+                    </span>
+                  </div>
+                  <p class="payment-methods-note">Paiement sécurisé par Carte Bancaire, Apple Pay et PayPal</p>
                 </div>
               </div>
             </div>
@@ -955,6 +1007,7 @@
                 <option value="">Choisir un sujet</option>
                 <option value="Question sur un tissu">Question sur un tissu</option>
                 <option value="Commande / disponibilité">Commande / disponibilité</option>
+                <option value="Mèches X-Pression">Mèches X-Pression</option>
                 <option value="French Curls">French Curls (24" / 150g)</option>
                 <option value="Livraison">Livraison</option>
                 <option value="Autre">Autre</option>
@@ -1316,7 +1369,7 @@
     <div class="container footer-grid">
       <div class="footer-brand">
         <a href="#" class="logo">Marteder Textile</a>
-        <p>Votre maison de référence pour le Bazin Getzner, les tissus wax africains de luxe et les extensions French Curls à Meyrin, Genève.</p>
+        <p>Votre maison de référence pour le Bazin Getzner, les tissus wax africains de luxe, les mèches X-Pression et les extensions French Curls à Meyrin, Genève.</p>
       </div>
       <div class="footer-links">
         <h4>Boutique</h4>
@@ -1325,7 +1378,7 @@
           <li><a href="#articles">Bazin Getzner</a></li>
           <li><a href="#espace-cosmetiques">Gamme OKADY Pearl</a></li>
           <li><a href="#espace-coiffure">Salon de coiffure</a></li>
-          <li><a href="#meches">French Curls</a></li>
+          <li><a href="#meches">Mèches &amp; French Curls</a></li>
           <li><a href="#collections">Collections wax</a></li>
         </ul>
       </div>

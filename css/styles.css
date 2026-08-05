@@ -1098,6 +1098,17 @@ ul {
   margin-top: 0;
 }
 
+.product-card--french-curls {
+  grid-column: 1 / -1;
+  max-width: 480px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.product-card--french-curls:hover {
+  transform: translateY(-4px);
+}
+
 .fabric-variants {
   margin-top: 0.75rem;
 }
@@ -1218,7 +1229,7 @@ ul {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
-  max-width: 720px;
+  max-width: 960px;
 }
 
 .meches-grid--single {
