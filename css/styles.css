@@ -1737,7 +1737,11 @@ ul {
 .meche-gallery-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.625rem;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: thin;
 }
 
 .meche-gallery-caption {

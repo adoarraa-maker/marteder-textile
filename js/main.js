@@ -39,8 +39,8 @@ const STRIPE_PRODUCTS = {
     label: 'Bazin Getzner',
   },
   meches: {
-    unitPrice: 5,
-    label: 'Mèches X-Pression Ultra Braid',
+    unitPrice: 13.5,
+    label: 'Extensions French Curls (24" / 150g)',
   },
   okady: {
     unitPrice: 69,
@@ -301,56 +301,91 @@ const fabricProducts = {
   },
 };
 
-const mecheProductName = 'X-Pression Ultra Braid';
+const mecheProductName = 'Extensions de Cheveux Tressés Frisés – French Curls (24 Pouces / 150g)';
 
-const mecheImages = {
-  clean: {
-    src: 'xpression-paquets-propres.png?v=20260721-gallery',
-    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid',
-  },
-  portrait: {
-    src: 'https://images.unsplash.com/photo-1763256377889-c4e85bdd1a6c?w=1200&q=90',
-    alt: 'X-Pression Ultra Braid — modèle avec coiffure portée',
-  },
-  closeup: {
-    src: 'https://images.unsplash.com/photo-1759756655332-d66200497312?w=1200&q=90',
-    alt: 'X-Pression Ultra Braid — gros plan sur les mèches',
-  },
-  pack1b: {
-    src: 'images/meches/xpression-pack-1b.jpg',
-    alt: 'Paquets X-Pression Ultra Braid — teinte 1B Noir naturel',
-  },
-  pack350: {
-    src: 'images/meches/xpression-pack-350.jpg',
-    alt: 'Paquet X-Pression Ultra Braid — teinte 350 Cuivré Roux',
-  },
-  pack2: {
-    src: 'images/meches/xpression-pack-2-brun.jpg',
-    alt: 'Paquet X-Pression Ultra Braid — teinte 2 Brun foncé',
-  },
-  color1: {
-    src: 'xpression-color-1.png',
-    alt: 'Coque de mèches X-Pression — Color 1',
-  },
-  color1b: {
-    src: 'xpression-color-1b.png',
-    alt: 'Coque de mèches X-Pression — Color 1B',
-  },
-};
+/** Galerie complète French Curls (59 photos) — images/meches/ */
+const mecheGalleryFiles = [
+  'MECHES1.png',
+  '20260805_220411.jpg',
+  '20260805_220417.jpg',
+  '20260805_220421.jpg',
+  '20260805_220425.jpg',
+  '20260805_220429.jpg',
+  '20260805_220434.jpg',
+  '20260805_220441.jpg',
+  '20260805_220446.jpg',
+  '20260805_220450.jpg',
+  '20260805_220455.jpg',
+  '20260805_220458.jpg',
+  '20260805_220503.jpg',
+  '20260805_220506.jpg',
+  '20260805_220510.jpg',
+  '20260805_220514.jpg',
+  '20260805_220518.jpg',
+  '20260805_220521.jpg',
+  '20260805_220525.jpg',
+  '20260805_220529.jpg',
+  '20260805_220535.jpg',
+  '20260805_220538.jpg',
+  '20260805_220542.jpg',
+  '20260805_220546.jpg',
+  '20260805_220549.jpg',
+  '20260805_220554.jpg',
+  '20260805_220558.jpg',
+  '20260805_220601.jpg',
+  '20260805_220604.jpg',
+  '20260805_220606.jpg',
+  '20260805_220608.jpg',
+  '20260805_220612.jpg',
+  '20260805_220614.jpg',
+  '20260805_220616.jpg',
+  '20260805_220618.jpg',
+  '20260805_220622.jpg',
+  '20260805_220624.jpg',
+  '20260805_220626.jpg',
+  '20260805_220628.jpg',
+  '20260805_220630.jpg',
+  '20260805_220632.jpg',
+  '20260805_220634.jpg',
+  '20260805_220638.jpg',
+  '20260805_220640.jpg',
+  '20260805_220642.jpg',
+  '20260805_220644.jpg',
+  '20260805_220646.jpg',
+  '20260805_220648.jpg',
+  '20260805_220652.jpg',
+  '20260805_220654.jpg',
+  '20260805_220657.jpg',
+  '20260805_220701.jpg',
+  '20260805_220703.jpg',
+  '20260805_220705.jpg',
+  '20260805_220707.jpg',
+  'Screenshot_20260805_220819_Gallery.jpg',
+  'Screenshot_20260805_220837_Gallery.jpg',
+  'Screenshot_20260805_220930_Gallery.jpg',
+  'Screenshot_20260805_221015_Gallery.jpg',
+];
+
+const mecheImages = Object.fromEntries(
+  mecheGalleryFiles.map((file, index) => {
+    const key = `g${index}`;
+    const n = index + 1;
+    return [
+      key,
+      {
+        src: `images/meches/${file}`,
+        alt: `French Curls — photo ${n} sur ${mecheGalleryFiles.length}`,
+      },
+    ];
+  })
+);
 
 const mecheVariants = {
-  '1b': {
-    label: 'Teinte 1B (Noir naturel)',
-    shortLabel: '1B — Noir naturel',
-    imageKey: 'clean',
-    price: 5,
-    stripeProduct: 'meches',
-  },
-  '350': {
-    label: 'Teinte 350 (Cuivré / Roux)',
-    shortLabel: '350 — Cuivré / Roux',
-    imageKey: 'pack350',
-    price: 5,
+  standard: {
+    label: '24 pouces / 150 g',
+    shortLabel: '24" / 150g',
+    imageKey: 'g0',
+    price: 13.5,
     stripeProduct: 'meches',
   },
 };
@@ -382,11 +417,14 @@ function formatCartSummary() {
 }
 
 function formatPrice(price) {
+  const value = Number(price);
+  const needsCents = !Number.isInteger(value);
   return new Intl.NumberFormat('fr-CH', {
     style: 'currency',
     currency: 'CHF',
-    minimumFractionDigits: 0,
-  }).format(price);
+    minimumFractionDigits: needsCents ? 2 : 0,
+    maximumFractionDigits: 2,
+  }).format(value);
 }
 
 function filterProducts(category) {
@@ -489,7 +527,7 @@ function normalizeCartItem(item) {
   if (item.stripeEligible && item.price === 80) {
     return { ...item, stripeProduct: 'getzner' };
   }
-  if (item.name === mecheProductName || item.price === 5) {
+  if (item.name === mecheProductName || item.price === 13.5 || item.price === 5) {
     return { ...item, stripeProduct: 'meches' };
   }
   if (item.name && String(item.name).includes('OKADY Pearl')) {
@@ -1037,17 +1075,16 @@ function initCart() {
     const mecheBtn = e.target.closest('.add-cart-meche');
     if (mecheBtn) {
       e.preventDefault();
-      const select = document.getElementById('mecheVariantSelect');
-      const variant = mecheVariants[select.value];
+      const variant = mecheVariants.standard;
       if (!variant) return;
 
       addToCart({
         name: mecheProductName,
-        displayName: `${mecheProductName} — ${variant.label}`,
-        variantKey: select.value,
+        displayName: mecheProductName,
+        variantKey: 'standard',
         variantLabel: variant.label,
-        variantType: 'Teinte',
-        packNote: '5 CHF le paquet',
+        variantType: 'Format',
+        packNote: '13.50 CHF le paquet',
         price: variant.price,
         stripeProduct: 'meches',
       });
@@ -1232,12 +1269,46 @@ function initFabricVariants() {
 }
 
 function initMecheVariant() {
-  const select = document.getElementById('mecheVariantSelect');
   const image = document.getElementById('mecheVariantImage');
-  const preview = document.getElementById('mecheVariantPreview');
-  const thumbs = document.querySelectorAll('.meche-thumb');
+  const galleryRow = document.getElementById('mecheGalleryRow');
+  const mainZoom = document.getElementById('mecheMainZoom');
 
-  if (!select || !image) return;
+  if (!image || !galleryRow) return;
+
+  const fragment = document.createDocumentFragment();
+
+  mecheGalleryFiles.forEach((file, index) => {
+    const key = `g${index}`;
+    const photo = mecheImages[key];
+    const n = index + 1;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `meche-thumb${index === 0 ? ' active' : ''}`;
+    button.dataset.imageKey = key;
+    button.dataset.productZoom = '';
+    button.dataset.productGallery = 'french-curls';
+    button.dataset.galleryIndex = String(index);
+    button.dataset.caption = `French Curls — photo ${n} sur ${mecheGalleryFiles.length}`;
+    button.setAttribute('aria-label', `Agrandir la photo ${n} sur ${mecheGalleryFiles.length}`);
+
+    const thumbImg = document.createElement('img');
+    thumbImg.src = photo.src;
+    thumbImg.alt = photo.alt;
+    thumbImg.loading = 'lazy';
+    button.appendChild(thumbImg);
+
+    const zoomIcon = document.createElement('span');
+    zoomIcon.className = 'product-zoom-icon';
+    zoomIcon.setAttribute('aria-hidden', 'true');
+    zoomIcon.textContent = '⌕';
+    button.appendChild(zoomIcon);
+
+    fragment.appendChild(button);
+  });
+
+  galleryRow.replaceChildren(fragment);
+
+  const thumbs = galleryRow.querySelectorAll('.meche-thumb');
 
   const setMainImage = (imageKey, updateThumbs = true) => {
     const photo = mecheImages[imageKey];
@@ -1245,10 +1316,13 @@ function initMecheVariant() {
 
     image.src = photo.src;
     image.alt = photo.alt;
-    const isProductShot = imageKey === 'clean'
-      || imageKey.startsWith('pack')
-      || imageKey.startsWith('color');
-    image.classList.toggle('is-pack-shot', isProductShot);
+    image.classList.toggle('is-pack-shot', imageKey === 'g0');
+
+    if (mainZoom) {
+      mainZoom.dataset.imageKey = imageKey;
+      mainZoom.dataset.galleryIndex = imageKey.replace(/^g/, '');
+      mainZoom.dataset.caption = photo.alt;
+    }
 
     if (updateThumbs) {
       thumbs.forEach((thumb) => {
@@ -1257,26 +1331,13 @@ function initMecheVariant() {
     }
   };
 
-  const updateFromVariant = () => {
-    const variant = mecheVariants[select.value];
-    if (!variant) return;
-
-    setMainImage(variant.imageKey);
-
-    if (preview) {
-      preview.innerHTML = `Teinte sélectionnée : <strong>${variant.label}</strong>`;
-    }
-  };
-
-  select.addEventListener('change', updateFromVariant);
-
   thumbs.forEach((thumb) => {
     thumb.addEventListener('click', () => {
       setMainImage(thumb.dataset.imageKey);
     });
   });
 
-  updateFromVariant();
+  setMainImage('g0');
 }
 
 function showToast(message) {

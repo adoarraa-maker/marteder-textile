@@ -14,8 +14,8 @@ const CATALOG = {
     unitAmountCents: 8000,
   },
   meches: {
-    name: 'Mèches X-Pression Ultra Braid',
-    unitAmountCents: 500,
+    name: 'Extensions French Curls (24" / 150g)',
+    unitAmountCents: 1350,
   },
   okady: {
     name: 'Coffret Soin Visage OKADY Pearl (7 pièces)',
