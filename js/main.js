@@ -1445,8 +1445,69 @@ function initMecheVariant() {
   const select = document.getElementById('frenchCurlColorSelect');
   const swatchList = document.getElementById('frenchCurlSwatches');
   const preview = document.getElementById('mecheVariantPreview');
+  const counter = document.getElementById('frenchCurlCounter');
+  const prevBtn = document.getElementById('frenchCurlPrev');
+  const nextBtn = document.getElementById('frenchCurlNext');
 
-  if (!image) return;
+  if (!image || !galleryRow) return;
+
+  let currentIndex = 0;
+  const total = frenchCurlGalleryFiles.length;
+
+  const updateCounter = (index) => {
+    if (counter) counter.textContent = `${index + 1} / ${total}`;
+  };
+
+  const scrollThumbIntoView = (index) => {
+    const thumb = galleryRow.querySelector(`.meche-thumb[data-gallery-index="${index}"]`);
+    thumb?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  };
+
+  const setMainByIndex = (index, { syncColor = false } = {}) => {
+    const safeIndex = ((index % total) + total) % total;
+    currentIndex = safeIndex;
+    const key = `g${safeIndex}`;
+    const photo = frenchCurlImages[key];
+    if (!photo) return;
+
+    image.src = photo.src;
+    image.alt = photo.alt;
+    image.classList.add('is-pack-shot');
+    image.classList.remove('french-curl-fade');
+    void image.offsetWidth;
+    image.classList.add('french-curl-fade');
+
+    if (mainZoom) {
+      mainZoom.dataset.imageKey = key;
+      mainZoom.dataset.galleryIndex = String(safeIndex);
+      mainZoom.dataset.caption = photo.alt;
+    }
+
+    galleryRow.querySelectorAll('.meche-thumb').forEach((thumb) => {
+      thumb.classList.toggle('active', Number(thumb.dataset.galleryIndex) === safeIndex);
+    });
+
+    updateCounter(safeIndex);
+    scrollThumbIntoView(safeIndex);
+
+    if (syncColor) {
+      const match = Object.entries(frenchCurlColorVariants).find(
+        ([, color]) => color.file === frenchCurlGalleryFiles[safeIndex],
+      );
+      if (match) {
+        const [colorKey, color] = match;
+        if (select) select.value = colorKey;
+        if (preview) {
+          preview.innerHTML = `Couleur sélectionnée : <strong>${color.label}</strong>`;
+        }
+        swatchList?.querySelectorAll('.french-curl-swatch').forEach((btn) => {
+          const active = btn.dataset.color === colorKey;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+      }
+    }
+  };
 
   const setColorVariant = (colorKey) => {
     const color = frenchCurlColorVariants[colorKey];
@@ -1454,31 +1515,29 @@ function initMecheVariant() {
 
     if (select) select.value = colorKey;
 
-    image.src = color.src;
-    image.alt = color.alt;
-    image.classList.add('is-pack-shot');
-    image.classList.remove('french-curl-fade');
-    // force reflow for smooth swap
-    void image.offsetWidth;
-    image.classList.add('french-curl-fade');
-
-    if (mainZoom) {
-      mainZoom.removeAttribute('data-image-key');
-      mainZoom.dataset.caption = color.alt;
-      mainZoom.dataset.galleryIndex = '0';
+    const galleryIndex = frenchCurlGalleryFiles.indexOf(color.file);
+    if (galleryIndex >= 0) {
+      setMainByIndex(galleryIndex);
+    } else {
+      image.src = color.src;
+      image.alt = color.alt;
+      image.classList.add('is-pack-shot');
+      if (mainZoom) {
+        mainZoom.removeAttribute('data-image-key');
+        mainZoom.dataset.caption = color.alt;
+      }
+      updateCounter(currentIndex);
     }
 
     if (preview) {
       preview.innerHTML = `Couleur sélectionnée : <strong>${color.label}</strong>`;
     }
 
-    if (swatchList) {
-      swatchList.querySelectorAll('.french-curl-swatch').forEach((btn) => {
-        const active = btn.dataset.color === colorKey;
-        btn.classList.toggle('active', active);
-        btn.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-    }
+    swatchList?.querySelectorAll('.french-curl-swatch').forEach((btn) => {
+      const active = btn.dataset.color === colorKey;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
   };
 
   if (swatchList) {
@@ -1512,72 +1571,54 @@ function initMecheVariant() {
 
   select?.addEventListener('change', () => setColorVariant(select.value));
 
-  if (galleryRow) {
-    const fragment = document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
+  frenchCurlGalleryFiles.forEach((file, index) => {
+    const key = `g${index}`;
+    const photo = frenchCurlImages[key];
+    const n = index + 1;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'meche-thumb';
+    button.dataset.imageKey = key;
+    button.dataset.productZoom = '';
+    button.dataset.productGallery = 'french-curls';
+    button.dataset.galleryIndex = String(index);
+    button.dataset.caption = `French Curls — photo ${n} sur ${total}`;
+    button.setAttribute('aria-label', `Voir la photo ${n} sur ${total}`);
 
-    frenchCurlGalleryFiles.forEach((file, index) => {
-      const key = `g${index}`;
-      const photo = frenchCurlImages[key];
-      const n = index + 1;
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'meche-thumb';
-      button.dataset.imageKey = key;
-      button.dataset.productZoom = '';
-      button.dataset.productGallery = 'french-curls';
-      button.dataset.galleryIndex = String(index);
-      button.dataset.caption = `French Curls — photo ${n} sur ${frenchCurlGalleryFiles.length}`;
-      button.setAttribute('aria-label', `Agrandir la photo ${n} sur ${frenchCurlGalleryFiles.length}`);
+    const thumbImg = document.createElement('img');
+    thumbImg.src = photo.src;
+    thumbImg.alt = photo.alt;
+    thumbImg.loading = 'lazy';
+    button.appendChild(thumbImg);
 
-      const thumbImg = document.createElement('img');
-      thumbImg.src = photo.src;
-      thumbImg.alt = photo.alt;
-      thumbImg.loading = 'lazy';
-      button.appendChild(thumbImg);
-
-      const zoomIcon = document.createElement('span');
-      zoomIcon.className = 'product-zoom-icon';
-      zoomIcon.setAttribute('aria-hidden', 'true');
-      zoomIcon.textContent = '⌕';
-      button.appendChild(zoomIcon);
-
-      fragment.appendChild(button);
+    button.addEventListener('click', () => {
+      setMainByIndex(index, { syncColor: true });
     });
 
-    galleryRow.replaceChildren(fragment);
+    fragment.appendChild(button);
+  });
+  galleryRow.replaceChildren(fragment);
 
-    const thumbs = galleryRow.querySelectorAll('.meche-thumb');
+  prevBtn?.addEventListener('click', () => {
+    setMainByIndex(currentIndex - 1, { syncColor: true });
+  });
+  nextBtn?.addEventListener('click', () => {
+    setMainByIndex(currentIndex + 1, { syncColor: true });
+  });
 
-    const setMainImage = (imageKey, updateThumbs = true) => {
-      const photo = frenchCurlImages[imageKey];
-      if (!photo) return;
-
-      image.src = photo.src;
-      image.alt = photo.alt;
-      image.classList.toggle('is-pack-shot', imageKey === 'g0' || imageKey.startsWith('g'));
-      image.classList.remove('french-curl-fade');
-      void image.offsetWidth;
-      image.classList.add('french-curl-fade');
-
-      if (mainZoom) {
-        mainZoom.dataset.imageKey = imageKey;
-        mainZoom.dataset.galleryIndex = imageKey.replace(/^g/, '');
-        mainZoom.dataset.caption = photo.alt;
-      }
-
-      if (updateThumbs) {
-        thumbs.forEach((thumb) => {
-          thumb.classList.toggle('active', thumb.dataset.imageKey === imageKey);
-        });
-      }
-    };
-
-    thumbs.forEach((thumb) => {
-      thumb.addEventListener('click', () => {
-        setMainImage(thumb.dataset.imageKey);
-      });
-    });
-  }
+  // Flèches clavier quand la fiche est focusée
+  const card = document.getElementById('mecheProduct');
+  card?.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      setMainByIndex(currentIndex - 1, { syncColor: true });
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      setMainByIndex(currentIndex + 1, { syncColor: true });
+    }
+  });
 
   setColorVariant(select?.value || FRENCH_CURL_DEFAULT_COLOR);
 }
