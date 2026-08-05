@@ -398,8 +398,57 @@
           <button class="filter-btn active" data-filter="all">Tous</button>
           <button class="filter-btn" data-filter="bazin">Bazin Getzner</button>
           <button class="filter-btn" data-filter="soins">Soins visage</button>
-          <button class="filter-btn" data-filter="meches" data-scroll="#articles">Mèches</button>
+          <button class="filter-btn" data-filter="meches" data-scroll="#french-curls-spotlight">Mèches</button>
         </div>
+
+        <aside class="french-spotlight" id="french-curls-spotlight" aria-labelledby="french-spotlight-title">
+          <div class="french-spotlight-copy">
+            <span class="section-label">Nouveauté coiffure</span>
+            <h3 class="french-spotlight-title" id="french-spotlight-title">French Curls</h3>
+            <p class="french-spotlight-text">
+              Extensions tressées frisées 24&nbsp;pouces / 150&nbsp;g — 13.50&nbsp;CHF le paquet.
+              Quatre visuels pour découvrir le rendu porté et les coloris.
+            </p>
+            <div class="french-spotlight-actions">
+              <a href="#mecheProduct" class="btn btn-cart">Voir le produit</a>
+              <span class="french-spotlight-price">13.50 CHF</span>
+            </div>
+          </div>
+          <div class="french-spotlight-grid" role="list">
+            <figure class="french-spotlight-shot french-spotlight-shot--hero" role="listitem">
+              <img
+                src="images/meches/Screenshot_20260805_221015_Gallery.jpg"
+                alt="Modèle portant des French Curls ombré cuivré"
+                loading="lazy"
+                decoding="async"
+              >
+            </figure>
+            <figure class="french-spotlight-shot" role="listitem">
+              <img
+                src="images/meches/Screenshot_20260805_220819_Gallery.jpg"
+                alt="French Curls blondes et queue de cheval noire"
+                loading="lazy"
+                decoding="async"
+              >
+            </figure>
+            <figure class="french-spotlight-shot" role="listitem">
+              <img
+                src="images/meches/Screenshot_20260805_220837_Gallery.jpg"
+                alt="Sélection de coiffures French Curls en plusieurs teintes"
+                loading="lazy"
+                decoding="async"
+              >
+            </figure>
+            <figure class="french-spotlight-shot" role="listitem">
+              <img
+                src="images/meches/Screenshot_20260805_220930_Gallery.jpg"
+                alt="Paquets de mèches French Curls — textures et coloris"
+                loading="lazy"
+                decoding="async"
+              >
+            </figure>
+          </div>
+        </aside>
 
         <div class="products-grid" id="productsGrid">
 
@@ -701,13 +750,14 @@
               </div>
               <p class="variant-selected" id="mecheVariantPreview">Format : <strong>24 pouces / 150&nbsp;g</strong></p>
               <div class="product-order-actions">
+                <button type="button" class="btn btn-cart add-cart-french-curls meche-cart-btn">Ajouter au panier</button>
                 <a
                   href="https://buy.stripe.com/5kQcN66INdnyewDfj5cAo0f"
-                  class="btn btn-stripe meche-cart-btn"
+                  class="btn btn-outline"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Acheter French Curls 13.50 CHF via Stripe"
-                >Acheter — 13.50 CHF</a>
+                  aria-label="Payer French Curls 13.50 CHF directement via Stripe"
+                >Payer directement — 13.50 CHF</a>
                 <div class="payment-methods payment-methods--compact" aria-label="Moyens de paiement acceptés">
                   <div class="payment-methods-icons">
                     <span class="payment-icon payment-icon--visa" title="Visa" aria-label="Visa">

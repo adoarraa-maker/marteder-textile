@@ -39,6 +39,10 @@ const STRIPE_PRODUCTS = {
     unitPrice: 5,
     label: 'Mèches X-Pression Ultra Braid',
   },
+  frenchCurls: {
+    unitPrice: 13.5,
+    label: 'Extensions French Curls (24" / 150g)',
+  },
   okady: {
     unitPrice: 69,
     label: 'Coffret OKADY Pearl',
@@ -449,6 +453,12 @@ function filterProducts(category) {
     const match = category === 'all' || card.dataset.category === category;
     card.classList.toggle('hidden', !match);
   });
+
+  const spotlight = document.getElementById('french-curls-spotlight');
+  if (spotlight) {
+    const showSpotlight = category === 'all' || category === 'meches';
+    spotlight.classList.toggle('hidden', !showSpotlight);
+  }
 }
 
 const SHIPPING_OPTIONS = {
@@ -545,6 +555,9 @@ function normalizeCartItem(item) {
   }
   if (item.name === xpressionProductName || item.price === 5) {
     return { ...item, stripeProduct: 'meches' };
+  }
+  if (item.name === frenchCurlProductName || item.price === 13.5) {
+    return { ...item, stripeProduct: 'frenchCurls' };
   }
   if (item.name && String(item.name).includes('OKADY Pearl')) {
     return { ...item, stripeProduct: 'okady' };
@@ -1104,6 +1117,22 @@ function initCart() {
         packNote: '5 CHF le paquet',
         price: variant.price,
         stripeProduct: 'meches',
+      });
+      return;
+    }
+
+    const frenchCurlBtn = e.target.closest('.add-cart-french-curls');
+    if (frenchCurlBtn) {
+      e.preventDefault();
+      addToCart({
+        name: frenchCurlProductName,
+        displayName: frenchCurlProductName,
+        variantKey: 'standard',
+        variantLabel: '24 pouces / 150 g',
+        variantType: 'Format',
+        packNote: '13.50 CHF le paquet',
+        price: 13.5,
+        stripeProduct: 'frenchCurls',
       });
       return;
     }
