@@ -1180,6 +1180,7 @@ ul {
 
 .french-spotlight-shot {
   margin: 0;
+  position: relative;
   border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--color-bg-alt);
@@ -1191,7 +1192,21 @@ ul {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.45s ease;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.french-spotlight-shot figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(26, 23, 20, 0.72));
 }
 
 .french-spotlight-shot--hero {
@@ -1199,7 +1214,76 @@ ul {
 }
 
 .french-spotlight-shot:hover img {
-  transform: scale(1.04);
+  transform: scale(1.045);
+}
+
+.french-curl-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.55rem 0 0.4rem;
+}
+
+.french-curl-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.28rem;
+  width: 3.4rem;
+  padding: 0.35rem 0.2rem 0.3rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.french-curl-swatch:hover,
+.french-curl-swatch:focus-visible {
+  border-color: var(--color-accent-light);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.french-curl-swatch.active {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px rgba(139, 90, 60, 0.18);
+}
+
+.french-curl-swatch-tone {
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  border: 1px solid rgba(26, 23, 20, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.french-curl-swatch-name {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.french-curl-swatch.active .french-curl-swatch-name {
+  color: var(--color-accent-dark);
+}
+
+#mecheVariantImage.french-curl-fade {
+  animation: french-curl-fade-in 0.28s ease;
+}
+
+@keyframes french-curl-fade-in {
+  from {
+    opacity: 0.35;
+    transform: scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @media (max-width: 860px) {

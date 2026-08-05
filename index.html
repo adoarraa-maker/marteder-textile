@@ -406,11 +406,11 @@
             <span class="section-label">Nouveauté coiffure</span>
             <h3 class="french-spotlight-title" id="french-spotlight-title">French Curls</h3>
             <p class="french-spotlight-text">
-              Extensions tressées frisées 24&nbsp;pouces / 150&nbsp;g — 13.50&nbsp;CHF le paquet.
-              Quatre visuels pour découvrir le rendu porté et les coloris.
+              Extensions tressées frisées 24&nbsp;pouces / 150&nbsp;g — 13.50&nbsp;CHF.
+              Paquets, modèles et reflets de couleur pour choisir votre teinte.
             </p>
             <div class="french-spotlight-actions">
-              <a href="#mecheProduct" class="btn btn-cart">Voir le produit</a>
+              <a href="#mecheProduct" class="btn btn-cart">Choisir une couleur</a>
               <span class="french-spotlight-price">13.50 CHF</span>
             </div>
           </div>
@@ -422,30 +422,34 @@
                 loading="lazy"
                 decoding="async"
               >
+              <figcaption>Rendu porté</figcaption>
             </figure>
             <figure class="french-spotlight-shot" role="listitem">
               <img
-                src="images/meches/Screenshot_20260805_220819_Gallery.jpg"
-                alt="French Curls blondes et queue de cheval noire"
+                src="images/meches/20260805_220648.jpg"
+                alt="Paquet French Curls Noir 1B"
                 loading="lazy"
                 decoding="async"
               >
+              <figcaption>Noir 1B</figcaption>
             </figure>
             <figure class="french-spotlight-shot" role="listitem">
               <img
-                src="images/meches/Screenshot_20260805_220837_Gallery.jpg"
-                alt="Sélection de coiffures French Curls en plusieurs teintes"
+                src="images/meches/20260805_220554.jpg"
+                alt="Paquet French Curls Ombré Blond T27"
                 loading="lazy"
                 decoding="async"
               >
+              <figcaption>Ombré T27</figcaption>
             </figure>
             <figure class="french-spotlight-shot" role="listitem">
               <img
-                src="images/meches/Screenshot_20260805_220930_Gallery.jpg"
-                alt="Paquets de mèches French Curls — textures et coloris"
+                src="images/meches/20260805_220429.jpg"
+                alt="Paquet French Curls Bordeaux T-Bug"
                 loading="lazy"
                 decoding="async"
               >
+              <figcaption>Bordeaux T-Bug</figcaption>
             </figure>
           </div>
         </aside>
@@ -726,15 +730,14 @@
                 data-product-zoom
                 data-product-gallery="french-curls"
                 data-gallery-index="0"
-                data-image-key="g0"
-                data-caption="Extensions French Curls — photo produit"
+                data-caption="French Curls — Noir 1B"
                 aria-label="Agrandir la photo principale French Curls"
               >
                 <img
                   id="mecheVariantImage"
                   class="is-pack-shot"
-                  src="images/meches/MECHES1.png"
-                  alt="Extensions de Cheveux Tressés Frisés – French Curls (24 Pouces / 150g)"
+                  src="images/meches/20260805_220648.jpg"
+                  alt="French Curls — Noir 1B"
                   loading="lazy"
                 >
                 <span class="product-zoom-icon" aria-hidden="true">⌕</span>
@@ -748,7 +751,24 @@
                 <span class="current" id="mechePriceDisplay">13.50 CHF</span>
                 <span class="price-note">(le paquet)</span>
               </div>
-              <p class="variant-selected" id="mecheVariantPreview">Format : <strong>24 pouces / 150&nbsp;g</strong></p>
+              <label class="variant-label" for="frenchCurlColorSelect">Choisir la couleur</label>
+              <div
+                class="french-curl-swatches"
+                id="frenchCurlSwatches"
+                role="listbox"
+                aria-label="Couleurs French Curls"
+              ></div>
+              <select class="variant-select" id="frenchCurlColorSelect" aria-label="Choisir la couleur French Curls">
+                <option value="1b" selected>Noir 1B</option>
+                <option value="t27">Ombré Blond T27</option>
+                <option value="t30">Ombré Marron T30</option>
+                <option value="tbug">Bordeaux T-Bug</option>
+                <option value="27">Blond 27#</option>
+                <option value="30">Marron 30#</option>
+                <option value="350">Roux 350</option>
+                <option value="cuivre">Ombré Noir / Cuivré</option>
+              </select>
+              <p class="variant-selected" id="mecheVariantPreview">Couleur sélectionnée : <strong>Noir 1B</strong></p>
               <div class="product-order-actions">
                 <button type="button" class="btn btn-cart add-cart-french-curls meche-cart-btn">Ajouter au panier</button>
                 <a
