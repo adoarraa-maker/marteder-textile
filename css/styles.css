@@ -1109,6 +1109,103 @@ ul {
   transform: translateY(-4px);
 }
 
+.product-more {
+  margin-top: 0.35rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 0.5rem;
+}
+
+.product-more-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+}
+
+.product-more-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.product-more-toggle::marker {
+  content: '';
+}
+
+.product-more-toggle:hover,
+.product-more-toggle:focus-visible {
+  color: var(--color-accent);
+  outline: none;
+}
+
+.product-more-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  font-weight: 400;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.product-more[open] .product-more-icon {
+  transform: rotate(45deg);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.product-more[open] .product-more-label {
+  font-size: 0;
+}
+
+.product-more[open] .product-more-label::after {
+  content: 'Réduire';
+  font-size: 0.8125rem;
+}
+
+.product-more-body {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  animation: product-more-in 0.25s ease;
+}
+
+.product-more-body .product-description {
+  margin: 0;
+}
+
+.product-more-body .meche-gallery {
+  padding: 0;
+  background: transparent;
+}
+
+.product-card--french-curls .meche-info {
+  padding-top: 1.25rem;
+}
+
+@keyframes product-more-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .fabric-variants {
   margin-top: 0.75rem;
 }
