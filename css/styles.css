@@ -399,7 +399,7 @@ ul {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background-color: #3d2a4a;
+  background-color: #1a1410;
 }
 
 .hero-bg-picture,
@@ -412,7 +412,12 @@ ul {
 
 .hero-bg-image {
   object-fit: cover;
-  object-position: center 42%;
+  object-position: center 28%;
+}
+
+.hero--french-curls .hero-bg-image {
+  object-position: 62% center;
+  filter: saturate(1.05) contrast(1.04);
 }
 
 .hero-overlay {
@@ -422,6 +427,13 @@ ul {
   background:
     linear-gradient(105deg, rgba(20, 16, 14, 0.78) 0%, rgba(20, 16, 14, 0.48) 42%, rgba(20, 16, 14, 0.28) 100%),
     linear-gradient(to top, rgba(20, 16, 14, 0.45) 0%, transparent 45%);
+}
+
+.hero--french-curls .hero-overlay {
+  background:
+    linear-gradient(105deg, rgba(18, 14, 12, 0.88) 0%, rgba(18, 14, 12, 0.62) 38%, rgba(18, 14, 12, 0.28) 68%, rgba(18, 14, 12, 0.18) 100%),
+    linear-gradient(to top, rgba(18, 14, 12, 0.55) 0%, transparent 48%),
+    radial-gradient(ellipse at 72% 42%, transparent 12%, rgba(18, 14, 12, 0.22) 70%);
 }
 
 .hero-content {
