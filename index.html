@@ -67,7 +67,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260806-hero-carousel">
+  <link rel="stylesheet" href="css/styles.css?v=20260806-coiffure-accueil">
   <link
     rel="preload"
     as="image"
@@ -312,18 +312,18 @@
             <div class="hero-overlay"></div>
           </div>
           <div class="hero-content container">
-            <span class="hero-badge">French Curls · 13.50 CHF</span>
+            <span class="hero-badge">Salon · French Curls · X-Pression</span>
             <h2 class="hero-title">
-              L'élégance<br>
-              <em>des mèches</em>
+              Coiffure<br>
+              <em>&amp; mèches</em>
             </h2>
             <p class="hero-text">
-              Extensions tressées frisées 24&nbsp;pouces / 150&nbsp;g — finition ACCRUE BRAID.
-              Choisissez votre teinte et sublimez votre coiffure chez Marteder Textile.
+              Salon de tresses à Meyrin — nattes dès 30&nbsp;CHF, rasta 70&nbsp;CHF.
+              French Curls 13.50&nbsp;CHF · X-Pression Ultra Braid 5.00&nbsp;CHF le paquet.
             </p>
             <div class="hero-actions">
-              <a href="#mecheProduct" class="btn btn-primary">Acheter les French Curls</a>
-              <a href="#french-curls-spotlight" class="btn btn-outline">Voir les couleurs</a>
+              <a href="#accueil-coiffure" class="btn btn-primary">Voir les modèles</a>
+              <a href="#espace-coiffure" class="btn btn-outline">Réserver au salon</a>
             </div>
           </div>
         </article>
@@ -363,7 +363,7 @@
         <button type="button" class="hero-nav hero-nav--prev" data-hero-prev aria-label="Bannière précédente">‹</button>
         <div class="hero-dots" role="tablist" aria-label="Choisir une bannière">
           <button type="button" class="hero-dot is-active" data-hero-dot="0" role="tab" aria-label="Pagnes &amp; tissus" aria-selected="true"></button>
-          <button type="button" class="hero-dot" data-hero-dot="1" role="tab" aria-label="French Curls" aria-selected="false"></button>
+          <button type="button" class="hero-dot" data-hero-dot="1" role="tab" aria-label="Coiffure et mèches" aria-selected="false"></button>
           <button type="button" class="hero-dot" data-hero-dot="2" role="tab" aria-label="OKADY Pearl" aria-selected="false"></button>
         </div>
         <button type="button" class="hero-nav hero-nav--next" data-hero-next aria-label="Bannière suivante">›</button>
@@ -375,31 +375,106 @@
       </div>
     </section>
 
-    <!-- Bande visuelle French Curls -->
-    <section class="home-visual-band" aria-labelledby="home-visual-band-title">
-      <div class="home-visual-band-track" aria-hidden="true">
-        <figure class="home-visual-band-panel">
-          <img
-            src="images/meches/Screenshot_20260805_221015_Gallery.jpg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          >
-        </figure>
-        <figure class="home-visual-band-panel home-visual-band-panel--mirror">
-          <img
-            src="images/meches/Screenshot_20260805_221015_Gallery.jpg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          >
-        </figure>
-      </div>
-      <div class="home-visual-band-overlay" aria-hidden="true"></div>
-      <div class="home-visual-band-content container">
-        <p class="home-visual-band-kicker">Signature coiffure</p>
-        <h2 class="home-visual-band-title" id="home-visual-band-title">French Curls — 13.50 CHF</h2>
-        <a href="#mecheProduct" class="btn btn-primary home-visual-band-cta">Découvrir les mèches</a>
+    <!-- Accueil coiffure : modèles, salon & mèches -->
+    <section class="accueil-coiffure" id="accueil-coiffure" aria-labelledby="accueil-coiffure-title">
+      <div class="container">
+        <div class="section-header centered">
+          <span class="section-label">Espace coiffure</span>
+          <h2 class="section-title" id="accueil-coiffure-title">Salon, modèles &amp; mèches</h2>
+          <p class="section-desc accueil-coiffure-intro">
+            Photos de nos modèles, prestations du salon à Meyrin, extensions French Curls
+            et mèches X-Pression Ultra Braid — tout pour sublimer votre coiffure.
+          </p>
+        </div>
+
+        <div class="accueil-coiffure-gallery" role="list">
+          <figure class="accueil-coiffure-shot accueil-coiffure-shot--hero" role="listitem">
+            <img
+              src="images/meches/Screenshot_20260805_221015_Gallery.jpg"
+              alt="Modèle portant des French Curls ombré cuivré"
+              loading="lazy"
+              decoding="async"
+            >
+            <figcaption>French Curls — rendu porté</figcaption>
+          </figure>
+          <figure class="accueil-coiffure-shot" role="listitem">
+            <img
+              src="rasta-model.png"
+              alt="Modèle tresses bicolores réalisées au salon Marteder"
+              width="600"
+              height="750"
+              loading="lazy"
+              decoding="async"
+            >
+            <figcaption>Tresses salon</figcaption>
+          </figure>
+          <figure class="accueil-coiffure-shot" role="listitem">
+            <img
+              src="rasta-zoom.jpg"
+              alt="Détail de tresses rasta"
+              width="600"
+              height="750"
+              loading="lazy"
+              decoding="async"
+            >
+            <figcaption>Rasta — détail</figcaption>
+          </figure>
+          <figure class="accueil-coiffure-shot" role="listitem">
+            <img
+              src="ma boutique.png"
+              alt="Salon de coiffure Marteder Textile à Meyrin"
+              width="800"
+              height="1000"
+              loading="lazy"
+              decoding="async"
+            >
+            <figcaption>Notre salon</figcaption>
+          </figure>
+        </div>
+
+        <div class="accueil-coiffure-infos">
+          <article class="accueil-coiffure-card">
+            <p class="accueil-coiffure-card-kicker">Salon</p>
+            <h3 class="accueil-coiffure-card-title">Prestations &amp; tarifs</h3>
+            <ul class="accueil-coiffure-tarifs">
+              <li><span>Natte simple (cheveux naturels)</span><strong>30&nbsp;CHF</strong></li>
+              <li><span>Natte couchée avec mèches</span><strong>50&nbsp;CHF</strong></li>
+              <li><span>Rasta</span><strong>70&nbsp;CHF</strong></li>
+            </ul>
+            <p class="accueil-coiffure-card-note">Tarifs selon longueur et épaisseur des cheveux.</p>
+            <a
+              href="https://wa.me/41765761672?text=Bonjour%2C%20je%20souhaite%20prendre%20rendez-vous%20pour%20une%20prestation%20coiffure."
+              class="btn btn-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Réserver sur WhatsApp</a>
+            <a href="#espace-coiffure" class="accueil-coiffure-card-link">Voir le salon complet</a>
+          </article>
+
+          <article class="accueil-coiffure-card">
+            <p class="accueil-coiffure-card-kicker">Mèches</p>
+            <h3 class="accueil-coiffure-card-title">French Curls</h3>
+            <p class="accueil-coiffure-card-text">
+              Extensions tressées frisées 24&nbsp;pouces / 150&nbsp;g — finition ACCRUE BRAID.
+              Plusieurs teintes : Noir 1B, ombrés T27 / T30, Bordeaux, Roux…
+            </p>
+            <p class="accueil-coiffure-card-price">13.50&nbsp;CHF <span>le paquet</span></p>
+            <a href="#mecheProduct" class="btn btn-cart">Choisir une couleur</a>
+            <a href="#french-curls-spotlight" class="accueil-coiffure-card-link">Voir la vitrine photos</a>
+          </article>
+
+          <article class="accueil-coiffure-card">
+            <p class="accueil-coiffure-card-kicker">Mèches</p>
+            <h3 class="accueil-coiffure-card-title">X-Pression Ultra Braid</h3>
+            <p class="accueil-coiffure-card-text">
+              Mèches synthétiques premium pour tresses et coiffures protectrices.
+              Teintes 1B, 2, 350 et coques Color 1 / 1B disponibles.
+            </p>
+            <p class="accueil-coiffure-card-price">5.00&nbsp;CHF <span>le paquet</span></p>
+            <a href="#xpressionProduct" class="btn btn-cart">Voir X-Pression</a>
+            <a href="#meches" class="accueil-coiffure-card-link">Galerie &amp; teintes</a>
+          </article>
+        </div>
       </div>
     </section>
 
