@@ -67,12 +67,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260804-okady-banner">
+  <link rel="stylesheet" href="css/styles.css?v=20260806-hero-wax">
   <link
     rel="preload"
     as="image"
-    type="image/jpeg"
-    href="images/meches/Screenshot_20260805_221015_Gallery.jpg"
+    type="image/png"
+    href="hero-getzner.png"
   >
 </head>
 <body>
@@ -259,36 +259,40 @@
 
   <main>
     <!-- Hero -->
-    <section class="hero hero--split" id="accueil">
-      <div class="hero-split">
-        <figure class="hero-media">
+    <section class="hero" id="accueil">
+      <div class="hero-bg" aria-hidden="true">
+        <picture class="hero-bg-picture">
           <img
-            class="hero-media-image"
-            src="images/meches/Screenshot_20260805_221015_Gallery.jpg"
-            alt="Modèle portant des extensions French Curls ACCRUE BRAID"
-            width="1600"
-            height="1200"
+            class="hero-bg-image"
+            src="hero-getzner.png"
+            alt=""
+            width="1000"
+            height="871"
             fetchpriority="high"
             decoding="async"
           >
-        </figure>
-        <div class="hero-panel">
-          <div class="hero-panel-inner">
-            <span class="hero-badge">French Curls · 13.50 CHF</span>
-            <h1 class="hero-title">
-              L'élégance<br>
-              <em>des mèches</em>
-            </h1>
-            <p class="hero-text">
-              Extensions tressées frisées 24&nbsp;pouces / 150&nbsp;g — finition ACCRUE BRAID.
-              Choisissez votre teinte et sublimez votre coiffure chez Marteder Textile à Meyrin.
-            </p>
-            <div class="hero-actions">
-              <a href="#mecheProduct" class="btn btn-primary">Acheter les French Curls</a>
-              <a href="#articles" class="btn btn-outline">Voir le catalogue</a>
-            </div>
-          </div>
+        </picture>
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content container">
+        <span class="hero-badge">Bazin Getzner &amp; wax premium</span>
+        <h1 class="hero-title">
+          L'art du tissu<br>
+          <em>africain</em>
+        </h1>
+        <p class="hero-text">
+          Découvrez notre sélection de Bazin Getzner, wax hollandais et tissus brodés
+          d'exception. Des étoffes de luxe pour sublimer vos créations et célébrer
+          l'élégance africaine.
+        </p>
+        <div class="hero-actions">
+          <a href="#articles" class="btn btn-primary">Découvrir nos tissus</a>
+          <a href="#collections" class="btn btn-outline">Voir les collections</a>
         </div>
+      </div>
+      <div class="hero-scroll">
+        <span>Défiler</span>
+        <div class="scroll-line"></div>
       </div>
     </section>
 
