@@ -67,7 +67,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260806-hero-wax">
+  <link rel="stylesheet" href="css/styles.css?v=20260806-hero-carousel">
   <link
     rel="preload"
     as="image"
@@ -258,38 +258,117 @@
   </div>
 
   <main>
-    <!-- Hero -->
-    <section class="hero" id="accueil">
-      <div class="hero-bg" aria-hidden="true">
-        <picture class="hero-bg-picture">
-          <img
-            class="hero-bg-image"
-            src="hero-getzner.png"
-            alt=""
-            width="1000"
-            height="871"
-            fetchpriority="high"
-            decoding="async"
-          >
-        </picture>
-        <div class="hero-overlay"></div>
+    <!-- Hero carousel -->
+    <section
+      class="hero hero--carousel"
+      id="accueil"
+      tabindex="0"
+      aria-roledescription="carousel"
+      aria-label="Bannière Marteder Textile"
+    >
+      <div class="hero-track">
+        <article class="hero-slide is-active" data-hero-slide="0" aria-hidden="false">
+          <div class="hero-bg" aria-hidden="true">
+            <img
+              class="hero-bg-image"
+              src="hero-getzner.png"
+              alt=""
+              width="1000"
+              height="871"
+              fetchpriority="high"
+              decoding="async"
+            >
+            <div class="hero-overlay"></div>
+          </div>
+          <div class="hero-content container">
+            <span class="hero-badge">Bazin Getzner &amp; wax premium</span>
+            <h1 class="hero-title">
+              L'art du tissu<br>
+              <em>africain</em>
+            </h1>
+            <p class="hero-text">
+              Découvrez notre sélection de Bazin Getzner, wax hollandais et tissus brodés
+              d'exception. Des étoffes de luxe pour sublimer vos créations et célébrer
+              l'élégance africaine.
+            </p>
+            <div class="hero-actions">
+              <a href="#articles" class="btn btn-primary">Découvrir nos tissus</a>
+              <a href="#collections" class="btn btn-outline">Voir les collections</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="hero-slide" data-hero-slide="1" aria-hidden="true">
+          <div class="hero-bg hero-bg--meches" aria-hidden="true">
+            <img
+              class="hero-bg-image"
+              src="images/meches/Screenshot_20260805_221015_Gallery.jpg"
+              alt=""
+              width="1600"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+            >
+            <div class="hero-overlay"></div>
+          </div>
+          <div class="hero-content container">
+            <span class="hero-badge">French Curls · 13.50 CHF</span>
+            <h2 class="hero-title">
+              L'élégance<br>
+              <em>des mèches</em>
+            </h2>
+            <p class="hero-text">
+              Extensions tressées frisées 24&nbsp;pouces / 150&nbsp;g — finition ACCRUE BRAID.
+              Choisissez votre teinte et sublimez votre coiffure chez Marteder Textile.
+            </p>
+            <div class="hero-actions">
+              <a href="#mecheProduct" class="btn btn-primary">Acheter les French Curls</a>
+              <a href="#french-curls-spotlight" class="btn btn-outline">Voir les couleurs</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="hero-slide" data-hero-slide="2" aria-hidden="true">
+          <div class="hero-bg hero-bg--okady" aria-hidden="true">
+            <img
+              class="hero-bg-image"
+              src="coffret-okady-pearl.png"
+              alt=""
+              width="1000"
+              height="1000"
+              loading="lazy"
+              decoding="async"
+            >
+            <div class="hero-overlay"></div>
+          </div>
+          <div class="hero-content container">
+            <span class="hero-badge">Soin visage · OKADY Pearl</span>
+            <h2 class="hero-title">
+              Le rituel<br>
+              <em>éclat</em>
+            </h2>
+            <p class="hero-text">
+              Coffret soin visage OKADY Pearl — 7 pièces pour une routine complète.
+              Hydratation, éclat et douceur, de nouveau disponible chez Marteder Textile.
+            </p>
+            <div class="hero-actions">
+              <a href="#okady" class="btn btn-primary">Découvrir OKADY Pearl</a>
+              <a href="#espace-cosmetiques" class="btn btn-outline">Voir les soins</a>
+            </div>
+          </div>
+        </article>
       </div>
-      <div class="hero-content container">
-        <span class="hero-badge">Bazin Getzner &amp; wax premium</span>
-        <h1 class="hero-title">
-          L'art du tissu<br>
-          <em>africain</em>
-        </h1>
-        <p class="hero-text">
-          Découvrez notre sélection de Bazin Getzner, wax hollandais et tissus brodés
-          d'exception. Des étoffes de luxe pour sublimer vos créations et célébrer
-          l'élégance africaine.
-        </p>
-        <div class="hero-actions">
-          <a href="#articles" class="btn btn-primary">Découvrir nos tissus</a>
-          <a href="#collections" class="btn btn-outline">Voir les collections</a>
+
+      <div class="hero-controls" aria-label="Contrôles du carrousel">
+        <button type="button" class="hero-nav hero-nav--prev" data-hero-prev aria-label="Bannière précédente">‹</button>
+        <div class="hero-dots" role="tablist" aria-label="Choisir une bannière">
+          <button type="button" class="hero-dot is-active" data-hero-dot="0" role="tab" aria-label="Pagnes &amp; tissus" aria-selected="true"></button>
+          <button type="button" class="hero-dot" data-hero-dot="1" role="tab" aria-label="French Curls" aria-selected="false"></button>
+          <button type="button" class="hero-dot" data-hero-dot="2" role="tab" aria-label="OKADY Pearl" aria-selected="false"></button>
         </div>
+        <button type="button" class="hero-nav hero-nav--next" data-hero-next aria-label="Bannière suivante">›</button>
       </div>
+
       <div class="hero-scroll">
         <span>Défiler</span>
         <div class="scroll-line"></div>
@@ -1532,6 +1611,6 @@
   </button>
 
   <script src="js/stripe-config.js?v=20260804-okady-cart"></script>
-  <script src="js/main.js?v=20260804-okady-cart"></script>
+  <script src="js/main.js?v=20260806-hero-carousel"></script>
 </body>
 </html>

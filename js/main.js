@@ -2119,6 +2119,100 @@ function initProductLightbox() {
   });
 }
 
+function initHeroCarousel() {
+  const root = document.querySelector('.hero--carousel');
+  if (!root) return;
+
+  const slides = Array.from(root.querySelectorAll('[data-hero-slide]'));
+  const dots = Array.from(root.querySelectorAll('[data-hero-dot]'));
+  const prevBtn = root.querySelector('[data-hero-prev]');
+  const nextBtn = root.querySelector('[data-hero-next]');
+  if (slides.length < 2) return;
+
+  let index = Math.max(0, slides.findIndex((slide) => slide.classList.contains('is-active')));
+  if (index < 0) index = 0;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const intervalMs = 6000;
+  let timer = null;
+
+  const setSlide = (nextIndex) => {
+    index = (nextIndex + slides.length) % slides.length;
+
+    slides.forEach((slide, i) => {
+      const active = i === index;
+      slide.classList.toggle('is-active', active);
+      slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+
+    dots.forEach((dot, i) => {
+      const active = i === index;
+      dot.classList.toggle('is-active', active);
+      dot.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  };
+
+  const stop = () => {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  };
+
+  const start = () => {
+    if (reduceMotion) return;
+    stop();
+    timer = setInterval(() => setSlide(index + 1), intervalMs);
+  };
+
+  prevBtn?.addEventListener('click', () => {
+    setSlide(index - 1);
+    start();
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    setSlide(index + 1);
+    start();
+  });
+
+  dots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const target = Number(dot.dataset.heroDot);
+      if (Number.isNaN(target)) return;
+      setSlide(target);
+      start();
+    });
+  });
+
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
+  root.addEventListener('focusin', stop);
+  root.addEventListener('focusout', (event) => {
+    if (!root.contains(event.relatedTarget)) start();
+  });
+
+  root.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      setSlide(index - 1);
+      start();
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      setSlide(index + 1);
+      start();
+    }
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop();
+    else start();
+  });
+
+  setSlide(index);
+  start();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   purgeOutOfStockFromCart();
   renderCart();
@@ -2134,6 +2228,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initOkadyGallery();
   initProductLightbox();
   initFilters();
+  initHeroCarousel();
   initNav();
   initBackToTop();
   initNewsletter();

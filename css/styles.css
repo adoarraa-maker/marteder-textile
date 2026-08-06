@@ -395,11 +395,48 @@ ul {
   overflow: hidden;
 }
 
+.hero--carousel {
+  align-items: stretch;
+}
+
+.hero-track {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.85s ease, visibility 0.85s ease;
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+}
+
 .hero-bg {
   position: absolute;
   inset: 0;
   overflow: hidden;
   background-color: #3d2a4a;
+}
+
+.hero-bg--meches {
+  background-color: #1a1410;
+}
+
+.hero-bg--okady {
+  background:
+    radial-gradient(ellipse at 70% 40%, rgba(212, 175, 55, 0.22), transparent 55%),
+    linear-gradient(135deg, #2a1f1a 0%, #4a3428 48%, #1f1712 100%);
 }
 
 .hero-bg-picture,
@@ -415,6 +452,22 @@ ul {
   object-position: center 42%;
 }
 
+.hero-bg--meches .hero-bg-image {
+  object-position: center 18%;
+  transform: scale(1.12);
+}
+
+.hero-bg--okady .hero-bg-image {
+  object-fit: contain;
+  object-position: right center;
+  padding: clamp(1.5rem, 6vw, 4rem);
+  max-width: min(52%, 640px);
+  margin-left: auto;
+  left: auto;
+  right: 0;
+  width: min(52%, 640px);
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -422,6 +475,12 @@ ul {
   background:
     linear-gradient(105deg, rgba(20, 16, 14, 0.78) 0%, rgba(20, 16, 14, 0.48) 42%, rgba(20, 16, 14, 0.28) 100%),
     linear-gradient(to top, rgba(20, 16, 14, 0.45) 0%, transparent 45%);
+}
+
+.hero-bg--okady .hero-overlay {
+  background:
+    linear-gradient(105deg, rgba(20, 16, 14, 0.88) 0%, rgba(20, 16, 14, 0.62) 48%, rgba(20, 16, 14, 0.22) 100%),
+    linear-gradient(to top, rgba(20, 16, 14, 0.4) 0%, transparent 50%);
 }
 
 .hero-content {
@@ -444,8 +503,18 @@ ul {
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.95);
   margin-bottom: 1.5rem;
+}
+
+.hero-slide.is-active .hero-badge,
+.hero-slide.is-active .hero-title,
+.hero-slide.is-active .hero-text,
+.hero-slide.is-active .hero-actions {
   animation: fadeUp 0.8s ease both;
 }
+
+.hero-slide.is-active .hero-title { animation-delay: 0.1s; }
+.hero-slide.is-active .hero-text { animation-delay: 0.2s; }
+.hero-slide.is-active .hero-actions { animation-delay: 0.3s; }
 
 .hero-title {
   font-family: var(--font-display);
@@ -454,7 +523,6 @@ ul {
   line-height: 1.05;
   letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
-  animation: fadeUp 0.8s 0.1s ease both;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
 }
 
@@ -469,7 +537,6 @@ ul {
   color: rgba(255, 255, 255, 0.88);
   max-width: 480px;
   margin-bottom: 2.5rem;
-  animation: fadeUp 0.8s 0.2s ease both;
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -477,7 +544,6 @@ ul {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  animation: fadeUp 0.8s 0.3s ease both;
 }
 
 .hero-actions .btn-outline {
@@ -489,6 +555,71 @@ ul {
   background: #fff;
   color: var(--color-text);
   border-color: #fff;
+}
+
+.hero-controls {
+  position: absolute;
+  left: 50%;
+  bottom: 5.5rem;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.hero-nav {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(20, 16, 14, 0.35);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: var(--transition);
+}
+
+.hero-nav:hover,
+.hero-nav:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #fff;
+  outline: none;
+}
+
+.hero-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(20, 16, 14, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+}
+
+.hero-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s ease, width 0.25s ease;
+}
+
+.hero-dot.is-active {
+  width: 1.5rem;
+  background: #fff;
+}
+
+.hero-dot:hover,
+.hero-dot:focus-visible {
+  background: rgba(255, 255, 255, 0.85);
+  outline: none;
 }
 
 .hero-scroll {
@@ -523,6 +654,44 @@ ul {
 @keyframes scrollPulse {
   0%, 100% { opacity: 0.4; transform: scaleY(0.6); }
   50% { opacity: 1; transform: scaleY(1); }
+}
+
+@media (max-width: 720px) {
+  .hero-bg--okady .hero-bg-image {
+    max-width: none;
+    width: 100%;
+    left: 0;
+    right: 0;
+    object-position: center 30%;
+    opacity: 0.55;
+    padding: 0;
+  }
+
+  .hero-bg--okady .hero-overlay {
+    background:
+      linear-gradient(180deg, rgba(20, 16, 14, 0.55) 0%, rgba(20, 16, 14, 0.82) 55%, rgba(20, 16, 14, 0.92) 100%);
+  }
+
+  .hero-controls {
+    bottom: 4.75rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.4rem, 11vw, 3.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide,
+  .hero-dot,
+  .hero-nav,
+  .hero-slide.is-active .hero-badge,
+  .hero-slide.is-active .hero-title,
+  .hero-slide.is-active .hero-text,
+  .hero-slide.is-active .hero-actions {
+    transition: none;
+    animation: none;
+  }
 }
 
 /* ---- Bande visuelle accueil (French Curls) ---- */
