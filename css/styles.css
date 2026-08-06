@@ -390,9 +390,51 @@ ul {
   position: relative;
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   padding-top: calc(var(--header-height) + var(--top-banner-height));
   overflow: hidden;
+  background: var(--color-bg);
+}
+
+.hero--split {
+  display: block;
+  padding-top: calc(var(--header-height) + var(--top-banner-height));
+}
+
+.hero-split {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  min-height: calc(100vh - var(--header-height) - var(--top-banner-height));
+}
+
+.hero-media {
+  margin: 0;
+  min-height: 100%;
+  background: #141210;
+  overflow: hidden;
+}
+
+.hero-media-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - var(--header-height) - var(--top-banner-height));
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+.hero-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  background:
+    linear-gradient(165deg, #fffdf9 0%, var(--color-bg) 48%, var(--color-bg-alt) 100%);
+  border-left: 1px solid var(--color-border);
+}
+
+.hero-panel-inner {
+  width: min(100%, 34rem);
 }
 
 .hero-bg {
@@ -415,11 +457,6 @@ ul {
   object-position: center 28%;
 }
 
-.hero--french-curls .hero-bg-image {
-  object-position: 62% center;
-  filter: saturate(1.05) contrast(1.04);
-}
-
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -427,13 +464,6 @@ ul {
   background:
     linear-gradient(105deg, rgba(20, 16, 14, 0.78) 0%, rgba(20, 16, 14, 0.48) 42%, rgba(20, 16, 14, 0.28) 100%),
     linear-gradient(to top, rgba(20, 16, 14, 0.45) 0%, transparent 45%);
-}
-
-.hero--french-curls .hero-overlay {
-  background:
-    linear-gradient(105deg, rgba(18, 14, 12, 0.88) 0%, rgba(18, 14, 12, 0.62) 38%, rgba(18, 14, 12, 0.28) 68%, rgba(18, 14, 12, 0.18) 100%),
-    linear-gradient(to top, rgba(18, 14, 12, 0.55) 0%, transparent 48%),
-    radial-gradient(ellipse at 72% 42%, transparent 12%, rgba(18, 14, 12, 0.22) 70%);
 }
 
 .hero-content {
@@ -447,42 +477,42 @@ ul {
 .hero-badge {
   display: inline-block;
   padding: 0.4rem 1rem;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(139, 90, 60, 0.1);
+  border: 1px solid rgba(139, 90, 60, 0.28);
   border-radius: 100px;
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--color-accent-dark);
   margin-bottom: 1.5rem;
   animation: fadeUp 0.8s ease both;
 }
 
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-size: clamp(2.75rem, 5.5vw, 4.75rem);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
+  color: var(--color-text);
   animation: fadeUp 0.8s 0.1s ease both;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
 }
 
 .hero-title em {
   font-style: italic;
-  color: var(--color-accent-light);
+  color: var(--color-accent);
 }
 
 .hero-text {
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.88);
-  max-width: 480px;
-  margin-bottom: 2.5rem;
+  color: var(--color-text-muted);
+  max-width: 40ch;
+  margin-bottom: 2.25rem;
+  line-height: 1.65;
   animation: fadeUp 0.8s 0.2s ease both;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
 }
 
 .hero-actions {
@@ -490,6 +520,17 @@ ul {
   flex-wrap: wrap;
   gap: 1rem;
   animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.hero--split .hero-actions .btn-outline {
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.hero--split .hero-actions .btn-outline:hover {
+  background: var(--color-text);
+  color: #fff;
+  border-color: var(--color-text);
 }
 
 .hero-actions .btn-outline {
@@ -520,6 +561,10 @@ ul {
   animation: fadeUp 0.8s 0.5s ease both;
 }
 
+.hero--split .hero-scroll {
+  display: none;
+}
+
 .scroll-line {
   width: 1px;
   height: 40px;
@@ -535,6 +580,28 @@ ul {
 @keyframes scrollPulse {
   0%, 100% { opacity: 0.4; transform: scaleY(0.6); }
   50% { opacity: 1; transform: scaleY(1); }
+}
+
+@media (max-width: 900px) {
+  .hero-split {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .hero-media-image {
+    min-height: min(62vh, 520px);
+    max-height: 62vh;
+  }
+
+  .hero-panel {
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+    padding: 2.25rem 1.5rem 3rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.4rem, 10vw, 3.4rem);
+  }
 }
 
 /* ---- Bande visuelle accueil (French Curls) ---- */
