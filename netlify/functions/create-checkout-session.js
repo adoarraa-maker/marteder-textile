@@ -20,6 +20,10 @@ const CATALOG = {
   frenchCurls: {
     name: 'Extensions French Curls (24" / 150g)',
     unitAmountCents: 1350,
+    supplier: 'Zhengzhou Yinesi International Trade Co., Ltd.',
+    alibabaProduct:
+      'Box Spiral French Curl Braiding Hair Extensions 12 Inch 24 Inch 150g/Pack',
+    alibabaSampleOrder: '29605148501040027',
   },
   okady: {
     name: 'Coffret Soin Visage OKADY Pearl (7 pièces)',
@@ -241,6 +245,24 @@ exports.handler = async (event) => {
       params.set(
         `line_items[${lineIndex}][price_data][product_data][metadata][variant]`,
         line.variantLabel
+      );
+    }
+    if (catalogItem.supplier) {
+      params.set(
+        `line_items[${lineIndex}][price_data][product_data][metadata][supplier]`,
+        sanitizeText(catalogItem.supplier, 120)
+      );
+    }
+    if (catalogItem.alibabaSampleOrder) {
+      params.set(
+        `line_items[${lineIndex}][price_data][product_data][metadata][alibaba_sample_order]`,
+        sanitizeText(catalogItem.alibabaSampleOrder, 40)
+      );
+    }
+    if (catalogItem.alibabaProduct) {
+      params.set(
+        `line_items[${lineIndex}][price_data][product_data][metadata][alibaba_product]`,
+        sanitizeText(catalogItem.alibabaProduct, 120)
       );
     }
     lineIndex += 1;

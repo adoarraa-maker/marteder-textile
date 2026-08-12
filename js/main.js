@@ -110,11 +110,17 @@ const schwerLocal = {
   'beige-dore': `${TISSUS_SCHWER}/beige-dore.jpg`,
 };
 
+/**
+ * Images de secours Getzner Schwer — VIDÉES le 09.08.2026.
+ * Elles pointaient vers des photos de banque d'images (Unsplash) qui ne sont
+ * pas nos tissus. Déposez vos vraies photos dans images/tissus/ avec les noms
+ * indiqués dans images/tissus/LISEZMOI.txt : le code les prendra tout seul.
+ */
 const schwerFallback = {
-  violet: 'https://images.unsplash.com/photo-1607300110843-b3994a493d98?w=800&q=85',
-  'vert-clair': 'https://images.unsplash.com/photo-1527167598984-8802d8028eea?w=800&q=85',
-  blanc: 'https://images.unsplash.com/photo-1744502671977-702d9105533d?w=800&q=85',
-  'beige-dore': 'https://images.unsplash.com/photo-1631663027473-3671aa7c4503?w=800&q=85',
+  violet: '',
+  'vert-clair': '',
+  blanc: '',
+  'beige-dore': '',
 };
 
 const fabricProducts = {
@@ -201,12 +207,12 @@ const fabricProducts = {
     variants: {
       'or-classique': {
         label: 'Or classique brodé',
-        image: 'https://images.unsplash.com/photo-1707569620487-1fcff5e22f9f?w=800&q=85',
+        image: '',
         alt: 'Bazin doré brodé or classique',
       },
       'or-rose': {
         label: 'Or rose brodé',
-        image: 'https://images.unsplash.com/photo-1777148783728-510bbeeba075?w=800&q=85',
+        image: '',
         alt: 'Bazin doré brodé or rose',
       },
     },
@@ -220,17 +226,17 @@ const fabricProducts = {
     variants: {
       classique: {
         label: 'Motif classique',
-        image: 'https://images.unsplash.com/photo-1768212565426-58b089b6386d?w=800&q=85',
+        image: '',
         alt: 'Wax hollandais Vlisco motif classique',
       },
       indigo: {
         label: 'Motif indigo',
-        image: 'https://images.unsplash.com/photo-1630084305900-b297cff3a608?w=800&q=85',
+        image: '',
         alt: 'Wax hollandais Vlisco motif indigo',
       },
       floral: {
         label: 'Motif floral',
-        image: 'https://images.unsplash.com/photo-1768212565424-efa3a3852b81?w=800&q=85',
+        image: '',
         alt: 'Wax hollandais Vlisco motif floral',
       },
     },
@@ -244,17 +250,17 @@ const fabricProducts = {
     variants: {
       'geo-noir': {
         label: 'Géométrique noir & or',
-        image: 'https://images.unsplash.com/photo-1630084305900-b297cff3a608?w=800&q=85',
+        image: '',
         alt: 'Wax super wax géométrique noir et or',
       },
       'geo-rouge': {
         label: 'Géométrique rouge',
-        image: 'https://images.unsplash.com/photo-1768212566108-4ce4f329e4d2?w=800&q=85',
+        image: '',
         alt: 'Wax super wax géométrique rouge',
       },
       'geo-bleu': {
         label: 'Géométrique bleu',
-        image: 'https://images.unsplash.com/photo-1768212565426-58b089b6386d?w=800&q=85',
+        image: '',
         alt: 'Wax super wax géométrique bleu',
       },
     },
@@ -268,17 +274,17 @@ const fabricProducts = {
     variants: {
       'multi-vif': {
         label: 'Multicolore vif',
-        image: 'https://images.unsplash.com/photo-1768212565424-efa3a3852b81?w=800&q=85',
+        image: '',
         alt: 'Pagne wax premium multicolore vif',
       },
       'multi-terre': {
         label: 'Tons terre',
-        image: 'https://images.unsplash.com/photo-1768212566108-4ce4f329e4d2?w=800&q=85',
+        image: '',
         alt: 'Pagne wax premium tons terre',
       },
       'multi-sunset': {
         label: 'Sunset orange',
-        image: 'https://images.unsplash.com/photo-1768212565426-58b089b6386d?w=800&q=85',
+        image: '',
         alt: 'Pagne wax premium sunset orange',
       },
     },
@@ -288,18 +294,32 @@ const fabricProducts = {
 const xpressionProductName = 'X-Pression Ultra Braid';
 const frenchCurlProductName = 'Extensions de Cheveux Tressés Frisés – French Curls (24 Pouces / 150g)';
 
+/**
+ * Référence fournisseur Alibaba (échantillon / réassort).
+ * Sert au suivi interne et aux e-mails de commande — ne passe pas les
+ * commandes clients automatiquement sur Alibaba (pas d’API dropshipping).
+ */
+const FRENCH_CURL_SUPPLIER = {
+  name: 'Zhengzhou Yinesi International Trade Co., Ltd.',
+  productTitle:
+    'Box Spiral French Curl Braiding Hair Extensions 12 Inch 24 Inch 150g/Pack',
+  alibabaOrderNo: '29605148501040027',
+  specs: '24 Inch · 150g/Pack (Box Spiral French Curl)',
+  platform: 'Alibaba',
+};
+
 const xpressionImages = {
   clean: {
     src: 'xpression-paquets-propres.png?v=20260721-gallery',
     alt: 'Trois paquets propres de mèches X-Pression Ultra Braid',
   },
   portrait: {
-    src: 'https://images.unsplash.com/photo-1763256377889-c4e85bdd1a6c?w=1200&q=90',
-    alt: 'X-Pression Ultra Braid — modèle avec coiffure portée',
+    src: 'rasta-model.png',
+    alt: 'X-Pression Ultra Braid — modèle coiffé au salon Marteder',
   },
   closeup: {
-    src: 'https://images.unsplash.com/photo-1759756655332-d66200497312?w=1200&q=90',
-    alt: 'X-Pression Ultra Braid — gros plan sur les mèches',
+    src: 'rasta-zoom.jpg',
+    alt: 'X-Pression Ultra Braid — gros plan sur les tresses',
   },
   pack1b: {
     src: 'images/meches/xpression-pack-1b.jpg',
@@ -335,6 +355,13 @@ const xpressionVariants = {
     label: 'Teinte 350 (Cuivré / Roux)',
     shortLabel: '350 — Cuivré / Roux',
     imageKey: 'pack350',
+    price: 5,
+    stripeProduct: 'meches',
+  },
+  '2': {
+    label: 'Teinte 2 (Brun foncé)',
+    shortLabel: '2 — Brun foncé',
+    imageKey: 'pack2',
     price: 5,
     stripeProduct: 'meches',
   },
@@ -505,8 +532,21 @@ function saveCart() {
 function formatCartSummary() {
   return cart.map((item) => {
     const variant = item.variantLabel ? ` (${item.variantLabel})` : '';
-    return `- ${item.displayName || item.name}${variant} × ${item.quantity} — ${formatPrice(item.price * item.quantity)}`;
+    let line = `- ${item.displayName || item.name}${variant} × ${item.quantity} — ${formatPrice(item.price * item.quantity)}`;
+    if (item.stripeProduct === 'frenchCurls' || item.name === frenchCurlProductName) {
+      line += `\n  Fournisseur: ${FRENCH_CURL_SUPPLIER.name}`;
+      line += `\n  Produit Alibaba: ${FRENCH_CURL_SUPPLIER.productTitle}`;
+      line += `\n  N° commande échantillon Alibaba: ${FRENCH_CURL_SUPPLIER.alibabaOrderNo}`;
+    }
+    return line;
   }).join('\n');
+}
+
+function cartContainsFrenchCurls() {
+  return cart.some((item) => {
+    const normalized = normalizeCartItem(item);
+    return normalized.stripeProduct === 'frenchCurls' || item.name === frenchCurlProductName;
+  });
 }
 
 function formatPrice(price) {
@@ -1823,6 +1863,14 @@ function initCartCheckout() {
       total: formatPrice(plan.total),
       payment: paymentMode,
       stripe_session_id: stripeSessionId,
+      ...(cartContainsFrenchCurls()
+        ? {
+            french_curls_supplier: FRENCH_CURL_SUPPLIER.name,
+            french_curls_alibaba_product: FRENCH_CURL_SUPPLIER.productTitle,
+            french_curls_alibaba_sample_order: FRENCH_CURL_SUPPLIER.alibabaOrderNo,
+            french_curls_specs: FRENCH_CURL_SUPPLIER.specs,
+          }
+        : {}),
     });
 
     try {

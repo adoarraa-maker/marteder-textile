@@ -12,7 +12,14 @@
 const CATALOG = {
   getzner: { name: 'Bazin Getzner (Lot de 5 yards)', unitAmountCents: 8000 },
   meches: { name: 'Mèches X-Pression Ultra Braid', unitAmountCents: 500 },
-  frenchCurls: { name: 'Extensions French Curls (24" / 150g)', unitAmountCents: 1350 },
+  frenchCurls: {
+    name: 'Extensions French Curls (24" / 150g)',
+    unitAmountCents: 1350,
+    supplier: 'Zhengzhou Yinesi International Trade Co., Ltd.',
+    alibabaProduct:
+      'Box Spiral French Curl Braiding Hair Extensions 12 Inch 24 Inch 150g/Pack',
+    alibabaSampleOrder: '29605148501040027',
+  },
   okady: { name: 'Coffret Soin Visage OKADY Pearl (7 pièces)', unitAmountCents: 6900 },
   dnutrimec: {
     name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
