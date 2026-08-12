@@ -2,11 +2,10 @@ const STORE_EMAIL = 'Adoarraa@gmail.com';
 const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${STORE_EMAIL}`;
 const CART_STORAGE_KEY = 'marteder-cart';
 
-const OUT_OF_STOCK_PRODUCT_IDS = new Set(['1', '2', '10']);
+const OUT_OF_STOCK_PRODUCT_IDS = new Set(['1', '2']);
 const OUT_OF_STOCK_NAMES = [
   'Bazin Riche Getzner Authentique (Schwer) – Lot de 5 Yards',
   'Bazin riche doré brodé',
-  'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
 ];
 
 function isOutOfStockProduct(productId, productName) {
@@ -27,7 +26,11 @@ const products = {
     price: 69,
     stripeProduct: 'okady',
   },
-  10: { name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)', price: 30 },
+  10: {
+    name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
+    price: 30,
+    stripeProduct: 'dnutrimec',
+  },
 };
 
 const STRIPE_PRODUCTS = {
@@ -46,6 +49,10 @@ const STRIPE_PRODUCTS = {
   okady: {
     unitPrice: 69,
     label: 'Coffret OKADY Pearl',
+  },
+  dnutrimec: {
+    unitPrice: 30,
+    label: 'Gel Essence Réparateur au Collagène',
   },
 };
 
@@ -627,6 +634,13 @@ function normalizeCartItem(item) {
   }
   if (item.name && String(item.name).includes('OKADY Pearl')) {
     return { ...item, stripeProduct: 'okady' };
+  }
+  if (
+    item.name &&
+    (String(item.name).includes('Gel Essence Réparateur au Collagène') ||
+      String(item.name).includes('D-nutrimec'))
+  ) {
+    return { ...item, stripeProduct: 'dnutrimec' };
   }
   return { ...item, stripeProduct: null };
 }

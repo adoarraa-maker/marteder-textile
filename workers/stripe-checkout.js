@@ -14,6 +14,10 @@ const CATALOG = {
   meches: { name: 'Mèches X-Pression Ultra Braid', unitAmountCents: 500 },
   frenchCurls: { name: 'Extensions French Curls (24" / 150g)', unitAmountCents: 1350 },
   okady: { name: 'Coffret Soin Visage OKADY Pearl (7 pièces)', unitAmountCents: 6900 },
+  dnutrimec: {
+    name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
+    unitAmountCents: 3000,
+  },
 };
 
 const SHIPPING = {

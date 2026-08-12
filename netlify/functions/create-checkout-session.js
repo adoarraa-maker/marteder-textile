@@ -25,6 +25,10 @@ const CATALOG = {
     name: 'Coffret Soin Visage OKADY Pearl (7 pièces)',
     unitAmountCents: 6900,
   },
+  dnutrimec: {
+    name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
+    unitAmountCents: 3000,
+  },
 };
 
 const SHIPPING = {
