@@ -1346,6 +1346,78 @@ ul {
   background: #161310;
 }
 
+.wifi-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  max-height: min(72vh, 560px);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #1a1714;
+  outline: none;
+}
+
+.wifi-stage:focus-visible {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--color-accent, #c4a574);
+}
+
+.wifi-zoom-trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.wifi-hover-zoom {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wifi-stage .wifi-still {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.2s ease-out, opacity 0.28s ease;
+  will-change: transform;
+}
+
+.wifi-stage .wifi-still.is-zoomed {
+  transition: transform 0.08s linear;
+}
+
+.wifi-stage .wifi-still.is-switching {
+  opacity: 0.55;
+}
+
+.wifi-stage .marteder-gallery-nav {
+  z-index: 3;
+}
+
+.wifi-stage .product-badge {
+  z-index: 2;
+}
+
+.wifi-stage .wifi-still-label {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 2;
+  margin: 0;
+  padding: 0.4rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(22, 19, 16, 0.72);
+  backdrop-filter: blur(6px);
+}
+
 .wifi-video-wrap {
   position: relative;
   width: 100%;
@@ -1355,6 +1427,11 @@ ul {
   overflow: hidden;
   background: #1a1714;
   line-height: 0;
+}
+
+.wifi-video-wrap--compact {
+  aspect-ratio: 16 / 9;
+  max-height: 168px;
 }
 
 .wifi-video {
@@ -1398,6 +1475,18 @@ ul {
   border-radius: var(--radius-sm);
 }
 
+@media (hover: none), (pointer: coarse) {
+  .wifi-stage .wifi-still.is-zoomed {
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wifi-stage .wifi-still {
+    transition: opacity 0.2s ease;
+  }
+}
+
 .product-card--star .product-info {
   padding: 1.25rem 1.35rem 1.4rem;
 }
@@ -1407,10 +1496,16 @@ ul {
     grid-template-columns: 1fr;
   }
 
-  .wifi-video-wrap {
-    max-height: min(68vh, 520px);
+  .wifi-stage {
+    max-height: min(70vh, 520px);
     margin-inline: auto;
-    width: min(100%, 340px);
+    width: min(100%, 380px);
+  }
+
+  .wifi-video-wrap--compact {
+    max-height: 168px;
+    margin-inline: auto;
+    width: min(100%, 380px);
   }
 }
 
@@ -1469,7 +1564,11 @@ ul {
   transform: scale(1.06);
 }
 
-.product-card--gallery:hover .product-image {
+.product-card:hover .wifi-stage .product-image:not(.is-zoomed) {
+  transform: none;
+}
+
+.product-card--gallery:hover .product-image:not(.is-zoomed) {
   transform: none;
 }
 
@@ -1504,6 +1603,12 @@ ul {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+
+.marteder-gallery-image.is-zoomed {
+  transition: transform 0.08s linear;
 }
 
 .marteder-zoom-hint {
@@ -1951,6 +2056,7 @@ ul {
   border: 0;
   background: transparent;
   cursor: zoom-in;
+  overflow: hidden;
 }
 
 .french-curl-main-trigger img {
@@ -1960,6 +2066,12 @@ ul {
   object-fit: contain;
   object-position: center center;
   background: #f4f1ec;
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+
+.french-curl-main-trigger img.is-zoomed {
+  transition: transform 0.08s linear;
 }
 
 .french-curl-zoom-hint {

@@ -68,7 +68,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260823-coiffure-photos">
+  <link rel="stylesheet" href="css/styles.css?v=20260823-gallery-fix">
   <link
     rel="preload"
     as="image"
@@ -609,7 +609,63 @@
           >
             <div class="wifi-layout" data-wifi-gallery>
               <div class="wifi-media">
-                <div class="wifi-video-wrap">
+                <div class="wifi-stage" data-wifi-stage tabindex="0" aria-label="Galerie coloris Bazin Getzner Wifi">
+                  <button type="button" class="marteder-gallery-nav marteder-gallery-prev" data-wifi-prev aria-label="Coloris précédent">‹</button>
+                  <button
+                    type="button"
+                    class="product-zoom-trigger wifi-zoom-trigger"
+                    data-product-zoom
+                    data-product-gallery="getzner-wifi"
+                    data-gallery-start-index="0"
+                    data-caption="Bazin Getzner motif Wifi — Bleu irisé"
+                    aria-label="Agrandir la photo du motif Wifi, coloris bleu irisé"
+                  >
+                    <span class="wifi-hover-zoom" data-wifi-zoom>
+                      <img
+                        class="product-image wifi-still"
+                        src="getzner-wifi-bleu.jpg"
+                        alt="Bazin Getzner motif Wifi — coloris bleu irisé"
+                        data-wifi-still
+                        width="900"
+                        height="1200"
+                        decoding="async"
+                      >
+                    </span>
+                    <span class="product-zoom-icon" aria-hidden="true">+</span>
+                  </button>
+                  <button type="button" class="marteder-gallery-nav marteder-gallery-next" data-wifi-next aria-label="Coloris suivant">›</button>
+                  <span class="product-badge new">Produit phare</span>
+                  <p class="wifi-still-label" data-wifi-label>Bleu irisé</p>
+                </div>
+                <div class="wifi-thumbs" role="listbox" aria-label="Coloris Bazin Getzner Wifi">
+                  <button
+                    type="button"
+                    class="marteder-thumb fabric-swatch active"
+                    role="option"
+                    aria-selected="true"
+                    data-wifi-thumb
+                    data-variant="bleu"
+                    data-label="Bleu irisé"
+                    data-src="getzner-wifi-bleu.jpg"
+                    aria-label="Afficher le coloris bleu irisé"
+                  >
+                    <img src="getzner-wifi-bleu.jpg" alt="Bazin Getzner Wifi bleu irisé" loading="lazy" draggable="false">
+                  </button>
+                  <button
+                    type="button"
+                    class="marteder-thumb fabric-swatch"
+                    role="option"
+                    aria-selected="false"
+                    data-wifi-thumb
+                    data-variant="bordeaux"
+                    data-label="Bordeaux or"
+                    data-src="getzner-wifi-bordeaux.jpg"
+                    aria-label="Afficher le coloris bordeaux or"
+                  >
+                    <img src="getzner-wifi-bordeaux.jpg" alt="Bazin Getzner Wifi bordeaux or" loading="lazy" draggable="false">
+                  </button>
+                </div>
+                <div class="wifi-video-wrap wifi-video-wrap--compact">
                   <video
                     class="wifi-video"
                     autoplay
@@ -623,45 +679,7 @@
                     <source src="Wifi-video.mp4" type="video/mp4">
                     Votre navigateur ne prend pas en charge la lecture de cette vidéo.
                   </video>
-                  <span class="product-badge new">Produit phare</span>
                 </div>
-                <p class="wifi-still-label" data-wifi-label>Bleu irisé</p>
-                <div class="wifi-thumbs" role="listbox" aria-label="Coloris Bazin Getzner Wifi">
-                  <button
-                    type="button"
-                    class="marteder-thumb fabric-swatch active"
-                    role="option"
-                    aria-selected="true"
-                    data-wifi-thumb
-                    data-variant="bleu"
-                    data-label="Bleu irisé"
-                    data-src="getzner-wifi-bleu.jpg"
-                    aria-label="Coloris bleu irisé"
-                  >
-                    <img src="getzner-wifi-bleu.jpg" alt="Bazin Getzner Wifi bleu irisé" loading="lazy" draggable="false">
-                  </button>
-                  <button
-                    type="button"
-                    class="marteder-thumb fabric-swatch"
-                    role="option"
-                    aria-selected="false"
-                    data-wifi-thumb
-                    data-variant="bordeaux"
-                    data-label="Bordeaux or"
-                    data-src="getzner-wifi-bordeaux.jpg"
-                    aria-label="Coloris bordeaux or"
-                  >
-                    <img src="getzner-wifi-bordeaux.jpg" alt="Bazin Getzner Wifi bordeaux or" loading="lazy" draggable="false">
-                  </button>
-                </div>
-                <img
-                  class="product-image wifi-still"
-                  src="getzner-wifi-bleu.jpg"
-                  alt="Bazin Getzner motif Wifi — coloris bleu irisé"
-                  data-wifi-still
-                  loading="lazy"
-                  decoding="async"
-                >
               </div>
               <div class="product-info">
                 <p class="product-category">Bazin Getzner</p>
@@ -1416,15 +1434,15 @@
                   <span class="product-zoom-icon" aria-hidden="true">⌕</span>
                 </button>
                 <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack1b" data-product-zoom data-product-gallery="xpression" data-gallery-index="1" data-caption="X-Pression Ultra Braid — paquet teinte 1B" aria-label="Agrandir le paquet teinte 1B — Noir naturel">
-                  <img src="images/meches/xpression-pack-1b.jpg" alt="Paquet X-Pression teinte 1B">
+                  <img src="xpression-color-1b.png" alt="Paquet X-Pression teinte 1B">
                   <span class="product-zoom-icon" aria-hidden="true">⌕</span>
                 </button>
                 <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack350" data-product-zoom data-product-gallery="xpression" data-gallery-index="2" data-caption="X-Pression Ultra Braid — paquet teinte 350" aria-label="Agrandir le paquet teinte 350 — Cuivré Roux">
-                  <img src="images/meches/xpression-pack-350.jpg" alt="Paquet X-Pression teinte 350">
+                  <img src="xpression-paquets-propres.png" alt="Paquet X-Pression teinte 350">
                   <span class="product-zoom-icon" aria-hidden="true">⌕</span>
                 </button>
                 <button type="button" class="meche-thumb meche-thumb--pack" data-image-key="pack2" data-product-zoom data-product-gallery="xpression" data-gallery-index="3" data-caption="X-Pression Ultra Braid — paquet teinte 2" aria-label="Agrandir le paquet teinte 2 — Brun foncé">
-                  <img src="images/meches/xpression-pack-2-brun.jpg" alt="Paquet X-Pression teinte 2 Brun foncé">
+                  <img src="xpression-color-1.png" alt="Paquet X-Pression teinte 2 Brun foncé">
                   <span class="product-zoom-icon" aria-hidden="true">⌕</span>
                 </button>
                 <button type="button" class="meche-thumb" data-image-key="color1" data-product-zoom data-product-gallery="xpression" data-gallery-index="4" data-caption="X-Pression Ultra Braid — coque Color 1" aria-label="Agrandir la coque Color 1">
@@ -1935,6 +1953,6 @@
   </button>
 
   <script src="js/stripe-config.js?v=20260804-okady-cart"></script>
-  <script src="js/main.js?v=20260823-ceremonie-stripe"></script>
+  <script src="js/main.js?v=20260823-gallery-fix"></script>
 </body>
 </html>

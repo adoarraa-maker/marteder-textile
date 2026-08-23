@@ -398,15 +398,15 @@ const xpressionImages = {
     alt: 'X-Pression Ultra Braid — gros plan sur les tresses',
   },
   pack1b: {
-    src: 'images/meches/xpression-pack-1b.jpg',
+    src: 'xpression-color-1b.png',
     alt: 'Paquets X-Pression Ultra Braid — teinte 1B Noir naturel',
   },
   pack350: {
-    src: 'images/meches/xpression-pack-350.jpg',
+    src: 'xpression-paquets-propres.png',
     alt: 'Paquet X-Pression Ultra Braid — teinte 350 Cuivré Roux',
   },
   pack2: {
-    src: 'images/meches/xpression-pack-2-brun.jpg',
+    src: 'xpression-color-1.png',
     alt: 'Paquet X-Pression Ultra Braid — teinte 2 Brun foncé',
   },
   color1: {
@@ -1823,6 +1823,8 @@ function initMecheVariant() {
 
   let currentIndex = 0;
   const total = frenchCurlGalleryFiles.length;
+  const failedIndices = new Set();
+  const resetHoverZoom = bindHoverZoom(mainZoom, image);
 
   const updateCounter = (index) => {
     if (counter) counter.textContent = `${index + 1} / ${total}`;
@@ -1833,17 +1835,27 @@ function initMecheVariant() {
     thumb?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
   };
 
-  const setMainByIndex = (index, { syncColor = false } = {}) => {
-    const safeIndex = ((index % total) + total) % total;
+  const setMainByIndex = (index, { syncColor = false, direction = 1 } = {}) => {
+    if (!total || failedIndices.size >= total) return;
+    let safeIndex = ((index % total) + total) % total;
+    let hops = 0;
+    while (failedIndices.has(safeIndex) && hops < total) {
+      safeIndex = (safeIndex + direction + total) % total;
+      hops += 1;
+    }
+    if (hops >= total) return;
+
     currentIndex = safeIndex;
     const key = `g${safeIndex}`;
     const photo = frenchCurlImages[key];
-    if (!photo) return;
+    if (!photo?.src) {
+      failedIndices.add(safeIndex);
+      setMainByIndex(safeIndex + direction, { syncColor, direction });
+      return;
+    }
 
-    image.src = photo.src;
-    image.alt = photo.alt;
-    const isPackShot = Boolean(FRENCH_CURL_MEDIA[safeIndex]?.file?.startsWith('french-curl'));
-    image.classList.toggle('is-pack-shot', isPackShot);
+    resetHoverZoom();
+    image.classList.toggle('is-pack-shot', Boolean(FRENCH_CURL_MEDIA[safeIndex]?.file?.startsWith('french-curl')));
     image.classList.remove('french-curl-fade');
     void image.offsetWidth;
     image.classList.add('french-curl-fade');
@@ -1860,6 +1872,14 @@ function initMecheVariant() {
 
     updateCounter(safeIndex);
     scrollThumbIntoView(safeIndex);
+
+    swapGalleryImage(image, photo.src, photo.alt).catch((err) => {
+      if (err?.message === 'stale') return;
+      failedIndices.add(safeIndex);
+      const thumb = galleryRow.querySelector(`.meche-thumb[data-gallery-index="${safeIndex}"]`);
+      if (thumb) thumb.hidden = true;
+      setMainByIndex(safeIndex + direction, { syncColor, direction });
+    });
 
     if (syncColor) {
       const mediaColor = FRENCH_CURL_MEDIA[safeIndex]?.color;
@@ -1979,6 +1999,10 @@ function initMecheVariant() {
     thumbImg.src = photo.src;
     thumbImg.alt = photo.alt;
     thumbImg.loading = 'lazy';
+    thumbImg.addEventListener('error', () => {
+      failedIndices.add(index);
+      button.hidden = true;
+    });
     button.appendChild(thumbImg);
 
     button.addEventListener('click', () => {
@@ -1990,10 +2014,10 @@ function initMecheVariant() {
   galleryRow.replaceChildren(fragment);
 
   prevBtn?.addEventListener('click', () => {
-    setMainByIndex(currentIndex - 1, { syncColor: true });
+    setMainByIndex(currentIndex - 1, { syncColor: true, direction: -1 });
   });
   nextBtn?.addEventListener('click', () => {
-    setMainByIndex(currentIndex + 1, { syncColor: true });
+    setMainByIndex(currentIndex + 1, { syncColor: true, direction: 1 });
   });
 
   // Flèches clavier quand la fiche est focusée
@@ -2001,11 +2025,11 @@ function initMecheVariant() {
   card?.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowLeft') {
       event.preventDefault();
-      setMainByIndex(currentIndex - 1, { syncColor: true });
+      setMainByIndex(currentIndex - 1, { syncColor: true, direction: -1 });
     }
     if (event.key === 'ArrowRight') {
       event.preventDefault();
-      setMainByIndex(currentIndex + 1, { syncColor: true });
+      setMainByIndex(currentIndex + 1, { syncColor: true, direction: 1 });
     }
   });
 
@@ -2298,6 +2322,7 @@ function initMartederGallery() {
   const zoomBtn = gallery.querySelector('[data-marteder-zoom]');
   const lightboxImage = document.getElementById('martederLightboxImage');
   const lightboxLabel = document.getElementById('martederLightboxLabel');
+  const resetHoverZoom = bindHoverZoom(zoomBtn, mainImage);
   let index = 0;
 
   const getSlide = (i) => {
@@ -2313,15 +2338,21 @@ function initMartederGallery() {
     };
   };
 
-  const showSlide = (i) => {
-    index = (i + thumbs.length) % thumbs.length;
-    const slide = getSlide(index);
-    if (mainImage.getAttribute('src') === slide.src) {
-      mainImage.src = `${slide.src}?v=${encodeURIComponent(slide.variant)}`;
-    } else {
-      mainImage.src = slide.src;
+  const showSlide = (i, direction = 1, attempts = 0) => {
+    if (!thumbs.length || attempts >= thumbs.length) return;
+    index = ((i % thumbs.length) + thumbs.length) % thumbs.length;
+    const thumbEl = thumbs[index];
+    if (thumbEl?.hidden) {
+      showSlide(index + direction, direction, attempts + 1);
+      return;
     }
-    mainImage.alt = `Création exclusive Marteder — ${slide.label}`;
+    const slide = getSlide(index);
+    if (!slide.src) {
+      if (thumbEl) thumbEl.hidden = true;
+      showSlide(index + direction, direction, attempts + 1);
+      return;
+    }
+    resetHoverZoom();
     gallery.dataset.selectedVariant = slide.variant || '';
     if (labelEl) labelEl.textContent = slide.label;
     if (previewEl) {
@@ -2332,6 +2363,11 @@ function initMartederGallery() {
       const active = thumbIndex === index;
       thumb.classList.toggle('active', active);
       thumb.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    swapGalleryImage(mainImage, slide.src, `Création exclusive Marteder — ${slide.label}`).catch((err) => {
+      if (err?.message === 'stale') return;
+      if (thumbEl) thumbEl.hidden = true;
+      showSlide(index + direction, direction, attempts + 1);
     });
   };
 
@@ -2355,8 +2391,8 @@ function initMartederGallery() {
     document.body.style.overflow = '';
   };
 
-  gallery.querySelector('.marteder-gallery-prev')?.addEventListener('click', () => showSlide(index - 1));
-  gallery.querySelector('.marteder-gallery-next')?.addEventListener('click', () => showSlide(index + 1));
+  gallery.querySelector('.marteder-gallery-prev')?.addEventListener('click', () => showSlide(index - 1, -1));
+  gallery.querySelector('.marteder-gallery-next')?.addEventListener('click', () => showSlide(index + 1, 1));
   thumbs.forEach((thumb, thumbIndex) => {
     thumb.addEventListener('click', (event) => {
       event.preventDefault();
@@ -2375,11 +2411,11 @@ function initMartederGallery() {
     el.addEventListener('click', closeLightbox);
   });
   lightbox.querySelector('.marteder-lightbox-prev')?.addEventListener('click', () => {
-    showSlide(index - 1);
+    showSlide(index - 1, -1);
     syncLightbox();
   });
   lightbox.querySelector('.marteder-lightbox-next')?.addEventListener('click', () => {
-    showSlide(index + 1);
+    showSlide(index + 1, 1);
     syncLightbox();
   });
 
@@ -2387,17 +2423,115 @@ function initMartederGallery() {
     if (!lightbox.hidden) {
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowLeft') {
-        showSlide(index - 1);
+        showSlide(index - 1, -1);
         syncLightbox();
       }
       if (e.key === 'ArrowRight') {
-        showSlide(index + 1);
+        showSlide(index + 1, 1);
         syncLightbox();
       }
     }
   });
 
   showSlide(0);
+}
+
+function clampPercent(value) {
+  return Math.min(100, Math.max(0, Number(value) || 0));
+}
+
+function bindHoverZoom(lens, getImage) {
+  const resolveImage = () => (typeof getImage === 'function' ? getImage() : getImage);
+  let hovering = false;
+  let lastPoint = null;
+
+  const reset = () => {
+    hovering = false;
+    lastPoint = null;
+    const img = resolveImage();
+    if (!img) return;
+    img.classList.remove('is-zoomed');
+    img.style.transform = '';
+    img.style.transformOrigin = 'center center';
+  };
+
+  const apply = () => {
+    const img = resolveImage();
+    if (!hovering || !img || !lastPoint || !img.naturalWidth) return;
+    const rect = lens.getBoundingClientRect();
+    if (rect.width < 10 || rect.height < 10) return;
+    const x = ((lastPoint.x - rect.left) / rect.width) * 100;
+    const y = ((lastPoint.y - rect.top) / rect.height) * 100;
+    img.classList.add('is-zoomed');
+    img.style.transformOrigin = `${clampPercent(x)}% ${clampPercent(y)}%`;
+    img.style.transform = 'scale(2.15)';
+  };
+
+  if (!lens) return reset;
+
+  const canHover =
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!canHover) return reset;
+
+  const track = (event) => {
+    hovering = true;
+    lastPoint = { x: event.clientX, y: event.clientY };
+    const img = resolveImage();
+    if (img && !img.naturalWidth) {
+      img.addEventListener('load', apply, { once: true });
+      return;
+    }
+    apply();
+  };
+
+  lens.addEventListener('pointerenter', track);
+  lens.addEventListener('pointermove', track);
+  lens.addEventListener('pointerleave', reset);
+  lens.addEventListener('pointercancel', reset);
+  return reset;
+}
+
+function swapGalleryImage(img, src, alt = '') {
+  return new Promise((resolve, reject) => {
+    if (!img || !src) {
+      reject(new Error('missing-image'));
+      return;
+    }
+    const token = String(Number(img.dataset.swapToken || 0) + 1);
+    img.dataset.swapToken = token;
+    const isCurrent = () => img.dataset.swapToken === token;
+    const cleanup = () => {
+      img.removeEventListener('load', onLoad);
+      img.removeEventListener('error', onError);
+    };
+    const onLoad = () => {
+      cleanup();
+      if (!isCurrent()) {
+        reject(new Error('stale'));
+        return;
+      }
+      if (img.naturalWidth > 0) resolve(img);
+      else reject(new Error('empty-image'));
+    };
+    const onError = () => {
+      cleanup();
+      if (!isCurrent()) {
+        reject(new Error('stale'));
+        return;
+      }
+      reject(new Error('image-error'));
+    };
+    img.addEventListener('load', onLoad);
+    img.addEventListener('error', onError);
+    if (alt) img.alt = alt;
+    const current = img.getAttribute('src') || '';
+    if (current === src && img.complete) {
+      onLoad();
+      return;
+    }
+    img.src = src;
+  });
 }
 
 function initPhotoGalleries() {
@@ -2409,15 +2543,25 @@ function initPhotoGalleries() {
     if (!main || thumbs.length === 0) return;
 
     let index = Math.max(0, thumbs.findIndex((thumb) => thumb.classList.contains('active')));
+    const missing = new Set();
+    const resetZoom = bindHoverZoom(zoomBtn || gallery.querySelector('.marteder-gallery-zoom'), main);
 
-    const show = (nextIndex) => {
-      index = (nextIndex + thumbs.length) % thumbs.length;
+    const show = (nextIndex, direction = 1, attempts = 0) => {
+      if (!thumbs.length || attempts >= thumbs.length) return;
+      index = ((nextIndex % thumbs.length) + thumbs.length) % thumbs.length;
+      if (missing.has(index)) {
+        show(index + direction, direction, attempts + 1);
+        return;
+      }
       const thumb = thumbs[index];
+      if (thumb.hidden || missing.has(index)) {
+        show(index + direction, direction, attempts + 1);
+        return;
+      }
       const src = thumb.dataset.src;
       const label = thumb.dataset.label || '';
       const alt = thumb.querySelector('img')?.alt || label;
-      main.src = src;
-      main.alt = alt;
+      resetZoom();
       if (labelEl) labelEl.textContent = label;
       if (zoomBtn) {
         zoomBtn.dataset.caption = alt;
@@ -2428,18 +2572,30 @@ function initPhotoGalleries() {
         item.classList.toggle('active', active);
         item.setAttribute('aria-selected', active ? 'true' : 'false');
       });
+      swapGalleryImage(main, src, alt).catch((err) => {
+        if (err?.message === 'stale') return;
+        missing.add(index);
+        thumb.hidden = true;
+        show(index + direction, direction, attempts + 1);
+      });
     };
 
     thumbs.forEach((thumb, i) => {
+      thumb.querySelector('img')?.addEventListener('error', () => {
+        missing.add(i);
+        thumb.hidden = true;
+        if (index === i) show(i + 1, 1);
+      });
       thumb.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        show(i);
+        show(i, 1);
       });
     });
 
-    gallery.querySelector('[data-photo-prev]')?.addEventListener('click', () => show(index - 1));
-    gallery.querySelector('[data-photo-next]')?.addEventListener('click', () => show(index + 1));
+    gallery.querySelector('[data-photo-prev]')?.addEventListener('click', () => show(index - 1, -1));
+    gallery.querySelector('[data-photo-next]')?.addEventListener('click', () => show(index + 1, 1));
+    show(index, 1);
   });
 }
 
@@ -2454,41 +2610,105 @@ function initGetznerWifiGallery() {
   const select = gallery.querySelector('[data-wifi-select]');
   const thumbs = Array.from(gallery.querySelectorAll('[data-wifi-thumb]'));
   const video = gallery.querySelector('.wifi-video');
+  const stage = gallery.querySelector('[data-wifi-stage]');
+  const zoomLens = gallery.querySelector('[data-wifi-zoom]');
+  const zoomTrigger = gallery.querySelector('[data-product-zoom]');
   const fabric = fabricProducts['getzner-wifi'];
+  const colorKeys = thumbs.map((thumb) => thumb.dataset.variant).filter(Boolean);
+  const missingKeys = new Set();
+  const resetHoverZoom = bindHoverZoom(zoomLens || zoomTrigger, still);
 
-  const applyColor = (variantKey) => {
+  let currentKey = select?.value || fabric?.defaultVariant || colorKeys[0] || 'bleu';
+
+  const applyColor = (variantKey, direction = 1, attempts = 0) => {
+    if (!colorKeys.length || attempts >= colorKeys.length) return;
+    if (missingKeys.has(variantKey)) {
+      const index = Math.max(0, colorKeys.indexOf(variantKey));
+      applyColor(colorKeys[(index + direction + colorKeys.length) % colorKeys.length], direction, attempts + 1);
+      return;
+    }
     const variant = fabric?.variants[variantKey];
     const thumb = thumbs.find((btn) => btn.dataset.variant === variantKey);
     if (!variant || !thumb) return;
 
-    if (still) {
-      still.src = variant.image;
-      still.alt = variant.alt;
-    }
+    currentKey = variantKey;
+    resetHoverZoom();
+
     if (labelEl) labelEl.textContent = variant.label;
     if (preview) {
       preview.innerHTML = `Coloris sélectionné : <strong>${variant.label}</strong>`;
     }
     if (select) select.value = variantKey;
+    if (zoomTrigger) {
+      const index = Math.max(0, colorKeys.indexOf(variantKey));
+      zoomTrigger.dataset.caption = variant.alt;
+      zoomTrigger.dataset.galleryStartIndex = String(index);
+      zoomTrigger.setAttribute(
+        'aria-label',
+        `Agrandir la photo du motif Wifi, coloris ${variant.label}`
+      );
+    }
 
     thumbs.forEach((btn) => {
       const active = btn === thumb;
       btn.classList.toggle('active', active);
       btn.setAttribute('aria-selected', active ? 'true' : 'false');
     });
+
+    if (!still) return;
+    still.classList.add('is-switching');
+    swapGalleryImage(still, variant.image, variant.alt)
+      .catch((err) => {
+        if (err?.message === 'stale') return;
+        missingKeys.add(variantKey);
+        thumb.hidden = true;
+        const index = Math.max(0, colorKeys.indexOf(variantKey));
+        applyColor(colorKeys[(index + direction + colorKeys.length) % colorKeys.length], direction, attempts + 1);
+      })
+      .finally(() => {
+        still.classList.remove('is-switching');
+      });
+  };
+
+  const cycleColor = (delta) => {
+    if (!colorKeys.length) return;
+    const index = Math.max(0, colorKeys.indexOf(currentKey));
+    applyColor(colorKeys[(index + delta + colorKeys.length) % colorKeys.length], delta);
   };
 
   thumbs.forEach((thumb) => {
     thumb.addEventListener('click', (event) => {
       event.preventDefault();
-      applyColor(thumb.dataset.variant);
+      applyColor(thumb.dataset.variant, 1);
     });
   });
 
-  select?.addEventListener('change', () => applyColor(select.value));
+  select?.addEventListener('change', () => applyColor(select.value, 1));
+
+  gallery.querySelector('[data-wifi-prev]')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    cycleColor(-1);
+  });
+  gallery.querySelector('[data-wifi-next]')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    cycleColor(1);
+  });
+
+  stage?.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      cycleColor(-1);
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      cycleColor(1);
+    }
+  });
 
   startMutedLoopVideo(video);
-  applyColor(select?.value || fabric?.defaultVariant || 'bleu');
+  applyColor(currentKey, 1);
 }
 
 function initDNutrimecGallery() {
@@ -2498,9 +2718,10 @@ function initDNutrimecGallery() {
   const faceZoom = document.querySelector('.product-face-zoom');
   if (!mainImage || !mainTrigger || thumbs.length === 0) return;
 
+  const resetHoverZoom = bindHoverZoom(mainTrigger, mainImage);
+
   const showImage = (thumb) => {
-    mainImage.src = thumb.dataset.src;
-    mainImage.alt = thumb.dataset.alt;
+    resetHoverZoom();
     mainTrigger.dataset.caption = thumb.dataset.caption;
     mainTrigger.dataset.galleryStartIndex = thumb.dataset.galleryIndex;
     thumbs.forEach((item) => item.classList.toggle('active', item === thumb));
@@ -2508,6 +2729,10 @@ function initDNutrimecGallery() {
       const index = thumb.dataset.galleryIndex;
       faceZoom.hidden = index !== '0' && index !== '2';
     }
+    swapGalleryImage(mainImage, thumb.dataset.src, thumb.dataset.alt).catch((err) => {
+      if (err?.message === 'stale') return;
+      thumb.hidden = true;
+    });
   };
 
   thumbs.forEach((thumb) => {
