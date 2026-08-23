@@ -38,6 +38,11 @@ const STRIPE_PRODUCTS = {
     unitPrice: 80,
     label: 'Bazin Getzner',
   },
+  getznerWifi: {
+    unitPrice: 85,
+    label: 'Bazin Getzner Motif Wifi',
+    paymentLink: 'https://buy.stripe.com/4gM5kEc371EQ2NV5IvcAo0w',
+  },
   meches: {
     unitPrice: 5,
     label: 'Mèches X-Pression Ultra Braid',
@@ -53,6 +58,16 @@ const STRIPE_PRODUCTS = {
   dnutrimec: {
     unitPrice: 30,
     label: 'Gel Essence Réparateur au Collagène',
+  },
+  bazinBrode: {
+    unitPrice: 80,
+    label: 'Bazin Brodé Géométrique & Cérémonie',
+    paymentLink: 'https://buy.stripe.com/aFabJ29UZerCgEL3AncAo0x',
+  },
+  dentelleSuisse: {
+    unitPrice: 250,
+    label: 'Dentelle Suisse Haute Cérémonie',
+    paymentLink: 'https://buy.stripe.com/28E5kE3wB83ecov1sfcAo0y',
   },
 };
 
@@ -77,6 +92,10 @@ function getConfiguredCheckoutApiUrl() {
 const STRIPE_CHECKOUT_API_URL =
   getConfiguredCheckoutApiUrl() ||
   '/.netlify/functions/create-checkout-session';
+
+const GETZNER_WIFI_STRIPE_LINK =
+  STRIPE_PRODUCTS.getznerWifi.paymentLink ||
+  'https://buy.stripe.com/4gM5kEc371EQ2NV5IvcAo0w';
 
 function getStripeCheckoutApiFallbacks() {
   const list = [];
@@ -123,44 +142,101 @@ const schwerFallback = {
   'beige-dore': '',
 };
 
+const GETZNER_ARRIVAL_CATALOG = [
+  { id: 'pal1', file: 'getzner-pal1.jpg', label: 'Blanc damassé' },
+  { id: 'pal2', file: 'getzner-pal2.jpg', label: 'Violet' },
+  { id: 'pal3', file: 'getzner-pal3.jpg', label: 'Jaune or' },
+  { id: 'pal4', file: 'getzner-pal4.jpg', label: 'Blanc argenté' },
+  { id: 'pal5', file: 'getzner-pal5.jpg', label: 'Bronze' },
+  { id: 'pal6', file: 'getzner-pal6.jpg', label: 'Fuchsia' },
+  { id: 'pal7', file: 'getzner-pal7.jpg', label: 'Rose clair' },
+  { id: 'pal8', file: 'getzner-pal8.jpg', label: 'Vert olive clair' },
+  { id: 'pal9', file: 'getzner-pal9.jpg', label: 'Noir anthracite' },
+  { id: 'pal11', file: 'getzner-pal11.jpg', label: "Jaune d'or" },
+  { id: 'pal12', file: 'getzner-pal12.jpg', label: 'Vert olive' },
+  { id: 'pal13', file: 'getzner-pal13.jpg', label: 'Vert forêt' },
+  { id: 'pal14', file: 'getzner-pal14.jpg', label: 'Bleu cobalt' },
+  { id: 'pal15', file: 'getzner-pal15.jpg', label: 'Bleu ciel' },
+  { id: 'pal16', file: 'getzner-pal16.jpg', label: 'Jaune moutarde' },
+];
+
+const GETZNER_ARRIVAL_IDS = new Set(GETZNER_ARRIVAL_CATALOG.map((item) => item.id));
+
+function getGetznerArrivalVariant(id) {
+  return GETZNER_ARRIVAL_CATALOG.find((item) => item.id === id) || null;
+}
+
+function buildGetznerArrivalVariants() {
+  return GETZNER_ARRIVAL_CATALOG.reduce((acc, item) => {
+    acc[item.id] = {
+      label: item.label,
+      image: item.file,
+      palId: item.id,
+      alt: `Getzner — ${item.label}`,
+    };
+    return acc;
+  }, {});
+}
+
 const fabricProducts = {
+  'getzner-wifi': {
+    baseName: 'Bazin Getzner Motif Wifi (Authentique / 5 yards - 4 mètres)',
+    price: 85,
+    packNote: 'Coupon de 5 yards (4 mètres)',
+    previewPrefix: 'Coloris sélectionné',
+    defaultVariant: 'bleu',
+    stripeProduct: 'getznerWifi',
+    variants: {
+      bleu: {
+        label: 'Bleu irisé',
+        image: 'getzner-wifi-bleu.jpg',
+        alt: 'Bazin Getzner motif Wifi — coloris bleu irisé',
+      },
+      bordeaux: {
+        label: 'Bordeaux or',
+        image: 'getzner-wifi-bordeaux.jpg',
+        alt: 'Bazin Getzner motif Wifi — coloris bordeaux or',
+      },
+    },
+  },
   'marteder-getzner': {
     baseName: 'Création exclusive Marteder',
     price: 80,
     packNote: 'Par coupon de 5 yards',
     previewPrefix: 'Couleur sélectionnée',
-    defaultVariant: '0',
+    defaultVariant: 'pal1',
     stripeProduct: 'getzner',
+    variants: buildGetznerArrivalVariants(),
+  },
+  'bazin-brode': {
+    baseName: 'Bazin Brodé Géométrique & Cérémonie',
+    price: 80,
+    packNote: 'Coupon 5 yards / 4,5 m',
+    previewPrefix: 'Coupon sélectionné',
+    defaultVariant: 'coupon',
+    stripeProduct: 'bazinBrode',
+    paymentLink: 'https://buy.stripe.com/aFabJ29UZerCgEL3AncAo0x',
     variants: {
-      '0': {
-        label: "Vert d'eau / Vert menthe pastel",
-        image: 'getzner-ab.jpg',
-        alt: "Création exclusive Marteder — Vert d'eau / Vert menthe pastel",
+      coupon: {
+        label: 'Coupon 5 yards / 4,5 m',
+        image: 'images/ceremonie/a1.jpg',
+        alt: 'Bazin brodé géométrique blanc, coupon de cérémonie',
       },
-      '1': {
-        label: 'Blanc éclatant / Argenté',
-        image: 'getzner-blanc.png',
-        alt: 'Création exclusive Marteder — Blanc éclatant / Argenté',
-      },
-      '2': {
-        label: 'Bleu turquoise / Turquoise lumineux',
-        image: 'getzner-turquoise.png',
-        alt: 'Création exclusive Marteder — Bleu turquoise',
-      },
-      '3': {
-        label: 'Vert sapin / Vert émeraude',
-        image: 'getzner-vert-sapin.png',
-        alt: 'Création exclusive Marteder — Vert sapin',
-      },
-      '4': {
-        label: 'Rouge royal / Fuchsia',
-        image: 'getzner-fuchsia.png',
-        alt: 'Création exclusive Marteder — Rouge royal / Fuchsia',
-      },
-      '5': {
-        label: 'Bleu nuit / Bleu roi',
-        image: 'getzner-bleu-outremer.png',
-        alt: 'Création exclusive Marteder — Bleu nuit',
+    },
+  },
+  'dentelle-suisse': {
+    baseName: 'Dentelle Suisse Haute Cérémonie – Motifs Floraux & Cristaux',
+    price: 250,
+    packNote: 'Coupon 5 yards / 4,5 m',
+    previewPrefix: 'Coupon sélectionné',
+    defaultVariant: 'coupon',
+    stripeProduct: 'dentelleSuisse',
+    paymentLink: 'https://buy.stripe.com/28E5kE3wB83ecov1sfcAo0y',
+    variants: {
+      coupon: {
+        label: 'Coupon 5 yards / 4,5 m',
+        image: 'images/ceremonie/b1.jpg',
+        alt: 'Dentelle suisse haute cérémonie, motifs floraux et cristaux',
       },
     },
   },
@@ -310,8 +386,8 @@ const FRENCH_CURL_SUPPLIER = {
 
 const xpressionImages = {
   clean: {
-    src: 'xpression-paquets-propres.png?v=20260721-gallery',
-    alt: 'Trois paquets propres de mèches X-Pression Ultra Braid',
+    src: 'xpression-paquets-propres.png',
+    alt: 'Paquets de mèches X-Pression Ultra Braid — 5.00 CHF',
   },
   portrait: {
     src: 'rasta-model.png',
@@ -367,140 +443,156 @@ const xpressionVariants = {
   },
 };
 
-/** Galerie complète French Curls (59 photos) — images/meches/ */
-const frenchCurlGalleryFiles = [
-  'MECHES1.png',
-  '20260805_220411.jpg',
-  '20260805_220417.jpg',
-  '20260805_220421.jpg',
-  '20260805_220425.jpg',
-  '20260805_220429.jpg',
-  '20260805_220434.jpg',
-  '20260805_220441.jpg',
-  '20260805_220446.jpg',
-  '20260805_220450.jpg',
-  '20260805_220455.jpg',
-  '20260805_220458.jpg',
-  '20260805_220503.jpg',
-  '20260805_220506.jpg',
-  '20260805_220510.jpg',
-  '20260805_220514.jpg',
-  '20260805_220518.jpg',
-  '20260805_220521.jpg',
-  '20260805_220525.jpg',
-  '20260805_220529.jpg',
-  '20260805_220535.jpg',
-  '20260805_220538.jpg',
-  '20260805_220542.jpg',
-  '20260805_220546.jpg',
-  '20260805_220549.jpg',
-  '20260805_220554.jpg',
-  '20260805_220558.jpg',
-  '20260805_220601.jpg',
-  '20260805_220604.jpg',
-  '20260805_220606.jpg',
-  '20260805_220608.jpg',
-  '20260805_220612.jpg',
-  '20260805_220614.jpg',
-  '20260805_220616.jpg',
-  '20260805_220618.jpg',
-  '20260805_220622.jpg',
-  '20260805_220624.jpg',
-  '20260805_220626.jpg',
-  '20260805_220628.jpg',
-  '20260805_220630.jpg',
-  '20260805_220632.jpg',
-  '20260805_220634.jpg',
-  '20260805_220638.jpg',
-  '20260805_220640.jpg',
-  '20260805_220642.jpg',
-  '20260805_220644.jpg',
-  '20260805_220646.jpg',
-  '20260805_220648.jpg',
-  '20260805_220652.jpg',
-  '20260805_220654.jpg',
-  '20260805_220657.jpg',
-  '20260805_220701.jpg',
-  '20260805_220703.jpg',
-  '20260805_220705.jpg',
-  '20260805_220707.jpg',
-  'Screenshot_20260805_220819_Gallery.jpg',
-  'Screenshot_20260805_220837_Gallery.jpg',
-  'Screenshot_20260805_220930_Gallery.jpg',
-  'Screenshot_20260805_221015_Gallery.jpg',
+/** Galerie French Curls — nouvelles photos Inez (cadrage vertical, fond clair) */
+const FRENCH_CURL_MEDIA = [
+  { file: 'Screenshot_20260805_221015_Gallery.jpg', alt: 'French Curls — modèle porté, longues mèches ondulées', color: null },
+  { file: 'french-curl-collection.jpg', alt: 'French Curls — aperçu de la collection', color: null },
+  { file: 'french-curl-nuancier.jpg', alt: 'French Curls — nuancier des teintes (dont Noir 1B)', color: '1b' },
+  { file: 'french-curl-27.jpg', alt: 'French Curls — Blond 27#', color: '27' },
+  { file: 'french-curl-mes11.jpg', alt: 'French Curls — Marron 30#', color: '30' },
+  { file: 'french-curl-350.jpg', alt: 'French Curls — Roux 350 / Cuivré', color: '350' },
+  { file: 'french-curl-t27.jpg', alt: 'French Curls — Ombré Blond T27', color: 't27' },
+  { file: 'french-curl-ot27.jpg', alt: 'French Curls — Ombré Blond T27, autre vue', color: 't27' },
+  { file: 'french-curl-t30.jpg', alt: 'French Curls — Ombré Marron T30', color: 't30' },
+  { file: 'french-curl-tbug.jpg', alt: 'French Curls — Bordeaux T-Bug', color: 'tbug' },
+  { file: 'french-curl-mes10.jpg', alt: 'French Curls — Ombré Noir / Cuivré', color: 'cuivre' },
+  { file: 'french-curl-t350.jpg', alt: 'French Curls — Ombré Cuivré T350', color: 'cuivre' },
+  { file: 'french-curl-ombre-cuivre.jpg', alt: 'French Curls — Ombré cuivré', color: 'cuivre' },
+  { file: 'french-curl-t1b-33.jpg', alt: 'French Curls — Ombré T1B/33', color: 't1b33' },
+  { file: 'french-curl-bug.jpg', alt: 'French Curls — Bordeaux Bug', color: 'bug' },
+  { file: 'french-curl-red.jpg', alt: 'French Curls — Rouge', color: 'red' },
+  { file: 'french-curl-pink.jpg', alt: 'French Curls — Rose', color: 'pink' },
+  { file: 'french-curl-green.jpg', alt: 'French Curls — Vert', color: 'green' },
+  { file: 'french-curl-grey.jpg', alt: 'French Curls — Gris', color: 'grey' },
+  { file: 'french-curl-tgrey.jpg', alt: 'French Curls — Ombré Gris', color: 'tgrey' },
+  { file: 'french-curl-dark-grey.jpg', alt: 'French Curls — Gris foncé', color: 'grey' },
+  { file: 'french-curl-p27-30.jpg', alt: 'French Curls — Mix 27# / 30#', color: '30' },
+  { file: 'french-curl-mix-27.jpg', alt: 'French Curls — Mix blond 27#', color: '27' },
+  { file: 'french-curl-mix-blond-brun.jpg', alt: 'French Curls — Mix blond / brun', color: '30' },
+  { file: 'french-curl-mix-cuivre.jpg', alt: 'French Curls — Mix cuivré', color: '350' },
+  { file: 'french-curl-piano-cuivre.jpg', alt: 'French Curls — Piano cuivré', color: 'cuivre' },
+  { file: 'french-curl-c14.jpg', alt: 'French Curls — Ombré noir / blond', color: 't27' },
+  { file: 'french-curl-ot33-27.jpg', alt: 'French Curls — Ombré 33 / 27', color: 't30' },
 ];
 
+const frenchCurlGalleryFiles = FRENCH_CURL_MEDIA.map((item) => item.file);
+
 const frenchCurlImages = Object.fromEntries(
-  frenchCurlGalleryFiles.map((file, index) => {
-    const key = `g${index}`;
-    const n = index + 1;
-    return [
-      key,
-      {
-        src: `images/meches/${file}`,
-        alt: `French Curls — photo ${n} sur ${frenchCurlGalleryFiles.length}`,
-      },
-    ];
-  })
+  FRENCH_CURL_MEDIA.map((item, index) => [
+    `g${index}`,
+    {
+      src: `images/meches/${item.file}`,
+      alt: item.alt,
+    },
+  ]),
 );
 
-/** 8 teintes populaires — chaque teinte pointe vers une photo produit dédiée */
+/** Teintes commandables — chaque pastille pointe vers la photo bundle correspondante */
 const frenchCurlColorVariants = {
   '1b': {
     label: 'Noir 1B',
     shortLabel: '1B',
     swatch: '#1a1512',
-    file: '20260805_220648.jpg',
-    alt: 'French Curls — Noir 1B',
-  },
-  t27: {
-    label: 'Ombré Blond T27',
-    shortLabel: 'T27',
-    swatch: 'linear-gradient(180deg, #2a1a12 28%, #c9a46a 72%)',
-    file: '20260805_220554.jpg',
-    alt: 'French Curls — Ombré Blond T27',
-  },
-  t30: {
-    label: 'Ombré Marron T30',
-    shortLabel: 'T30',
-    swatch: 'linear-gradient(180deg, #1c1210 30%, #8a4a2e 100%)',
-    file: '20260805_220506.jpg',
-    alt: 'French Curls — Ombré Marron T30',
-  },
-  tbug: {
-    label: 'Bordeaux T-Bug',
-    shortLabel: 'T-Bug',
-    swatch: '#6b1528',
-    file: '20260805_220429.jpg',
-    alt: 'French Curls — Bordeaux T-Bug',
+    file: 'french-curl-nuancier.jpg',
+    alt: 'French Curls — nuancier (référence Noir 1B)',
   },
   '27': {
     label: 'Blond 27#',
     shortLabel: '27#',
     swatch: '#d4b07a',
-    file: '20260805_220657.jpg',
+    file: 'french-curl-27.jpg',
     alt: 'French Curls — Blond 27#',
   },
   '30': {
     label: 'Marron 30#',
     shortLabel: '30#',
     swatch: '#5c3a28',
-    file: '20260805_220701.jpg',
+    file: 'french-curl-mes11.jpg',
     alt: 'French Curls — Marron 30#',
   },
   '350': {
     label: 'Roux 350',
     shortLabel: '350',
-    swatch: '#a84a2a',
-    file: '20260805_220421.jpg',
+    swatch: '#c45a28',
+    file: 'french-curl-350.jpg',
     alt: 'French Curls — Roux 350',
+  },
+  t27: {
+    label: 'Ombré Blond T27',
+    shortLabel: 'T27',
+    swatch: 'linear-gradient(180deg, #2a1a12 28%, #c9a46a 72%)',
+    file: 'french-curl-t27.jpg',
+    alt: 'French Curls — Ombré Blond T27',
+  },
+  t30: {
+    label: 'Ombré Marron T30',
+    shortLabel: 'T30',
+    swatch: 'linear-gradient(180deg, #1c1210 30%, #8a4a2e 100%)',
+    file: 'french-curl-t30.jpg',
+    alt: 'French Curls — Ombré Marron T30',
+  },
+  tbug: {
+    label: 'Bordeaux T-Bug',
+    shortLabel: 'T-Bug',
+    swatch: 'linear-gradient(180deg, #1a1012 32%, #8a1428 100%)',
+    file: 'french-curl-tbug.jpg',
+    alt: 'French Curls — Bordeaux T-Bug',
   },
   cuivre: {
     label: 'Ombré Noir / Cuivré',
     shortLabel: 'Cuivré',
     swatch: 'linear-gradient(180deg, #141010 32%, #b85a32 100%)',
-    file: '20260805_220608.jpg',
+    file: 'french-curl-mes10.jpg',
     alt: 'French Curls — Ombré Noir / Cuivré',
+  },
+  t1b33: {
+    label: 'Ombré T1B/33',
+    shortLabel: 'T1B/33',
+    swatch: 'linear-gradient(180deg, #1a1512 36%, #6b2e22 100%)',
+    file: 'french-curl-t1b-33.jpg',
+    alt: 'French Curls — Ombré T1B/33',
+  },
+  bug: {
+    label: 'Bordeaux Bug',
+    shortLabel: 'Bug',
+    swatch: '#6b1528',
+    file: 'french-curl-bug.jpg',
+    alt: 'French Curls — Bordeaux Bug',
+  },
+  red: {
+    label: 'Rouge',
+    shortLabel: 'Rouge',
+    swatch: '#c4122e',
+    file: 'french-curl-red.jpg',
+    alt: 'French Curls — Rouge',
+  },
+  pink: {
+    label: 'Rose',
+    shortLabel: 'Rose',
+    swatch: '#e8a0b4',
+    file: 'french-curl-pink.jpg',
+    alt: 'French Curls — Rose',
+  },
+  green: {
+    label: 'Vert',
+    shortLabel: 'Vert',
+    swatch: '#0d6b5c',
+    file: 'french-curl-green.jpg',
+    alt: 'French Curls — Vert',
+  },
+  grey: {
+    label: 'Gris',
+    shortLabel: 'Gris',
+    swatch: '#8a8a8a',
+    file: 'french-curl-grey.jpg',
+    alt: 'French Curls — Gris',
+  },
+  tgrey: {
+    label: 'Ombré Gris',
+    shortLabel: 'T-Grey',
+    swatch: 'linear-gradient(180deg, #1a1a1a 30%, #c5c5c8 100%)',
+    file: 'french-curl-tgrey.jpg',
+    alt: 'French Curls — Ombré Gris',
   },
 };
 
@@ -508,14 +600,40 @@ Object.values(frenchCurlColorVariants).forEach((variant) => {
   variant.src = `images/meches/${variant.file}`;
 });
 
-const FRENCH_CURL_DEFAULT_COLOR = '1b';
+const FRENCH_CURL_DEFAULT_COLOR = 't27';
 
-let cart = loadCart();
+function getGetznerPalIdFromSrc(src) {
+  const match = String(src || '').match(/(?:^|[\\/])getzner-(pal\d+)\.jpe?g(?:\?|$)/i);
+  return match ? match[1].toLowerCase() : '';
+}
+
+function isGetznerCartItem(item) {
+  if (!item) return false;
+  const key = String(item.variantKey || '');
+  const name = String(item.displayName || item.name || '');
+  return (
+    item.stripeProduct === 'getzner' ||
+    key.startsWith('marteder-getzner:') ||
+    /getzner|création exclusive marteder/i.test(name)
+  );
+}
+
+function isCurrentGetznerArrivalItem(item) {
+  if (!isGetznerCartItem(item)) return true;
+  const key = String(item.variantKey || '');
+  const palId = key.includes(':') ? key.split(':').pop() : '';
+  const variant = getGetznerArrivalVariant(palId);
+  if (!variant || !GETZNER_ARRIVAL_IDS.has(palId)) return false;
+  if (item.image && item.image !== variant.file) return false;
+  return true;
+}
 
 function loadCart() {
   try {
     const saved = localStorage.getItem(CART_STORAGE_KEY);
-    return saved ? JSON.parse(saved) : [];
+    const parsed = saved ? JSON.parse(saved) : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(isCurrentGetznerArrivalItem);
   } catch {
     return [];
   }
@@ -528,6 +646,9 @@ function saveCart() {
     /* stockage indisponible */
   }
 }
+
+let cart = loadCart();
+saveCart();
 
 function formatCartSummary() {
   return cart.map((item) => {
@@ -572,6 +693,13 @@ function filterProducts(category) {
     const showSpotlight = category === 'all' || category === 'meches';
     spotlight.classList.toggle('hidden', !showSpotlight);
   }
+
+  document.querySelectorAll('.ceremonie-duo').forEach((row) => {
+    const visible = [...row.querySelectorAll('.product-card')].some(
+      (card) => !card.classList.contains('hidden'),
+    );
+    row.classList.toggle('hidden', !visible);
+  });
 }
 
 const SHIPPING_OPTIONS = {
@@ -879,6 +1007,7 @@ function buildCheckoutSessionPayload() {
     const item = normalizeCartItem(rawItem);
     const productKey = item.stripeProduct;
     if (!productKey || !STRIPE_PRODUCTS[productKey]) return;
+    if (productKey === 'getzner' && !isCurrentGetznerArrivalItem(item)) return;
 
     const variantLabel = item.variantLabel || '';
     const mergeKey = `${productKey}::${variantLabel}`;
@@ -958,10 +1087,109 @@ function getSiteOriginPath() {
   }
 }
 
+function isGetznerWifiCartItem(item) {
+  const normalized = normalizeCartItem(item);
+  const variantKey = String(
+    item?.variantKey ||
+    item?.variantKey ||
+    normalized.variantKey ||
+    normalized.variantKey ||
+    ''
+  );
+  return (
+    normalized.stripeProduct === 'getznerWifi' ||
+    variantKey.startsWith('getzner-wifi:')
+  );
+}
+
+function addGetznerWifiFromCard(card, options = {}) {
+  const fabric = fabricProducts['getzner-wifi'];
+  if (!fabric) return false;
+  const variantKey =
+    (card ? getFabricVariantKey(card) : fabric.defaultVariant) || fabric.defaultVariant;
+  const variant = fabric.variants[variantKey];
+  if (!variant) return false;
+  addToCart(
+    {
+      name: fabric.baseName,
+      displayName: `${fabric.baseName} — ${variant.label}`,
+      variantKey: `getzner-wifi:${variantKey}`,
+      variantLabel: variant.label,
+      variantType: 'Coloris',
+      packNote: fabric.packNote,
+      price: fabric.price,
+      stripeProduct: fabric.stripeProduct || 'getznerWifi',
+      image: variant.image || '',
+    },
+    options
+  );
+  return true;
+}
+
+function isGetznerWifiOnlyCart() {
+  return cart.length > 0 && cart.every(isGetznerWifiCartItem);
+}
+
+function getExclusiveStripePaymentLink() {
+  if (!cart.length) return '';
+  const products = cart.map((item) => normalizeCartItem(item).stripeProduct);
+  if (products.some((key) => !key)) return '';
+  const unique = [...new Set(products)];
+  if (unique.length !== 1) return '';
+  const key = unique[0];
+  if (key === 'getznerWifi') return '';
+  const link = STRIPE_PRODUCTS[key]?.paymentLink;
+  if (!link) return '';
+  const qty = cart.reduce(
+    (sum, item) => sum + Math.max(1, Math.round(Number(item.quantity) || 0)),
+    0
+  );
+  const url = new URL(link);
+  if (qty > 1) url.searchParams.set('quantity', String(qty));
+  const email = String(getCheckoutCustomer().email || '').trim();
+  if (email) url.searchParams.set('prefilled_email', email);
+  return url.toString();
+}
+
+function getGetznerWifiCartQuantity() {
+  return cart.reduce((sum, item) => {
+    if (!isGetznerWifiCartItem(item)) return sum;
+    return sum + Math.max(1, Math.round(Number(item.quantity) || 0));
+  }, 0);
+}
+
+function buildGetznerWifiPaymentUrl(customer = {}) {
+  const url = new URL(GETZNER_WIFI_STRIPE_LINK);
+  const quantity = Math.max(1, getGetznerWifiCartQuantity());
+  if (quantity > 1) url.searchParams.set('quantity', String(quantity));
+  const email = String(customer.email || '').trim();
+  if (email) url.searchParams.set('prefilled_email', email);
+  return url.toString();
+}
+
 async function createStripeCheckoutSession(options = {}) {
   const plan = getStripePaymentPlan();
   if (!plan.canCheckout) {
     throw new Error(plan.note || 'Paiement Stripe indisponible pour ce panier.');
+  }
+
+  if (isGetznerWifiOnlyCart()) {
+    const customer = getCheckoutCustomer();
+    saveCheckoutCustomerSnapshot(customer, plan);
+    return {
+      url: buildGetznerWifiPaymentUrl(customer),
+      id: 'plink_getzner_wifi',
+    };
+  }
+
+  const exclusivePayUrl = getExclusiveStripePaymentLink();
+  if (exclusivePayUrl) {
+    const customer = getCheckoutCustomer();
+    saveCheckoutCustomerSnapshot(customer, plan);
+    return {
+      url: exclusivePayUrl,
+      id: 'plink_official',
+    };
   }
 
   if (!options.skipValidation) {
@@ -1142,7 +1370,8 @@ function renderCart() {
     cartList.innerHTML = '<p class="cart-empty">Votre panier est vide.</p>';
   } else {
     cartList.innerHTML = cart.map((item, index) => `
-      <div class="cart-item">
+      <div class="cart-item${item.image ? ' cart-item--photo' : ''}">
+        ${item.image ? `<img class="cart-item-photo" src="${item.image}" alt="${item.variantLabel || item.name}">` : ''}
         <div class="cart-item-info">
           <p class="cart-item-name">${item.name}</p>
           ${item.variantLabel ? `<p class="cart-item-variant">${item.variantType || 'Variante'} : <strong>${item.variantLabel}</strong></p>` : ''}
@@ -1172,7 +1401,11 @@ function renderCart() {
   updateCheckoutButton();
 }
 
-function addToCart(item) {
+function addToCart(item, options = {}) {
+  if (item.stripeProduct === 'getzner' && !isCurrentGetznerArrivalItem({ ...item, quantity: 1 })) {
+    showToast('Cette référence Getzner n’est plus disponible. Choisissez une couleur du nouvel arrivage.');
+    return;
+  }
   const existing = cart.find(
     (entry) => entry.name === item.name && entry.variantKey === item.variantKey,
   );
@@ -1185,6 +1418,7 @@ function addToCart(item) {
 
   renderCart();
   saveCart();
+  if (options.silent) return;
   openCartPanel();
   showToast(`« ${item.displayName} » ajouté au panier`);
 }
@@ -1199,6 +1433,29 @@ function getFabricVariantKey(card) {
 
 function initCart() {
   document.body.addEventListener('click', (e) => {
+    const wifiPay = e.target.closest('[data-wifi-pay]');
+    if (wifiPay) {
+      e.preventDefault();
+      const card =
+        wifiPay.closest('.product-card') ||
+        document.querySelector('[data-product-id="getzner-wifi"]');
+      addGetznerWifiFromCard(card, { silent: true });
+      showToast('Redirection vers le paiement Stripe…');
+      redirectToStripe(buildGetznerWifiPaymentUrl(getCheckoutCustomer()));
+      return;
+    }
+
+    const stripePay = e.target.closest('[data-stripe-pay]');
+    if (stripePay) {
+      e.preventDefault();
+      const productId = stripePay.getAttribute('data-stripe-pay');
+      const payUrl = fabricProducts[productId]?.paymentLink || stripePay.href;
+      if (!payUrl) return;
+      showToast('Redirection vers le paiement Stripe…');
+      redirectToStripe(payUrl);
+      return;
+    }
+
     const qtyBtn = e.target.closest('.cart-qty-btn');
     if (qtyBtn) {
       const index = parseInt(qtyBtn.dataset.index, 10);
@@ -1237,6 +1494,7 @@ function initCart() {
         packNote: '5 CHF le paquet',
         price: variant.price,
         stripeProduct: 'meches',
+        image: (xpressionImages[variant.imageKey] || xpressionImages.clean).src,
       });
       return;
     }
@@ -1272,14 +1530,71 @@ function initCart() {
       const fabric = fabricProducts[productId];
       const card = fabricBtn.closest('.product-card') || fabricBtn.closest('.getzner-product-details');
       if (!fabric) return;
+      if (fabric.stripeProduct === 'getzner' && productId !== 'marteder-getzner') {
+        showToast('Ce modèle n’est plus disponible. Choisissez le nouvel arrivage Getzner.');
+        return;
+      }
+
+      if (productId === 'bazin-brode' || productId === 'dentelle-suisse') {
+        const payUrl = fabric.paymentLink;
+        if (payUrl) {
+          showToast('Redirection vers le paiement Stripe…');
+          redirectToStripe(payUrl);
+          return;
+        }
+        const main = card?.querySelector('[data-photo-main]');
+        const variant = fabric.variants[fabric.defaultVariant];
+        addToCart({
+          name: fabric.baseName,
+          displayName: fabric.baseName,
+          variantKey: `${productId}:coupon`,
+          variantLabel: fabric.packNote,
+          variantType: 'Coupon',
+          packNote: fabric.packNote,
+          price: fabric.price,
+          stripeProduct: fabric.stripeProduct || null,
+          image: main?.getAttribute('src') || variant?.image || '',
+        });
+        return;
+      }
 
       let variantKey = card ? getFabricVariantKey(card) : fabric.defaultVariant;
       if (productId === 'marteder-getzner') {
         const martederSelect = document.querySelector('[data-marteder-select]');
-        if (martederSelect) variantKey = martederSelect.value;
+        const gallery = document.querySelector('[data-marteder-gallery]');
+        variantKey = martederSelect?.value || gallery?.dataset.selectedVariant || '';
+        const arrival = getGetznerArrivalVariant(variantKey);
+        const mainImage = document.querySelector('[data-marteder-main]');
+        const fromImage = getGetznerPalIdFromSrc(mainImage?.getAttribute('src') || mainImage?.currentSrc || '');
+        const fromGallery = String(gallery?.dataset.selectedVariant || '');
+        const fromSelect = String(martederSelect?.value || '');
+        const idsMatch =
+          arrival &&
+          fromSelect === arrival.id &&
+          (!fromGallery || fromGallery === arrival.id) &&
+          (!fromImage || fromImage === arrival.id);
+        if (!idsMatch) {
+          showToast('Veuillez choisir une couleur du nouvel arrivage Getzner.');
+          return;
+        }
+        addToCart({
+          name: fabric.baseName,
+          displayName: `${fabric.baseName} — ${arrival.label}`,
+          variantKey: `${productId}:${arrival.id}`,
+          variantLabel: `${arrival.label} · ${arrival.id}`,
+          variantType: 'Couleur / motif',
+          packNote: fabric.packNote,
+          price: fabric.price,
+          stripeProduct: fabric.stripeProduct || null,
+          image: arrival.file,
+        });
+        return;
       }
-      const variant = fabric.variants[variantKey] || fabric.variants[fabric.defaultVariant];
-      if (!variant) return;
+      const variant = fabric.variants[variantKey];
+      if (!variant) {
+        showToast('Cette variante n’est plus disponible.');
+        return;
+      }
 
       addToCart({
         name: fabric.baseName,
@@ -1290,6 +1605,7 @@ function initCart() {
         packNote: fabric.packNote,
         price: fabric.price,
         stripeProduct: fabric.stripeProduct || null,
+        image: variant.image || '',
       });
       return;
     }
@@ -1415,8 +1731,8 @@ function initFabricVariants() {
     const productId = card.dataset.productId;
     const fabric = fabricProducts[productId];
     if (!fabric) return;
-    // La galerie Marteder gère ses propres variantes
-    if (card.querySelector('[data-marteder-gallery]')) return;
+    // La galerie Marteder et la fiche Wifi gèrent leurs propres variantes
+    if (card.querySelector('[data-marteder-gallery], [data-wifi-gallery], [data-photo-gallery]')) return;
 
     const select = card.querySelector('.fabric-variant-select');
     const swatches = card.querySelectorAll('.fabric-swatch');
@@ -1526,7 +1842,8 @@ function initMecheVariant() {
 
     image.src = photo.src;
     image.alt = photo.alt;
-    image.classList.add('is-pack-shot');
+    const isPackShot = Boolean(FRENCH_CURL_MEDIA[safeIndex]?.file?.startsWith('french-curl'));
+    image.classList.toggle('is-pack-shot', isPackShot);
     image.classList.remove('french-curl-fade');
     void image.offsetWidth;
     image.classList.add('french-curl-fade');
@@ -1545,10 +1862,13 @@ function initMecheVariant() {
     scrollThumbIntoView(safeIndex);
 
     if (syncColor) {
-      const match = Object.entries(frenchCurlColorVariants).find(
-        ([, color]) => color.file === frenchCurlGalleryFiles[safeIndex],
-      );
-      if (match) {
+      const mediaColor = FRENCH_CURL_MEDIA[safeIndex]?.color;
+      const match = mediaColor
+        ? [mediaColor, frenchCurlColorVariants[mediaColor]]
+        : Object.entries(frenchCurlColorVariants).find(
+            ([, color]) => color.file === frenchCurlGalleryFiles[safeIndex],
+          );
+      if (match && match[1]) {
         const [colorKey, color] = match;
         if (select) select.value = colorKey;
         if (preview) {
@@ -1569,9 +1889,11 @@ function initMecheVariant() {
 
     if (select) select.value = colorKey;
 
-    const galleryIndex = frenchCurlGalleryFiles.indexOf(color.file);
-    if (galleryIndex >= 0) {
-      setMainByIndex(galleryIndex);
+    const galleryIndex = FRENCH_CURL_MEDIA.findIndex((item) => item.color === colorKey && item.file === color.file);
+    const fallbackIndex = frenchCurlGalleryFiles.indexOf(color.file);
+    const targetIndex = galleryIndex >= 0 ? galleryIndex : fallbackIndex;
+    if (targetIndex >= 0) {
+      setMainByIndex(targetIndex);
     } else {
       image.src = color.src;
       image.alt = color.alt;
@@ -1593,6 +1915,19 @@ function initMecheVariant() {
       btn.setAttribute('aria-selected', active ? 'true' : 'false');
     });
   };
+
+  if (select) {
+    const selected = select.value;
+    select.replaceChildren(
+      ...Object.entries(frenchCurlColorVariants).map(([key, color]) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = color.label;
+        return option;
+      }),
+    );
+    select.value = frenchCurlColorVariants[selected] ? selected : FRENCH_CURL_DEFAULT_COLOR;
+  }
 
   if (swatchList) {
     const fragment = document.createDocumentFragment();
@@ -1674,7 +2009,8 @@ function initMecheVariant() {
     }
   });
 
-  setColorVariant(select?.value || FRENCH_CURL_DEFAULT_COLOR);
+  if (select) select.value = frenchCurlColorVariants[select.value] ? select.value : FRENCH_CURL_DEFAULT_COLOR;
+  setMainByIndex(0);
 }
 
 function showToast(message) {
@@ -1770,6 +2106,11 @@ function initCartCheckout() {
 
   checkoutBtn.addEventListener('click', () => {
     if (cart.length === 0) return;
+    if (isGetznerWifiOnlyCart()) {
+      showToast('Redirection vers le paiement Stripe…');
+      redirectToStripe(buildGetznerWifiPaymentUrl(getCheckoutCustomer()));
+      return;
+    }
     updateCheckoutButton();
     showCheckoutForm(true);
   });
@@ -1798,10 +2139,12 @@ function initCartCheckout() {
       return;
     }
 
-    const formError = validateCheckoutForm();
-    if (formError) {
-      showCartPayError(formError);
-      return;
+    if (!isGetznerWifiOnlyCart()) {
+      const formError = validateCheckoutForm();
+      if (formError) {
+        showCartPayError(formError);
+        return;
+      }
     }
 
     const customer = getCheckoutCustomer();
@@ -1829,6 +2172,9 @@ function initCartCheckout() {
       if (session?.url) {
         payUrl = session.url;
         stripeSessionId = session.id || '';
+        if (session.id === 'plink_getzner_wifi') {
+          paymentMode = 'Stripe Payment Link — Bazin Getzner Wifi';
+        }
       } else {
         checkoutError = 'Réponse Stripe invalide (URL manquante).';
       }
@@ -1946,7 +2292,9 @@ function initMartederGallery() {
   const labelEl = gallery.querySelector('[data-marteder-label]');
   const previewEl = document.querySelector('[data-marteder-preview]');
   const colorSelect = document.querySelector('[data-marteder-select]');
-  const thumbs = Array.from(gallery.querySelectorAll('.marteder-thumb'));
+  const thumbs = Array.from(gallery.querySelectorAll('.marteder-thumb')).filter((thumb) =>
+    GETZNER_ARRIVAL_IDS.has(thumb.dataset.variant),
+  );
   const zoomBtn = gallery.querySelector('[data-marteder-zoom]');
   const lightboxImage = document.getElementById('martederLightboxImage');
   const lightboxLabel = document.getElementById('martederLightboxLabel');
@@ -1954,22 +2302,32 @@ function initMartederGallery() {
 
   const getSlide = (i) => {
     const thumb = thumbs[i];
+    const arrival = getGetznerArrivalVariant(thumb?.dataset.variant);
+    if (!arrival) {
+      return { src: '', label: '', variant: '' };
+    }
     return {
-      src: thumb.dataset.src,
-      label: thumb.dataset.label,
+      src: arrival.file,
+      label: arrival.label,
+      variant: arrival.id,
     };
   };
 
   const showSlide = (i) => {
     index = (i + thumbs.length) % thumbs.length;
     const slide = getSlide(index);
-    mainImage.src = slide.src;
+    if (mainImage.getAttribute('src') === slide.src) {
+      mainImage.src = `${slide.src}?v=${encodeURIComponent(slide.variant)}`;
+    } else {
+      mainImage.src = slide.src;
+    }
     mainImage.alt = `Création exclusive Marteder — ${slide.label}`;
+    gallery.dataset.selectedVariant = slide.variant || '';
     if (labelEl) labelEl.textContent = slide.label;
     if (previewEl) {
       previewEl.innerHTML = `Couleur sélectionnée : <strong>${slide.label}</strong>`;
     }
-    if (colorSelect) colorSelect.value = String(index);
+    if (colorSelect && slide.variant) colorSelect.value = slide.variant;
     thumbs.forEach((thumb, thumbIndex) => {
       const active = thumbIndex === index;
       thumb.classList.toggle('active', active);
@@ -1999,11 +2357,17 @@ function initMartederGallery() {
 
   gallery.querySelector('.marteder-gallery-prev')?.addEventListener('click', () => showSlide(index - 1));
   gallery.querySelector('.marteder-gallery-next')?.addEventListener('click', () => showSlide(index + 1));
-  thumbs.forEach((thumb) => {
-    thumb.addEventListener('click', () => showSlide(Number(thumb.dataset.index)));
+  thumbs.forEach((thumb, thumbIndex) => {
+    thumb.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const nextIndex = Number(thumb.dataset.index);
+      showSlide(Number.isNaN(nextIndex) ? thumbIndex : nextIndex);
+    });
   });
   colorSelect?.addEventListener('change', () => {
-    showSlide(Number(colorSelect.value));
+    const nextIndex = thumbs.findIndex((thumb) => thumb.dataset.variant === colorSelect.value);
+    if (nextIndex >= 0) showSlide(nextIndex);
   });
   zoomBtn?.addEventListener('click', openLightbox);
 
@@ -2036,10 +2400,102 @@ function initMartederGallery() {
   showSlide(0);
 }
 
+function initPhotoGalleries() {
+  document.querySelectorAll('[data-photo-gallery]').forEach((gallery) => {
+    const main = gallery.querySelector('[data-photo-main]');
+    const labelEl = gallery.querySelector('[data-photo-label]');
+    const zoomBtn = gallery.querySelector('[data-product-zoom]');
+    const thumbs = Array.from(gallery.querySelectorAll('[data-photo-thumb]'));
+    if (!main || thumbs.length === 0) return;
+
+    let index = Math.max(0, thumbs.findIndex((thumb) => thumb.classList.contains('active')));
+
+    const show = (nextIndex) => {
+      index = (nextIndex + thumbs.length) % thumbs.length;
+      const thumb = thumbs[index];
+      const src = thumb.dataset.src;
+      const label = thumb.dataset.label || '';
+      const alt = thumb.querySelector('img')?.alt || label;
+      main.src = src;
+      main.alt = alt;
+      if (labelEl) labelEl.textContent = label;
+      if (zoomBtn) {
+        zoomBtn.dataset.caption = alt;
+        zoomBtn.dataset.galleryStartIndex = String(index);
+      }
+      thumbs.forEach((item, i) => {
+        const active = i === index;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    };
+
+    thumbs.forEach((thumb, i) => {
+      thumb.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        show(i);
+      });
+    });
+
+    gallery.querySelector('[data-photo-prev]')?.addEventListener('click', () => show(index - 1));
+    gallery.querySelector('[data-photo-next]')?.addEventListener('click', () => show(index + 1));
+  });
+}
+
+function initGetznerWifiGallery() {
+  const card = document.querySelector('[data-product-id="getzner-wifi"]');
+  const gallery = card?.querySelector('[data-wifi-gallery]');
+  if (!card || !gallery) return;
+
+  const still = gallery.querySelector('[data-wifi-still]');
+  const labelEl = gallery.querySelector('[data-wifi-label]');
+  const preview = gallery.querySelector('[data-wifi-preview]');
+  const select = gallery.querySelector('[data-wifi-select]');
+  const thumbs = Array.from(gallery.querySelectorAll('[data-wifi-thumb]'));
+  const video = gallery.querySelector('.wifi-video');
+  const fabric = fabricProducts['getzner-wifi'];
+
+  const applyColor = (variantKey) => {
+    const variant = fabric?.variants[variantKey];
+    const thumb = thumbs.find((btn) => btn.dataset.variant === variantKey);
+    if (!variant || !thumb) return;
+
+    if (still) {
+      still.src = variant.image;
+      still.alt = variant.alt;
+    }
+    if (labelEl) labelEl.textContent = variant.label;
+    if (preview) {
+      preview.innerHTML = `Coloris sélectionné : <strong>${variant.label}</strong>`;
+    }
+    if (select) select.value = variantKey;
+
+    thumbs.forEach((btn) => {
+      const active = btn === thumb;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  };
+
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', (event) => {
+      event.preventDefault();
+      applyColor(thumb.dataset.variant);
+    });
+  });
+
+  select?.addEventListener('change', () => applyColor(select.value));
+
+  startMutedLoopVideo(video);
+  applyColor(select?.value || fabric?.defaultVariant || 'bleu');
+}
+
 function initDNutrimecGallery() {
   const mainImage = document.getElementById('dnutrimecMainImage');
   const mainTrigger = mainImage?.closest('[data-product-zoom]');
   const thumbs = Array.from(document.querySelectorAll('[data-dnutrimec-thumb]'));
+  const faceZoom = document.querySelector('.product-face-zoom');
   if (!mainImage || !mainTrigger || thumbs.length === 0) return;
 
   const showImage = (thumb) => {
@@ -2048,13 +2504,60 @@ function initDNutrimecGallery() {
     mainTrigger.dataset.caption = thumb.dataset.caption;
     mainTrigger.dataset.galleryStartIndex = thumb.dataset.galleryIndex;
     thumbs.forEach((item) => item.classList.toggle('active', item === thumb));
+    if (faceZoom) {
+      const index = thumb.dataset.galleryIndex;
+      faceZoom.hidden = index !== '0' && index !== '2';
+    }
   };
 
   thumbs.forEach((thumb) => {
-    thumb.addEventListener('click', () => showImage(thumb));
+    thumb.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      showImage(thumb);
+    });
   });
 
   showImage(thumbs[0]);
+}
+
+function startMutedLoopVideo(video) {
+  if (!video) return;
+  video.muted = true;
+  video.defaultMuted = true;
+  video.playsInline = true;
+  video.setAttribute('playsinline', '');
+  video.loop = true;
+  video.play()?.catch(() => {});
+}
+
+function initOkadyCoffretMedia() {
+  const mainImage = document.getElementById('okadyCoffretMainImage');
+  const mainTrigger = mainImage?.closest('[data-product-zoom]');
+  const thumbs = Array.from(document.querySelectorAll('[data-okady-coffret-thumb]'));
+  const video = document.querySelector('.okady-coffret-video');
+
+  if (mainImage && mainTrigger && thumbs.length > 0) {
+    const showImage = (thumb) => {
+      mainImage.src = thumb.dataset.src;
+      mainImage.alt = thumb.dataset.alt;
+      mainTrigger.dataset.caption = thumb.dataset.caption;
+      mainTrigger.dataset.galleryIndex = thumb.dataset.galleryIndex;
+      thumbs.forEach((item) => item.classList.toggle('active', item === thumb));
+    };
+
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        showImage(thumb);
+      });
+    });
+
+    showImage(thumbs[0]);
+  }
+
+  startMutedLoopVideo(video);
 }
 
 function initOkadyGallery() {
@@ -2286,7 +2789,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initXpressionVariant();
   initMecheVariant();
   initMartederGallery();
+  initPhotoGalleries();
+  initGetznerWifiGallery();
   initDNutrimecGallery();
+  initOkadyCoffretMedia();
   initOkadyGallery();
   initProductLightbox();
   initFilters();

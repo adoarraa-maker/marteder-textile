@@ -13,6 +13,10 @@ const CATALOG = {
     name: 'Bazin Getzner (Lot de 5 yards)',
     unitAmountCents: 8000,
   },
+  getznerWifi: {
+    name: 'Bazin Getzner Motif Wifi (Lot de 5 yards)',
+    unitAmountCents: 8500,
+  },
   meches: {
     name: 'Mèches X-Pression Ultra Braid',
     unitAmountCents: 500,
@@ -32,6 +36,14 @@ const CATALOG = {
   dnutrimec: {
     name: 'Gel Essence Réparateur au Collagène (D-nutrimec · 30 g)',
     unitAmountCents: 3000,
+  },
+  bazinBrode: {
+    name: 'Bazin Brodé Géométrique & Cérémonie (Coupon 5 yards / 4,5 m)',
+    unitAmountCents: 8000,
+  },
+  dentelleSuisse: {
+    name: 'Dentelle Suisse Haute Cérémonie – Motifs Floraux & Cristaux (Coupon 5 yards / 4,5 m)',
+    unitAmountCents: 25000,
   },
 };
 

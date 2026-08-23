@@ -1016,6 +1016,61 @@ ul {
   color: var(--color-text);
 }
 
+.accueil-coiffure-offres {
+  display: grid;
+  gap: 2.25rem;
+  margin-top: 2.5rem;
+}
+
+.accueil-offre {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.2fr);
+  gap: 2rem 2.5rem;
+  align-items: center;
+  padding: 1.35rem 1.5rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.accueil-offre-media {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: #1a1410;
+  aspect-ratio: 4 / 5;
+}
+
+.accueil-offre-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.accueil-offre-media--pack {
+  aspect-ratio: 1;
+  background: #f6f1e8;
+}
+
+.accueil-offre-media--pack img {
+  object-fit: contain;
+  object-position: center;
+  padding: 0.85rem;
+}
+
+.accueil-offre-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.accueil-offre-body .btn {
+  margin-top: 0.15rem;
+}
+
 @media (max-width: 960px) {
   .accueil-coiffure-gallery {
     grid-template-columns: 1fr 1fr;
@@ -1030,6 +1085,18 @@ ul {
 
   .accueil-coiffure-infos {
     grid-template-columns: 1fr;
+  }
+
+  .accueil-offre {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 1.1rem;
+  }
+
+  .accueil-offre-media {
+    max-width: 420px;
+    margin-inline: auto;
+    width: 100%;
   }
 
   .beaute-raffinee-video-wrapper {
@@ -1185,9 +1252,62 @@ ul {
 .products-grid--duo {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2.5rem;
-  max-width: 920px;
+  max-width: 1080px;
   margin-inline: auto;
   align-items: stretch;
+}
+
+.ceremonie-duo {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.75rem;
+  margin: 0.35rem 0 1.5rem;
+  align-items: stretch;
+}
+
+.product-card--ceremonie {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--color-surface);
+}
+
+.product-card--ceremonie .marteder-gallery-main {
+  background: #f4efe6;
+}
+
+.product-card--ceremonie .marteder-gallery-image {
+  object-fit: contain;
+}
+
+.ceremonie-thumbs {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  padding: 0 0.85rem 0.95rem;
+}
+
+.product-card--ceremonie .product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem 1.3rem 1.45rem;
+  gap: 0.35rem;
+}
+
+.product-card--ceremonie .product-order-actions {
+  margin-top: auto;
+}
+
+.product-card--ceremonie .product-lot-note {
+  margin: 0.1rem 0 0.15rem;
+}
+
+.product-card--ceremonie .payment-methods-note {
+  margin: 0.55rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-muted, #7a7168);
+  text-align: center;
 }
 
 .products-grid--duo > .product-card:not(.product-card--french-curls) {
@@ -1198,7 +1318,110 @@ ul {
   margin-top: 0.75rem;
 }
 
+.products-grid > .product-card--star,
+.products-grid--duo > .product-card--star,
+.products-grid--duo > .product-card.product-card--star,
+.products-grid--duo > .product-card.product-card--star {
+  grid-column: 1 / -1;
+  height: auto;
+}
+
+.product-card--star {
+  scroll-margin-top: calc(var(--header-height) + var(--top-banner-height) + 1rem);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.wifi-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.wifi-media {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  background: #161310;
+}
+
+.wifi-video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: min(72vh, 560px);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #1a1714;
+  line-height: 0;
+}
+
+.wifi-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+.wifi-video-wrap .product-badge {
+  z-index: 2;
+}
+
+.wifi-still-label {
+  margin: 0;
+  color: #f4efe6;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.wifi-thumbs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.wifi-thumbs .marteder-thumb,
+.wifi-thumbs .fabric-swatch {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+.wifi-still {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  object-position: center;
+  background: #221c18;
+  border-radius: var(--radius-sm);
+}
+
+.product-card--star .product-info {
+  padding: 1.25rem 1.35rem 1.4rem;
+}
+
 @media (max-width: 720px) {
+  .wifi-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .wifi-video-wrap {
+    max-height: min(68vh, 520px);
+    margin-inline: auto;
+    width: min(100%, 340px);
+  }
+}
+
+@media (max-width: 720px) {
+  .ceremonie-duo {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    max-width: 480px;
+    margin-inline: auto;
+  }
+
   .products-grid--duo {
     grid-template-columns: 1fr;
     gap: 1.75rem;
@@ -1351,14 +1574,20 @@ ul {
   z-index: 2;
 }
 
+.product-card--gallery .marteder-gallery-main {
+  aspect-ratio: 4 / 3;
+}
+
 .marteder-gallery-thumbs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.4rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
   padding: 0 0.65rem 0.65rem;
 }
 
 .marteder-thumb {
+  position: relative;
+  z-index: 1;
   aspect-ratio: 1;
   padding: 0;
   border: 2px solid transparent;
@@ -1374,11 +1603,26 @@ ul {
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .marteder-thumb:hover,
 .marteder-thumb.active {
   border-color: var(--color-accent);
+}
+
+@media (max-width: 700px) {
+  .marteder-gallery-thumbs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.product-card--ceremonie .marteder-gallery-thumbs.ceremonie-thumbs {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  padding: 0 0.85rem 0.95rem;
 }
 
 .marteder-lightbox {
@@ -1693,9 +1937,9 @@ ul {
 
 .french-curl-stage {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 4;
   max-height: min(72vh, 760px);
-  background: #0f0d0c;
+  background: #f4f1ec;
   overflow: hidden;
 }
 
@@ -1714,7 +1958,8 @@ ul {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: #141210;
+  object-position: center center;
+  background: #f4f1ec;
 }
 
 .french-curl-zoom-hint {
@@ -1833,7 +2078,9 @@ ul {
 
 .french-curl-thumbs .meche-thumb img {
   aspect-ratio: 3 / 4;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center center;
+  background: #f4f1ec;
 }
 
 .french-curl-thumbs .meche-gallery-caption {
@@ -2466,6 +2713,31 @@ ul {
   border-bottom: 1px solid var(--color-border);
 }
 
+.cart-item--photo {
+  grid-template-columns: 56px 1fr auto;
+}
+
+.cart-item-photo {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.cart-item--photo .cart-item-info,
+.cart-item--photo .cart-item-name,
+.cart-item--photo .cart-item-variant,
+.cart-item--photo .cart-item-note {
+  grid-column: 2;
+}
+
+.cart-item--photo .cart-item-meta {
+  grid-column: 3;
+}
+
 .cart-item-name {
   font-family: var(--font-display);
   font-size: 1.0625rem;
@@ -2935,6 +3207,26 @@ ul {
   margin-bottom: 2rem;
 }
 
+.cover-tissus-gallery {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.75rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 520px;
+}
+
+.cover-tissus-gallery:has(.cover-tissus-figure:only-child) {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  min-height: 0;
+}
+
+.cover-tissus-gallery:has(.cover-tissus-figure:only-child) .cover-tissus-figure--main {
+  grid-row: auto;
+}
+
 .cover-tissus-figure {
   margin: 0 auto;
   max-width: 1000px;
@@ -2945,10 +3237,44 @@ ul {
   box-shadow: var(--shadow-sm);
 }
 
+.cover-tissus-gallery .cover-tissus-figure {
+  margin: 0;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+}
+
+.cover-tissus-gallery .cover-tissus-figure--main {
+  grid-row: span 2;
+}
+
 .cover-tissus-figure img {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.cover-tissus-gallery .cover-tissus-figure img {
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 700px) {
+  .cover-tissus-gallery {
+    grid-template-columns: 1fr 1fr;
+    min-height: 0;
+  }
+
+  .cover-tissus-gallery .cover-tissus-figure--main {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    aspect-ratio: 3 / 4;
+    max-height: 70vh;
+  }
+
+  .cover-tissus-gallery .cover-tissus-figure:not(.cover-tissus-figure--main) {
+    aspect-ratio: 3 / 4;
+  }
 }
 
 .cover-tissus-text {
@@ -3117,6 +3443,15 @@ ul {
   letter-spacing: 0.02em;
   padding: 0.8rem 1.25rem;
   font-size: 0.875rem;
+}
+
+a.wifi-pay-now {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .product-order-actions .btn-outline {
@@ -3335,20 +3670,73 @@ ul {
 
 .dnutrimec-gallery {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 0.65rem;
-  margin: -0.25rem 0 1rem;
+  gap: 0.5rem;
+  margin: -0.25rem 0 0.85rem;
 }
 
 .dnutrimec-gallery .dnutrimec-thumb {
-  flex: 0 1 78px;
-  max-width: 78px;
+  flex: 0 1 68px;
+  max-width: 68px;
+  cursor: pointer;
 }
 
 .dnutrimec-gallery .dnutrimec-thumb img {
   aspect-ratio: 1;
   object-fit: cover;
   padding: 0;
+  pointer-events: none;
+}
+
+.okady-coffret-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: -0.25rem 0 0.85rem;
+}
+
+.okady-coffret-gallery .okady-coffret-thumb {
+  flex: 0 1 68px;
+  max-width: 68px;
+  cursor: pointer;
+}
+
+.okady-coffret-gallery .okady-coffret-thumb img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  padding: 0;
+  pointer-events: none;
+}
+
+.okady-coffret-video-wrap {
+  width: 100%;
+  margin: 0 0 1rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #1a1220;
+  line-height: 0;
+}
+
+.okady-coffret-video {
+  display: block;
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 700px) {
+  .okady-coffret-video {
+    max-height: 220px;
+  }
+
+  .dnutrimec-gallery .dnutrimec-thumb,
+  .okady-coffret-gallery .okady-coffret-thumb {
+    flex-basis: 56px;
+    max-width: 56px;
+  }
 }
 
 .okady-main-visual .product-zoom-trigger {
