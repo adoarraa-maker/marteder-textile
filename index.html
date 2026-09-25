@@ -68,7 +68,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260823-gallery-fix">
+  <link rel="stylesheet" href="css/styles.css?v=20260925-avis-form">
   <link
     rel="preload"
     as="image"
@@ -1663,6 +1663,89 @@
       </div>
     </section>
 
+    <!-- Avis Clients -->
+    <section class="customer-reviews" id="avis" aria-labelledby="avis-title">
+      <div class="container">
+        <div class="reviews-panel">
+          <div class="section-header centered">
+            <span class="section-label">Avis clients</span>
+            <h2 class="section-title" id="avis-title">Ce que disent nos clientes</h2>
+            <p class="section-desc reviews-intro">
+              Merci pour vos retours après vos achats chez Marteder Textile.
+            </p>
+          </div>
+
+          <div class="reviews-grid">
+            <article class="review-card">
+              <div class="review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+              <h3>Aïssata D.</h3>
+              <p>« Un Bazin Getzner d'une qualité remarquable, avec cette brillance si caractéristique. »</p>
+            </article>
+            <article class="review-card">
+              <div class="review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+              <h3>Mariama K.</h3>
+              <p>« Très beaux tissus, conseils chaleureux et livraison rapide sur Genève. Je recommande. »</p>
+            </article>
+            <article class="review-card">
+              <div class="review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+              <h3>Fatou S.</h3>
+              <p>« Les mèches sont souples et faciles à tresser. La couleur correspond parfaitement aux photos. »</p>
+            </article>
+            <article class="review-card">
+              <div class="review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+              <h3>Claudia M.</h3>
+              <p>« Accueil attentionné, beaux choix de bazins et de wax. Une adresse de confiance à Meyrin. »</p>
+            </article>
+          </div>
+
+          <div class="reviews-form-wrapper">
+            <form
+              class="review-form"
+              id="reviewForm"
+              name="avis-clients"
+              method="POST"
+              action="avis-merci.html"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+            >
+              <input type="hidden" name="form-name" value="avis-clients">
+              <input type="text" name="bot-field" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+              <h3 class="review-form-title">Laisser votre avis</h3>
+              <p class="review-form-desc">
+                Votre avis nous sera transmis par e-mail via Netlify Forms afin que nous puissions l'ajouter aux avis existants.
+              </p>
+
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="form-label" for="reviewName">Nom</label>
+                  <input class="form-input" type="text" id="reviewName" name="nom" required autocomplete="name" placeholder="Votre nom">
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="reviewRating">Note</label>
+                  <select class="form-input form-select review-rating-select" id="reviewRating" name="note" required>
+                    <option value="">Choisir une note</option>
+                    <option value="5">★★★★★ — 5 étoiles</option>
+                    <option value="4">★★★★☆ — 4 étoiles</option>
+                    <option value="3">★★★☆☆ — 3 étoiles</option>
+                    <option value="2">★★☆☆☆ — 2 étoiles</option>
+                    <option value="1">★☆☆☆☆ — 1 étoile</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="reviewComment">Commentaire</label>
+                <textarea class="form-input form-textarea" id="reviewComment" name="commentaire" rows="5" required placeholder="Partagez votre expérience après votre achat…"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-cart review-submit-btn">Envoyer mon avis</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Témoignage -->
     <section class="testimonial">
       <div class="container testimonial-inner">
@@ -1953,6 +2036,6 @@
   </button>
 
   <script src="js/stripe-config.js?v=20260804-okady-cart"></script>
-  <script src="js/main.js?v=20260823-gallery-fix"></script>
+  <script src="js/main.js?v=20260925-avis-form"></script>
 </body>
 </html>
