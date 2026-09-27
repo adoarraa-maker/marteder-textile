@@ -68,7 +68,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260823-gallery-fix">
+  <link rel="stylesheet" href="css/styles.css?v=20260927-avis">
   <link
     rel="preload"
     as="image"
@@ -1675,6 +1675,48 @@
       </div>
     </section>
 
+    <!-- Avis clients -->
+    <section class="customer-reviews" id="avis" aria-labelledby="avis-title">
+      <div class="container">
+        <div class="section-header centered">
+          <span class="section-label">Avis clients</span>
+          <h2 class="section-title" id="avis-title">Partagez votre expérience</h2>
+          <p class="section-desc">
+            Une note et quelques mots suffisent. Votre avis est envoyé directement à la boutique.
+          </p>
+        </div>
+        <div class="reviews-panel">
+          <form class="avis-form" id="formulaire-avis" novalidate>
+            <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <div class="form-field">
+              <label class="form-label" for="nom-client">Votre nom</label>
+              <input class="form-input" type="text" id="nom-client" name="nom" required autocomplete="name" maxlength="80" placeholder="Votre prénom ou nom">
+            </div>
+
+            <div class="form-field">
+              <span class="form-label" id="note-client-label">Votre note</span>
+              <div class="star-rating" role="radiogroup" aria-labelledby="note-client-label">
+                <button type="button" class="star" aria-label="1 étoile">★</button>
+                <button type="button" class="star" aria-label="2 étoiles">★</button>
+                <button type="button" class="star" aria-label="3 étoiles">★</button>
+                <button type="button" class="star" aria-label="4 étoiles">★</button>
+                <button type="button" class="star" aria-label="5 étoiles">★</button>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="commentaire-client">Votre commentaire</label>
+              <textarea class="form-input form-textarea" id="commentaire-client" name="commentaire" rows="4" required maxlength="800" placeholder="Qu’avez-vous pensé de votre tissu, de vos mèches ou de votre visite ?"></textarea>
+            </div>
+
+            <p class="avis-statut" id="avis-statut" role="status" hidden></p>
+            <button type="submit" class="btn btn-cart avis-submit">Publier mon avis</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <!-- Horaires & Accès -->
     <section class="horaires-acces" id="horaires" aria-labelledby="horaires-title">
       <div class="container">
@@ -1953,6 +1995,6 @@
   </button>
 
   <script src="js/stripe-config.js?v=20260804-okady-cart"></script>
-  <script src="js/main.js?v=20260823-gallery-fix"></script>
+  <script src="js/main.js?v=20260927-avis"></script>
 </body>
 </html>
