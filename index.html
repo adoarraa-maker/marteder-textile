@@ -68,7 +68,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=20260927-avis">
+  <link rel="stylesheet" href="css/styles.css?v=20260925-avis-form">
   <link
     rel="preload"
     as="image"
@@ -1699,36 +1699,47 @@
           </div>
 
           <div class="reviews-form-wrapper">
-            <h3 class="review-form-title">Laisser votre avis</h3>
-            <p class="review-form-desc">
-              Votre note et votre commentaire sont envoyés à la boutique. Nous les ajoutons aux avis après lecture.
-            </p>
-            <form class="avis-form" id="formulaire-avis" novalidate>
-              <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <form
+              class="review-form"
+              id="reviewForm"
+              name="avis-clients"
+              method="POST"
+              action="avis-merci.html"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+            >
+              <input type="hidden" name="form-name" value="avis-clients">
+              <input type="text" name="bot-field" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-              <div class="form-field">
-                <label class="form-label" for="nom-client">Votre nom</label>
-                <input class="form-input" type="text" id="nom-client" name="nom" required autocomplete="name" maxlength="80" placeholder="Votre prénom ou nom">
-              </div>
+              <h3 class="review-form-title">Laisser votre avis</h3>
+              <p class="review-form-desc">
+                Votre avis nous sera transmis par e-mail via Netlify Forms afin que nous puissions l'ajouter aux avis existants.
+              </p>
 
-              <div class="form-field">
-                <span class="form-label" id="note-client-label">Votre note</span>
-                <div class="star-rating" role="radiogroup" aria-labelledby="note-client-label">
-                  <button type="button" class="star" aria-label="1 étoile">★</button>
-                  <button type="button" class="star" aria-label="2 étoiles">★</button>
-                  <button type="button" class="star" aria-label="3 étoiles">★</button>
-                  <button type="button" class="star" aria-label="4 étoiles">★</button>
-                  <button type="button" class="star" aria-label="5 étoiles">★</button>
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="form-label" for="reviewName">Nom</label>
+                  <input class="form-input" type="text" id="reviewName" name="nom" required autocomplete="name" placeholder="Votre nom">
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="reviewRating">Note</label>
+                  <select class="form-input form-select review-rating-select" id="reviewRating" name="note" required>
+                    <option value="">Choisir une note</option>
+                    <option value="5">★★★★★ — 5 étoiles</option>
+                    <option value="4">★★★★☆ — 4 étoiles</option>
+                    <option value="3">★★★☆☆ — 3 étoiles</option>
+                    <option value="2">★★☆☆☆ — 2 étoiles</option>
+                    <option value="1">★☆☆☆☆ — 1 étoile</option>
+                  </select>
                 </div>
               </div>
 
               <div class="form-field">
-                <label class="form-label" for="commentaire-client">Votre commentaire</label>
-                <textarea class="form-input form-textarea" id="commentaire-client" name="commentaire" rows="4" required maxlength="800" placeholder="Qu’avez-vous pensé de votre tissu, de vos mèches ou de votre visite ?"></textarea>
+                <label class="form-label" for="reviewComment">Commentaire</label>
+                <textarea class="form-input form-textarea" id="reviewComment" name="commentaire" rows="5" required placeholder="Partagez votre expérience après votre achat…"></textarea>
               </div>
 
-              <p class="avis-statut" id="avis-statut" role="status" hidden></p>
-              <button type="submit" class="btn btn-cart avis-submit">Publier mon avis</button>
+              <button type="submit" class="btn btn-cart review-submit-btn">Envoyer mon avis</button>
             </form>
           </div>
         </div>
@@ -2025,6 +2036,6 @@
   </button>
 
   <script src="js/stripe-config.js?v=20260804-okady-cart"></script>
-  <script src="js/main.js?v=20260927-avis"></script>
+  <script src="js/main.js?v=20260925-avis-form"></script>
 </body>
 </html>

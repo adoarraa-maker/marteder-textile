@@ -2277,119 +2277,6 @@ function initCartCheckout() {
   });
 }
 
-function initAvisForm() {
-  const formulaireAvis = document.getElementById('formulaire-avis');
-  const etoiles = document.querySelectorAll('.star-rating .star');
-  if (!formulaireAvis || !etoiles.length) return;
-
-  let noteSelectionnee = 5;
-  const statut = document.getElementById('avis-statut');
-  const bouton = formulaireAvis.querySelector('.avis-submit');
-
-  function mettreAJourEtoiles(note) {
-    etoiles.forEach((etoile, index) => {
-      const active = index < note;
-      etoile.textContent = active ? '★' : '☆';
-      etoile.style.color = active ? '#f5b301' : '#ccc';
-      etoile.setAttribute('aria-pressed', active ? 'true' : 'false');
-    });
-  }
-
-  function afficherStatut(message, type) {
-    if (!statut) return;
-    statut.hidden = false;
-    statut.textContent = message;
-    statut.classList.toggle('is-success', type === 'success');
-    statut.classList.toggle('is-error', type === 'error');
-  }
-
-  etoiles.forEach((etoile, index) => {
-    etoile.addEventListener('click', () => {
-      noteSelectionnee = index + 1;
-      mettreAJourEtoiles(noteSelectionnee);
-    });
-  });
-
-  mettreAJourEtoiles(noteSelectionnee);
-
-  formulaireAvis.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const nom = document.getElementById('nom-client').value.trim();
-    const commentaire = document.getElementById('commentaire-client').value.trim();
-    if (nom.length < 2 || commentaire.length < 8) {
-      afficherStatut('Indiquez votre nom et un commentaire d’au moins quelques mots.', 'error');
-      return;
-    }
-
-    const donneesAvis = {
-      nom,
-      commentaire,
-      note: noteSelectionnee,
-      date: new Date().toLocaleDateString('fr-FR'),
-      _honey: formulaireAvis.querySelector('[name="_honey"]')?.value || '',
-    };
-
-    if (bouton) {
-      bouton.disabled = true;
-      bouton.textContent = 'Envoi en cours…';
-    }
-
-    const envoyer = async (url, body) => {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
-      return response;
-    };
-
-    try {
-      let response;
-      try {
-        response = await envoyer('/.netlify/functions/enregistrer-avis', donneesAvis);
-      } catch {
-        response = null;
-      }
-
-      if (!response || response.status === 404) {
-        response = await envoyer(FORMSUBMIT_URL, {
-          _subject: 'Nouvel avis client — Marteder Textile',
-          _template: 'table',
-          _captcha: 'false',
-          nom: donneesAvis.nom,
-          note: `${donneesAvis.note}/5`,
-          commentaire: donneesAvis.commentaire,
-          date: donneesAvis.date,
-        });
-      }
-
-      if (!response.ok) {
-        throw new Error('enregistrement');
-      }
-
-      const message = 'Merci pour votre avis ! Votre évaluation a bien été enregistrée.';
-      afficherStatut(message, 'success');
-      showToast(message);
-      formulaireAvis.reset();
-      noteSelectionnee = 5;
-      mettreAJourEtoiles(5);
-    } catch {
-      const message = 'Une erreur est survenue lors de l’enregistrement de votre avis.';
-      afficherStatut(message, 'error');
-      showToast(message);
-    } finally {
-      if (bouton) {
-        bouton.disabled = false;
-        bouton.textContent = 'Publier mon avis';
-      }
-    }
-  });
-}
-
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
@@ -3136,7 +3023,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initCartPanel();
   initCartCheckout();
   initContactForm();
-  initAvisForm();
   initReviewForm();
   initFabricVariants();
   initXpressionVariant();
