@@ -2408,6 +2408,19 @@ function initContactForm() {
   });
 }
 
+function initReviewForm() {
+  const form = document.getElementById('reviewForm');
+  if (!form) return;
+
+  form.addEventListener('submit', () => {
+    const btn = form.querySelector('.review-submit-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours…';
+    }
+  });
+}
+
 function initNewsletter() {
   const form = document.getElementById('newsletterForm');
   if (!form) return;
@@ -3124,6 +3137,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCartCheckout();
   initContactForm();
   initAvisForm();
+  initReviewForm();
   initFabricVariants();
   initXpressionVariant();
   initMecheVariant();

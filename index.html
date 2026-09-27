@@ -1663,6 +1663,78 @@
       </div>
     </section>
 
+    <!-- Avis Clients -->
+    <section class="customer-reviews" id="avis" aria-labelledby="avis-title">
+      <div class="container">
+        <div class="reviews-panel">
+          <div class="section-header centered">
+            <span class="section-label">Avis clients</span>
+            <h2 class="section-title" id="avis-title">Ce que disent nos clientes</h2>
+            <p class="section-desc reviews-intro">
+              Merci pour vos retours après vos achats chez Marteder Textile.
+            </p>
+          </div>
+
+          <div class="reviews-grid">
+            <article class="review-card">
+              <div class="review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+              <h3>Aïssata D.</h3>
+              <p>« Un Bazin Getzner d'une qualité remarquable, avec cette brillance si caractéristique. »</p>
+            </article>
+            <article class="review-card">
+              <div class="review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+              <h3>Mariama K.</h3>
+              <p>« Très beaux tissus, conseils chaleureux et livraison rapide sur Genève. Je recommande. »</p>
+            </article>
+            <article class="review-card">
+              <div class="review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+              <h3>Fatou S.</h3>
+              <p>« Les mèches sont souples et faciles à tresser. La couleur correspond parfaitement aux photos. »</p>
+            </article>
+            <article class="review-card">
+              <div class="review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+              <h3>Claudia M.</h3>
+              <p>« Accueil attentionné, beaux choix de bazins et de wax. Une adresse de confiance à Meyrin. »</p>
+            </article>
+          </div>
+
+          <div class="reviews-form-wrapper">
+            <h3 class="review-form-title">Laisser votre avis</h3>
+            <p class="review-form-desc">
+              Votre note et votre commentaire sont envoyés à la boutique. Nous les ajoutons aux avis après lecture.
+            </p>
+            <form class="avis-form" id="formulaire-avis" novalidate>
+              <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+              <div class="form-field">
+                <label class="form-label" for="nom-client">Votre nom</label>
+                <input class="form-input" type="text" id="nom-client" name="nom" required autocomplete="name" maxlength="80" placeholder="Votre prénom ou nom">
+              </div>
+
+              <div class="form-field">
+                <span class="form-label" id="note-client-label">Votre note</span>
+                <div class="star-rating" role="radiogroup" aria-labelledby="note-client-label">
+                  <button type="button" class="star" aria-label="1 étoile">★</button>
+                  <button type="button" class="star" aria-label="2 étoiles">★</button>
+                  <button type="button" class="star" aria-label="3 étoiles">★</button>
+                  <button type="button" class="star" aria-label="4 étoiles">★</button>
+                  <button type="button" class="star" aria-label="5 étoiles">★</button>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="commentaire-client">Votre commentaire</label>
+                <textarea class="form-input form-textarea" id="commentaire-client" name="commentaire" rows="4" required maxlength="800" placeholder="Qu’avez-vous pensé de votre tissu, de vos mèches ou de votre visite ?"></textarea>
+              </div>
+
+              <p class="avis-statut" id="avis-statut" role="status" hidden></p>
+              <button type="submit" class="btn btn-cart avis-submit">Publier mon avis</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Témoignage -->
     <section class="testimonial">
       <div class="container testimonial-inner">
@@ -1672,48 +1744,6 @@
           pour tous mes tissus de cérémonie. »
         </blockquote>
         <cite>— Aïssata D., couturière et cliente fidèle</cite>
-      </div>
-    </section>
-
-    <!-- Avis clients -->
-    <section class="customer-reviews" id="avis" aria-labelledby="avis-title">
-      <div class="container">
-        <div class="section-header centered">
-          <span class="section-label">Avis clients</span>
-          <h2 class="section-title" id="avis-title">Partagez votre expérience</h2>
-          <p class="section-desc">
-            Une note et quelques mots suffisent. Votre avis est envoyé directement à la boutique.
-          </p>
-        </div>
-        <div class="reviews-panel">
-          <form class="avis-form" id="formulaire-avis" novalidate>
-            <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-
-            <div class="form-field">
-              <label class="form-label" for="nom-client">Votre nom</label>
-              <input class="form-input" type="text" id="nom-client" name="nom" required autocomplete="name" maxlength="80" placeholder="Votre prénom ou nom">
-            </div>
-
-            <div class="form-field">
-              <span class="form-label" id="note-client-label">Votre note</span>
-              <div class="star-rating" role="radiogroup" aria-labelledby="note-client-label">
-                <button type="button" class="star" aria-label="1 étoile">★</button>
-                <button type="button" class="star" aria-label="2 étoiles">★</button>
-                <button type="button" class="star" aria-label="3 étoiles">★</button>
-                <button type="button" class="star" aria-label="4 étoiles">★</button>
-                <button type="button" class="star" aria-label="5 étoiles">★</button>
-              </div>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label" for="commentaire-client">Votre commentaire</label>
-              <textarea class="form-input form-textarea" id="commentaire-client" name="commentaire" rows="4" required maxlength="800" placeholder="Qu’avez-vous pensé de votre tissu, de vos mèches ou de votre visite ?"></textarea>
-            </div>
-
-            <p class="avis-statut" id="avis-statut" role="status" hidden></p>
-            <button type="submit" class="btn btn-cart avis-submit">Publier mon avis</button>
-          </form>
-        </div>
       </div>
     </section>
 
